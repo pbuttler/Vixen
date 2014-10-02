@@ -2,6 +2,7 @@
 #define VIX_INTERFACES_H
 
 #include <vix_platform.h>
+#include <vix_stringutil.h>
 
 namespace Vixen {
 
@@ -26,7 +27,18 @@ namespace Vixen {
 			virtual int  run() = 0;			//application loop
 		};
 
-		class VIX_API IContent;
+		class VIX_API IContent
+		{
+		public:
+			//methods
+		};
+
+		class VIX_API IShader
+		{
+		protected:
+			virtual bool loadFromFile(const std::string& filePath) = 0;
+			virtual bool loadFromString(const std::string& shaderString) = 0;
+		};
 
 	}
 }
