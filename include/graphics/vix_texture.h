@@ -26,6 +26,9 @@ namespace Vixen {
 
 			bool operator== (const Texture& other);
 			bool operator!= (const Texture& other);
+
+		private:
+			bool init(GLenum target, const std::string& path);
 		};
 
 	}
