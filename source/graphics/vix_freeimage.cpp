@@ -28,6 +28,12 @@ namespace Vixen {
 			return format;
 		}
 
+		//NOTE:
+		//
+		//	Clearly there are more formats, and the formats
+		//  for images depend on their compression type, bits, etc.
+		//  Eventually this should take all that into account
+		//
 		GLenum fibToFormat(FIBITMAP* bmp)
 		{
 			GLenum format = GL_NONE;
@@ -45,6 +51,5 @@ namespace Vixen {
 
 			return format;
 		}
-
 	}
 }

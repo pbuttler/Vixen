@@ -1,4 +1,5 @@
 #include <vix_texture.h>
+#include <vix_osutil.h>
 #include <vix_freeimage.h>
 
 namespace Vixen {
@@ -9,7 +10,10 @@ namespace Vixen {
 			: m_width(0),
 			  m_height(0)
 		{
-
+			const std::string ospath = Util::os_path(path);
+			if (!init(target, ospath)) {
+				//log out error message
+			}
 		}
 
 		Texture::~Texture()
@@ -73,6 +77,10 @@ namespace Vixen {
 			glGetTexLevelParameterfv(m_target, NULL, GL_TEXTURE_HEIGHT, &m_height); //get texture height
 			glTexParameterf(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR); //linear filtering
 			glTexParameterf(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR); //linear filtering
+
+			FreeImage_Unload(bmp);
+
+			return true;
 		}
 
 		bool Texture::operator== (const Texture& other)
