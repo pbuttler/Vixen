@@ -1,8 +1,36 @@
 #include <vix_osutil.h>
 
+#ifdef VIX_SYS_WINDOWS
+	#include <direct.h>   //iso c++
+#elif VIX_SYS_LINUX
+	#include <sys/stat.h> //linux
+#endif
+
 namespace Vixen {
 
 	namespace Util {
+
+		void os_mkdir(const std::string& dir)
+		{
+#ifdef VIX_SYS_WINDOWS
+			_mkdir(dir.c_str());
+#elif  VIX_SYS_LINUX
+			 mkdir(dir.c_str());
+#endif
+		}
+
+		bool os_isdir(const std::string& dir)
+		{
+			//convert path
+			std::string path = os_path(dir);
+#ifdef VIX_SYS_WINDOWS
+			DWORD dwAttrib = GetFileAttributesA(path.c_str());
+			return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
+				   (dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+#elif VIX_SYS_LINUX
+			return false;
+#endif
+		}
 
 		std::string os_path(const std::string& path)
 		{

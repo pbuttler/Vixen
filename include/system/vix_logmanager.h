@@ -10,9 +10,11 @@ namespace Vixen {
 
 		class VIX_API LogManager : public Singleton < LogManager >
 		{
+			static std::string  _LogDirectory;
 		public:
 
 
+			static void        setLogDirectory(const std::string& path);
 			static LogManager* instancePtr();
 			static LogManager& instance();
 		};

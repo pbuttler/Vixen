@@ -13,7 +13,7 @@ namespace Vixen {
 			if (msg.empty()) return;
 
 #ifdef VIX_SYS_WINDOWS
-				OutputDebugString((WCHAR*)msg.c_str());
+				OutputDebugStringA(msg.c_str());
 #else
 			std::cerr << msg << std::endl;
 #endif
