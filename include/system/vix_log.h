@@ -3,7 +3,8 @@
 
 #include <vix_platform.h>
 #include <vix_interfaces.h>
-#include <memory>
+#include <vix_stringutil.h>
+#include <fstream>
 
 namespace Vixen {
 
@@ -11,15 +12,39 @@ namespace Vixen {
 
 		class Logger;
 
-		typedef std::unique_ptr<Logger> LoggerPtr;
 
-		class VIX_API Logger : INonCopyable
+		enum LogFrequency
 		{
-			static LoggerPtr m_instance;
-		public:
-			static Logger* Instance();
+			LL_LOW = 1,
+			LL_NORMAL = 2,
+			LL_HIGH = 3
+		};
 
-			static void    Log();
+		enum LogPriority
+		{
+			LP_TRIVIAL = 1,
+			LP_STANDARD = 2,
+			LP_CRITICAL = 3
+		};
+
+		class VIX_API Log
+		{
+		protected:
+			std::ofstream  m_log;
+			LogFrequency   m_freq;
+			bool           m_debugOut;
+			bool           m_noFile;
+			bool           m_timeStamp;
+			std::string    m_name;
+
+		public:
+			Log(const std::string& name, bool noFile);
+
+			void logMessage(const std::string& message,
+				            LogPriority lp,
+							bool outDebug = false);
+
+			static const size_t LOG_THRESHOLD = 4;
 		};
 
 	}

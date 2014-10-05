@@ -9,7 +9,7 @@ namespace Vixen {
 
 	namespace System {
 
-		using namespace tinyxml2;
+		
 
 		Config::Config()
 			: m_title(""),
@@ -91,26 +91,27 @@ namespace Vixen {
 		Config Config::fromFile(const std::string& path)
 		{
 			using namespace Vixen::Util;
+			
 
 			Config config;
 			
 			//load xml config file
-			XMLDocument doc;
-			XMLError    error = doc.LoadFile(os_path(path).c_str());
-			if (error != XML_NO_ERROR) {
+			tinyxml2::XMLDocument doc;
+			tinyxml2::XMLError    error = doc.LoadFile(os_path(path).c_str());
+			if (error != tinyxml2::XML_NO_ERROR) {
 				//output debug that config file failed to load
 				printf("Config file: %s failed to load", path.c_str());
 				return config;
 			}
 			
 			//now read data from config
-			XMLElement* game = doc.FirstChildElement("game");
+			tinyxml2::XMLElement* game = doc.FirstChildElement("game");
 			//read platform
-			XMLElement* platform = game->FirstChildElement("platform");
+			tinyxml2::XMLElement* platform = game->FirstChildElement("platform");
 			config.setPlatformName(platform->Attribute("title"));
 			config.setPlatform(Config::fromPlatformString(platform->Attribute("title")));
 			//read settings
-			XMLElement* settings = game->FirstChildElement("settings");
+			tinyxml2::XMLElement* settings = game->FirstChildElement("settings");
 			config.setTitle(settings->Attribute("title"));
 			config.setClientW(settings->IntAttribute("clientW"));
 			config.setClientH(settings->IntAttribute("clientH"));

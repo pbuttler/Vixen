@@ -10,6 +10,7 @@
 #ifdef _WIN32
 	//Windows platform
 	#define VIX_SYS_WINDOWS
+	#include <windows.h>
 	#ifndef NOMINMAX
 	#define NOMINMAX
 	#endif

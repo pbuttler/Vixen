@@ -1,20 +1,17 @@
 #include <vix_log.h>
+#include <vix_debugutil.h>
 
 namespace Vixen {
 
 	namespace System {
 
-		LoggerPtr Logger::m_instance;
-
-		Logger* Logger::Instance()
+		Log::Log(const std::string& name, bool noFile)
+			: m_name(name),
+			  m_noFile(noFile)
 		{
-			if (!m_instance)
-				m_instance = std::make_unique<Logger>();
-
-			return m_instance.get();
+			if (!m_noFile) {
+				m_log.open(name);
+			}
 		}
-
-
-
 	}
 }
