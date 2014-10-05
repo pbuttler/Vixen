@@ -10,6 +10,10 @@ namespace Vixen {
 
 	namespace System {
 
+
+
+
+
 		inline void vixOutputDebugString(const std::string& msg)
 		{
 			if (msg.empty()) return;
