@@ -3,6 +3,7 @@
 
 #include <vix_platform.h>
 #include <string>
+#include <sstream>
 
 namespace Vixen {
 

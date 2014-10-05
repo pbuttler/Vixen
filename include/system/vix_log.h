@@ -4,6 +4,7 @@
 #include <vix_platform.h>
 #include <vix_interfaces.h>
 #include <vix_stringutil.h>
+#include <vix_debugutil.h>
 #include <fstream>
 
 namespace Vixen {
@@ -32,13 +33,12 @@ namespace Vixen {
 		protected:
 			std::ofstream  m_log;
 			LogFrequency   m_freq;
-			bool           m_debugOut;
 			bool           m_noFile;
 			bool           m_timeStamp;
 			std::string    m_name;
 
 		public:
-			Log(const std::string& name, bool noFile);
+			Log(const std::string& name, bool noFile = false, bool timeStamp = true);
 
 			void logMessage(const std::string& message,
 				            LogPriority lp,
