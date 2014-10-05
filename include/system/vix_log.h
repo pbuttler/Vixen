@@ -2,16 +2,23 @@
 #define VIX_LOG_H
 
 #include <vix_platform.h>
+#include <vix_interfaces.h>
+#include <memory>
 
 namespace Vixen {
 
 	namespace System {
 
-		class VIX_API Logger
+		class Logger;
+
+		typedef std::unique_ptr<Logger> LoggerPtr;
+
+		class VIX_API Logger : INonCopyable
 		{
-			static Logger* m_instance;
+			static LoggerPtr m_instance;
 		public:
 			static Logger* Instance();
+
 			static void    Log();
 		};
 

@@ -55,8 +55,8 @@ namespace Vixen {
 			//retrieve image data
 			bits = FreeImage_GetBits(bmp);
 			//get image width and height
-			m_width = FreeImage_GetWidth(bmp);
-			m_height = FreeImage_GetHeight(bmp);
+			m_width = static_cast<float>(FreeImage_GetWidth(bmp));
+			m_height = static_cast<float>(FreeImage_GetHeight(bmp));
 			if (!bits || m_width == 0 || m_height == 0)
 				return false;
 
@@ -66,8 +66,8 @@ namespace Vixen {
 			glBindTexture(m_target, m_id);
 			glTexImage2D(m_target,
 				         0, 
-						 fibToInternalFormat(bmp), 
-						 m_width, m_height, 
+						 fibToInternalFormat(bmp),
+						 (GLsizei)m_width, (GLsizei)m_height,
 						 0, 
 						 fibToFormat(bmp), 
 						 GL_UNSIGNED_BYTE, 

@@ -25,6 +25,7 @@ namespace Vixen {
 
 			bool initialized() override;
 			int  run()		   override;
+
 		private:
 			SDL_Window*    m_window;
 			SDL_GLContext  m_context;
