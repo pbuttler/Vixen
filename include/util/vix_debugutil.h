@@ -27,6 +27,20 @@
 #define VIX_SFY_FILE VIX_SFY_(__FILE__)
 #endif
 
+#ifndef VIX_LOG_FILE
+#define VIX_LOG_FILE "FILE: " VIX_SFY_FILE
+#endif
+#ifndef VIX_LOG_LINE
+#define VIX_LOG_LINE "LINE: " VIX_SFY_LINE
+#endif
+
+#ifndef VIX_LOG_PREFIX
+#define VIX_LOG_PREFIX VIX_LOG_FILE "\n" VIX_LOG_LINE "\n"
+#endif
+#ifndef VIX_LOG_STRING(x)
+#define VIX_LOG_STRING(x) VIX_LOG_PREFIX x
+#endif
+
 namespace Vixen {
 
 	namespace Util {

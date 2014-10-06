@@ -22,6 +22,28 @@ namespace Vixen {
 			}
 		}
 
+		void Logger::DebugLog(const std::string& name, const std::string& msg, LogPriority priority, bool debugOut)
+		{
+			if (name.empty()) //must have name for new log file
+				return;
+
+			LogManager* manager = LogManager::instancePtr();
+			if (manager) {
+				if (!LogManager::LogExists(name)) {
+					LogManager::CreateLog(name, LLF_NORMAL, false);
+					Log* log = LogManager::GrabLog(name);
+					if (log)
+						log->logMessage(msg, priority, debugOut);
+				}
+				else {
+					Log* log = LogManager::GrabLog(name);
+					if (log)
+						log->logMessage(msg, priority, debugOut);
+				}
+				
+			}
+		}
+
 		template<>
 		LogManager* Singleton<LogManager>::_data = nullptr;
 
@@ -35,6 +57,31 @@ namespace Vixen {
 			}
 			else
 				return false;
+		}
+		
+		bool LogManager::LogExists(const std::string& name)
+		{
+			LogManager* manager = instancePtr();
+			if (manager) {
+				LogList::iterator it = manager->m_logs.find(name);
+				if (it != manager->m_logs.end())
+					return true;
+			}
+
+			return false;
+		}
+
+		Log* LogManager::GrabLog(const std::string& name)
+		{
+			LogManager* manager = instancePtr();
+			if (manager) {
+				LogList::iterator it = manager->m_logs.find(name);
+				if (it != manager->m_logs.end()) {
+					return it->second;
+				}
+			}
+
+			return nullptr;
 		}
 
 		Log* LogManager::DefaultLog()
@@ -74,7 +121,7 @@ namespace Vixen {
 
 				Log* log = new Log(log_path, freq, noFile);
 				if (log)
-					manager->m_logs.insert(LogList::value_type(log_path, log));
+					manager->m_logs.insert(LogList::value_type(name, log));
 			}
 		}
 
@@ -85,6 +132,15 @@ namespace Vixen {
 			if (os_isdir(dir)) {
 				_LogDirectory = dir;
 			}
+			else {
+				os_mkdir(dir);
+				_LogDirectory = dir;
+			}
+		}
+
+		void LogManager::Init()
+		{
+			LogManager();
 		}
 
 		LogManager& LogManager::instance()
