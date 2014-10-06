@@ -48,6 +48,7 @@ namespace Vixen {
 		LogManager* Singleton<LogManager>::_data = nullptr;
 
 		std::string LogManager::_LogDirectory = "";
+		std::string LogManager::_LogExtension = ".log";
 
 		bool LogManager::HasDefaultLog()
 		{
@@ -117,7 +118,7 @@ namespace Vixen {
 			LogManager* manager = instancePtr();
 			if (manager) {
 
-				std::string log_path = _LogDirectory + name;
+				std::string log_path = _LogDirectory + name + _LogExtension;
 
 				Log* log = new Log(log_path, freq, noFile);
 				if (log)

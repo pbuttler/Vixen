@@ -27,6 +27,7 @@ namespace Vixen {
 			typedef std::map<std::string, Log*> LogList;
 
 			static std::string  _LogDirectory;
+			static std::string  _LogExtension;
 		public:
 
 			static void        Init();

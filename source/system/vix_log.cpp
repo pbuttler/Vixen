@@ -39,8 +39,6 @@ namespace Vixen {
 
 				output << "TIME STAMP: " << vixDebugTimeStamp();
 			}
-			output << "FILE: " << VIX_SFY_FILE << "\n";
-			output << "LINE #: " << VIX_SFY_LINE << "\n";
 			output << msg << "\n\n";
 
 			if (outDebug)
