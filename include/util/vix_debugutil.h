@@ -3,42 +3,37 @@
 
 #include <vix_platform.h>
 #include <vix_stringutil.h>
+#include <iostream>
+#include <iomanip>
 #include <chrono>
+
+#ifdef VIX_SYS_WINDOWS
+#include <time.h>
+#endif
 #include <ctime>
+
+#ifndef VIX_STRINGIFY(x)
+#define VIX_STRINGIFY(x) #x
+#endif
+
+#ifndef VIX_SFY_(x)
+#define VIX_SFY_(x) VIX_STRINGIFY(x)
+#endif
+
+#ifndef VIX_SFY_LINE
+#define VIX_SFY_LINE VIX_SFY_(__LINE__)
+#endif
+#ifndef VIX_SFY_FILE
+#define VIX_SFY_FILE VIX_SFY_(__FILE__)
+#endif
 
 namespace Vixen {
 
-	namespace System {
+	namespace Util {
 
-
-
-
-
-		inline void vixOutputDebugString(const std::string& msg)
-		{
-			if (msg.empty()) return;
-
-#ifdef VIX_SYS_WINDOWS
-				OutputDebugStringA(msg.c_str());
-#else
-			std::cerr << msg << std::endl;
-#endif
-		}
-
-		inline std::string vixDebugTimeStamp()
-		{
-			using namespace std::chrono;
-			std::stringstream ss;
-
-			high_resolution_clock::time_point now_point = high_resolution_clock::now();
-			milliseconds ms = duration_cast<milliseconds>(now_point.time_since_epoch());
-			std::time_t  t = ms.count();
-
-			ss << t;
-
-			return ss.str();
-		}
-
+		VIX_API void        vixOutputDebugString(const std::string& msg);
+		VIX_API std::string vixDebugTimeStamp();
+		
 	}
 }
 

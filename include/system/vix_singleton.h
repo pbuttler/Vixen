@@ -30,11 +30,15 @@ namespace Vixen {
 
 			static T& instance()
 			{
+				if (!_data)
+					_data = new T();
 				return *_data;
 			}
 
 			static T* instancePtr()
 			{
+				if (!_data)
+					_data = new T();
 				return _data;
 			}
 		};

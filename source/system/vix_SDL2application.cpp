@@ -1,4 +1,5 @@
 #include <vix_SDL2application.h>
+#include <vix_logmanager.h>
 
 namespace Vixen {
 
@@ -7,9 +8,10 @@ namespace Vixen {
 		SDLApplication::SDLApplication(const SDLSettings& settings)
 			: m_initialized(false)
 		{
+			Logger::DebugLog("Beginning Intialization", LLP_STANDARD);
+
 			if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-				//eventually this will be written out to logger
-				printf("SDL Error: %s\n", SDL_GetError());
+				Logger::DebugLog("SDL Failed to initialize", LLP_STANDARD);
 				return;
 			}
 			

@@ -10,6 +10,12 @@ namespace Vixen {
 
 	namespace System {
 
+		class VIX_API Logger
+		{
+		public:
+			static void DebugLog(const std::string& msg, LogPriority priority, bool debugOut = false);
+		};
+
 		class VIX_API LogManager : public Singleton < LogManager >
 		{
 			typedef std::map<std::string, Log*> LogList;
@@ -17,8 +23,11 @@ namespace Vixen {
 			static std::string  _LogDirectory;
 		public:
 
-			static void        CreateLog(const std::string& name, bool noFile);
+			static Log*        DefaultLog();
+			static void        CreateLog(const std::string& name, LogFrequency freq, bool noFile);
+			static void        SetDefaultLog(const std::string& name);
 			static void        SetLogDirectory(const std::string& path);
+			static bool        HasDefaultLog();
 			static LogManager* instancePtr();
 			static LogManager& instance();
 		protected:

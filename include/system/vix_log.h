@@ -16,16 +16,16 @@ namespace Vixen {
 
 		enum LogFrequency
 		{
-			LL_LOW = 1,
-			LL_NORMAL = 2,
-			LL_HIGH = 3
+			LLF_LOW = 1,
+			LLF_NORMAL = 2,
+			LLF_HIGH = 3
 		};
 
 		enum LogPriority
 		{
-			LP_TRIVIAL = 1,
-			LP_STANDARD = 2,
-			LP_CRITICAL = 3
+			LLP_TRIVIAL = 1,
+			LLP_STANDARD = 2,
+			LLP_CRITICAL = 3
 		};
 
 		class VIX_API Log
@@ -38,13 +38,17 @@ namespace Vixen {
 			std::string    m_name;
 
 		public:
-			Log(const std::string& name, bool noFile = false, bool timeStamp = true);
+			Log(const std::string& name, 
+				LogFrequency freq = LLF_NORMAL, 
+				bool noFile = false,
+				bool timeStamp = true);
+			~Log();
 
 			void logMessage(const std::string& message,
 				            LogPriority lp,
 							bool outDebug = false);
 
-			static const size_t LOG_THRESHOLD = 4;
+			static const int LOG_THRESHOLD = 4;
 		};
 
 	}
