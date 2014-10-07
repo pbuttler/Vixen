@@ -8,10 +8,10 @@ namespace Vixen {
 		SDLApplication::SDLApplication(const SDLSettings& settings)
 			: m_initialized(false)
 		{
-			Logger::DebugLog("Beginning Intialization", LLP_STANDARD);
+			
 
 			if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-				Logger::DebugLog("SDL Failed to initialize", LLP_STANDARD);
+				
 				return;
 			}
 			

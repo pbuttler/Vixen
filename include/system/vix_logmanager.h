@@ -24,13 +24,14 @@ namespace Vixen {
 
 		class VIX_API LogManager : public Singleton < LogManager >
 		{
+			friend class Singleton < LogManager > ;
+
 			typedef std::map<std::string, Log*> LogList;
 
 			static std::string  _LogDirectory;
 			static std::string  _LogExtension;
-		public:
 
-			static void        Init();
+		public:
 			static Log*        DefaultLog();
 			static Log*        GrabLog(const std::string& name);
 			static bool        LogExists(const std::string& name);
@@ -38,11 +39,10 @@ namespace Vixen {
 			static void        SetDefaultLog(const std::string& name);
 			static void        SetLogDirectory(const std::string& path);
 			static bool        HasDefaultLog();
-			static LogManager* instancePtr();
-			static LogManager& instance();
 		protected:
 			LogList   m_logs;
 			Log*      m_default;
+
 		};
 
 	}

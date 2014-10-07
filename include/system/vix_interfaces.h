@@ -12,10 +12,11 @@ namespace Vixen {
 		{
 		protected:
 			INonCopyable() { }
+			~INonCopyable() { }
 
 		private:
 			INonCopyable(const INonCopyable&);
-			INonCopyable& operator= (const INonCopyable&);
+			const INonCopyable& operator= (const INonCopyable&);
 		};
 
 		class VIX_API IApplication : INonCopyable

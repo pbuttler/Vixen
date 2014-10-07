@@ -4,45 +4,30 @@
 #include <vix_platform.h>
 #include <vix_interfaces.h>
 #include <cassert>
+#include <memory>
 
 namespace Vixen {
 
 	namespace System {
 
 		template <typename T>
-		class VIX_API Singleton : public INonCopyable
+		class VIX_API Singleton : protected INonCopyable
 		{
-		protected:
-			static T* _data;
-
 		public:
-			Singleton(void)
-			{
-				assert(!_data);
-				_data = static_cast<T*>(this);
-			}
-
-			~Singleton(void)
-			{
-				assert(_data);
-				_data = nullptr;
-			}
-
 			static T& instance()
 			{
-				if (!_data)
-					_data = new T();
-				return *_data;
+				static T _instance;
+
+				return _instance;
 			}
 
-			static T* instancePtr()
+		protected:
+			explicit Singleton<T>() 
 			{
-				if (!_data)
-					_data = new T();
-				return _data;
+		
 			}
+		
 		};
-
 	}
 }
 
