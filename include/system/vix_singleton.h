@@ -22,10 +22,7 @@ namespace Vixen {
 			}
 
 		protected:
-			explicit Singleton<T>() 
-			{
-		
-			}
+			explicit Singleton<T>() { }
 		
 		};
 	}

@@ -44,6 +44,13 @@ namespace Vixen {
 		std::string LogManager::_LogDirectory = "";
 		std::string LogManager::_LogExtension = ".log";
 
+		int LogManager::NumLogs()
+		{
+			LogManager& manager = instance();
+
+			return manager.m_logs.size();
+		}
+
 		bool LogManager::HasDefaultLog()
 		{
 			LogManager& manager = instance();

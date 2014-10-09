@@ -30,8 +30,8 @@ namespace Vixen {
 
 			static std::string  _LogDirectory;
 			static std::string  _LogExtension;
-
 		public:
+			static int         NumLogs();
 			static Log*        DefaultLog();
 			static Log*        GrabLog(const std::string& name);
 			static bool        LogExists(const std::string& name);
@@ -42,7 +42,6 @@ namespace Vixen {
 		protected:
 			LogList   m_logs;
 			Log*      m_default;
-
 		};
 
 	}
