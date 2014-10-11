@@ -11,11 +11,9 @@
 
 namespace Vixen {
 
-	namespace Util {
-
-
-		VIX_API void str_replaceAll(std::string& input, const std::string& from, const std::string& to);
-	}
+		VIX_API void str_replaceAll(std::string& input,
+			                        const std::string& from, 
+			                        const std::string& to);
 }
 
 

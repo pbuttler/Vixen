@@ -5,48 +5,44 @@
 
 namespace Vixen {
 
-	namespace Math {
+	class VIX_API Rect
+	{
+	public:
+		int x;
+		int y;
+		int width;
+		int height;
 
-		class VIX_API Rect
+	public:
+		Rect()
 		{
-		public:
-			int x;
-			int y;
-			int width;
-			int height;
+			x = 0;
+			y = 0;
+			width = 0;
+			height = 0;
+		}
 
-		public:
-			Rect()
-			{
-				x = 0;
-				y = 0;
-				width = 0;
-				height = 0;
-			}
-
-			Rect(int _x, int _y, int _width, int _height)
-			{
-				x = _x;
-				y = _y;
-				width = _width;
-				height = _height;
-			}
+		Rect(int _x, int _y, int _width, int _height)
+		{
+			x = _x;
+			y = _y;
+			width = _width;
+			height = _height;
+		}
 			
-			int left()	{ return x; }
-			int right() { return x + width; }
-			int top()	{ return y; }
-			int bottom(){ return y + height; }
-			bool hasValue()
-			{
-				return x != 0 || y != 0 || width != 0 || height != 0;
-			}
+		int left()	{ return x; }
+		int right() { return x + width; }
+		int top()	{ return y; }
+		int bottom(){ return y + height; }
+		bool hasValue()
+		{
+			return x != 0 || y != 0 || width != 0 || height != 0;
+		}
 
-			bool contains(int x, int y);
+		bool contains(int x, int y);
 
-			static const Rect EMPTY;
-		};
-
-	}
+		static const Rect EMPTY;
+	};
 }
 
 #endif

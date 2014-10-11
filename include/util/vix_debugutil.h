@@ -13,11 +13,11 @@
 #include <ctime>
 
 
-#ifndef VIX_STRINGIFY(x)
+#ifndef VIX_STRINGIFY
 #define VIX_STRINGIFY(x) #x
 #endif
 
-#ifndef VIX_SFY_(x)
+#ifndef VIX_SFY_
 #define VIX_SFY_(x) VIX_STRINGIFY(x)
 #endif
 
@@ -46,18 +46,15 @@
 #ifndef VIX_LOG_PREFIX
 #define VIX_LOG_PREFIX VIX_LOG_FILE "\n" VIX_LOG_FUNC "\n" VIX_LOG_LINE "\n"
 #endif
-#ifndef VIX_LOG_STRING(x)
+#ifndef VIX_LOG_STRING
 #define VIX_LOG_STRING(x) VIX_LOG_PREFIX x
 #endif
 
 namespace Vixen {
 
-	namespace Util {
-
-		VIX_API void        vixOutputDebugString(const std::string& msg);
-		VIX_API std::string vixDebugTimeStamp();
-		
-	}
+	VIX_API void        vixOutputDebugString(const std::string& msg);
+	VIX_API std::string vixDebugTimeStamp();
+	
 }
 
 #endif

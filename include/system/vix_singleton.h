@@ -8,24 +8,21 @@
 
 namespace Vixen {
 
-	namespace System {
-
-		template <typename T>
-		class VIX_API Singleton : protected INonCopyable
+	template <typename T>
+	class VIX_API Singleton : private INonCopyable
+	{
+	public:
+		static T& instance()
 		{
-		public:
-			static T& instance()
-			{
-				static T _instance;
+			static T _instance;
 
-				return _instance;
-			}
+			return _instance;
+		}
 
-		protected:
-			explicit Singleton<T>() { }
+	protected:
+		explicit Singleton<T>() { }
 		
-		};
-	}
+	};
 }
 
 #endif

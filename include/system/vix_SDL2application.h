@@ -4,8 +4,7 @@
 #include <vix_platform.h>
 #include <vix_interfaces.h>
 #include <vix_config.h>
-
-#include <SDL.h>
+#include <vix_sdlwindow.h>
 
 namespace Vixen {
 
@@ -27,10 +26,7 @@ namespace Vixen {
 			int  run()		   override;
 
 		private:
-			SDL_Window*    m_window;
-			SDL_GLContext  m_context;
-			bool           m_initialized;
-			bool           m_running;
+			SDL_GameWindow m_window;
 		};
 	}
 }

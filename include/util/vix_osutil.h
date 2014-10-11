@@ -8,13 +8,10 @@
 
 namespace Vixen {
 
-	namespace Util {
-
-		VIX_API void        os_mkdir(const std::string& dir);
-		VIX_API bool        os_isdir(const std::string& dir);
-		VIX_API	std::string os_path(const std::string& path);
-		VIX_API std::string os_dir(const std::string& path, bool wt = true);
-	}
+	VIX_API void        os_mkdir(const std::string& dir);
+	VIX_API bool        os_isdir(const std::string& dir);
+	VIX_API	std::string os_path(const std::string& path);
+	VIX_API std::string os_dir(const std::string& path, bool wt = true);
 }
 
 

@@ -8,7 +8,6 @@ namespace Vixen {
 		SDLApplication::SDLApplication(const SDLSettings& settings)
 			: m_initialized(false)
 		{
-			
 
 			if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
 				

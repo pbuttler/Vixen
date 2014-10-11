@@ -7,12 +7,8 @@
 
 namespace Vixen {
 
-	namespace Graphics {
-
-		VIX_API GLenum fibToInternalFormat(FIBITMAP* bmp);
-		VIX_API GLenum fibToFormat(FIBITMAP* bmp);
-
-	}
+	VIX_API GLenum fibToInternalFormat(FIBITMAP* bmp);
+	VIX_API GLenum fibToFormat(FIBITMAP* bmp);
 }
 
 #endif
