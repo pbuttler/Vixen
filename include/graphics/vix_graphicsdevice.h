@@ -3,13 +3,14 @@
 
 #include <vix_platform.h>
 #include <vix_interfaces.h>
+#include <SDL.h>
 
 namespace Vixen {
 
-	class GraphicsDevice
+	class VIX_API GraphicsDevice
 	{
 	public:
-		const IApplication& m_application;
+		
 
 
 	};

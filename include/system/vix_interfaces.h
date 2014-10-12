@@ -42,6 +42,7 @@ namespace Vixen {
 		virtual void               VSetFullscreen(bool flag,
 			                                      bool keep_res = false) = 0;
 		virtual void               VSetVisible(bool flag) = 0;
+		virtual void               VSwapBuffers() = 0;
 		virtual const std::string& VGetTitle() = 0;
 		virtual const Rect&        VGetClientBounds() = 0;
 	
@@ -84,6 +85,7 @@ namespace Vixen {
 		virtual void VSetClearColor(byte r, byte g, byte b, byte a) = 0;
 		virtual void VSwapBuffers() = 0;
 	};
+
 
 }
 

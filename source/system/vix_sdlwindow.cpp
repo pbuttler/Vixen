@@ -32,6 +32,13 @@ namespace Vixen {
 			return ErrCode::ERR_SDL_INIT;
 		}
 
+		//create and initialize the opengl context
+		m_GLContext = SDL_GL_CreateContext(m_WindowHandle);
+		if (!m_GLContext) {
+			SDL_Quit();
+			return ErrCode::ERR_SDL_INIT;
+		}
+
 		
 		//everything succeeded
 		return ErrCode::ERR_SUCCESS; 
@@ -69,6 +76,20 @@ namespace Vixen {
 				SDL_HideWindow(m_WindowHandle);
 		}
 			
+	}
+
+	void SDL_GameWindow::VSwapBuffers()
+	{
+		if (!m_WindowHandle) //obv, log error message
+			return;
+
+		//swap buffers on OpenGL window for double buffering.
+		//NOTE:
+		//
+		//	We assume double buffering is available, as all current
+		//  hardware, including integrated chipsets support this
+		//
+		SDL_GL_SwapWindow(m_WindowHandle);
 	}
 
 	const std::string& SDL_GameWindow::VGetTitle()

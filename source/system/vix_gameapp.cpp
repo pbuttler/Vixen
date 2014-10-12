@@ -72,6 +72,8 @@ namespace Vixen {
 				}
 			}
 
+
+			m_window->VSwapBuffers();
 		}
 
 		//shutdown subsystems

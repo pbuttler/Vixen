@@ -36,6 +36,7 @@ namespace Vixen {
 		void                VSetVisible(bool flag)                 override;
 		void                VSetFullscreen(bool flag, 
 			                               bool keep_res = false)  override;
+		void                VSwapBuffers()                         override;
 		const std::string&  VGetTitle()                            override;
 		const Rect&         VGetClientBounds()                     override;
 
@@ -44,6 +45,7 @@ namespace Vixen {
 		bool          m_IsHidden;
 		Rect          m_ClientBounds;
 		SDL_Window*   m_WindowHandle;
+		SDL_GLContext m_GLContext;
 	};
 }
 
