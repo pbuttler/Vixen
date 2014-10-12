@@ -20,7 +20,13 @@ namespace Vixen {
 		//initialize log system
 		g_LogManager.VStartUp();
 
-		//try and create window
+		//NOTE:
+		//
+		//	Once the configuration manager is setup, this
+		//  could check for user settings on whether they want
+		//  to use SDL or not. Among other things...
+		//
+		//
 		m_window = new SDL_GameWindow;
 		err = m_window->VInit();
 		if (!CheckError(err))
@@ -65,10 +71,6 @@ namespace Vixen {
 					m_running = false;
 					break;
 
-				case SDL_MOUSEBUTTONDOWN:
-					visible = !visible;
-					m_window->VSetVisible(visible);
-					break;
 				}
 			}
 
