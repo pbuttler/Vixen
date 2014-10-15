@@ -16,8 +16,7 @@ enum class ErrCode
 
 inline bool CheckError(ErrCode err)
 {
-	int val = static_cast<int>(err);
-	if (val != static_cast<int>(ErrCode::ERR_SUCCESS))
+	if (err != ErrCode::ERR_SUCCESS)
 		return false;
 	else
 		return true;

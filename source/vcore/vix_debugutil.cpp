@@ -2,19 +2,7 @@
 
 namespace Vixen {
 
-
-	void vixOutputDebugString(const std::string& msg)
-	{
-		if (msg.empty()) return;
-
-#ifdef VIX_SYS_WINDOWS
-		OutputDebugStringA(msg.c_str());
-#else
-		std::cerr << msg << std::endl;
-#endif
-	}
-
-	std::string vixDebugTimeStamp()
+	std::string DebugTimeStamp()
 	{
 		using namespace std::chrono;
 		std::stringstream ss;

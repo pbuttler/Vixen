@@ -9,8 +9,9 @@ namespace Vixen {
 
 	class Rect;
 	class Point;
+	class Color;
 
-	class VIX_API INonCopyable
+	class INonCopyable
 	{
 	protected:
 		INonCopyable() { }
@@ -21,7 +22,7 @@ namespace Vixen {
 		const INonCopyable& operator= (const INonCopyable&);
 	};
 
-	class VIX_API IApplication : INonCopyable
+	class IApplication : INonCopyable
 	{
 	public:
 		virtual ~IApplication() { }
@@ -32,7 +33,7 @@ namespace Vixen {
 	};
 
 
-	class VIX_API IGameWindow : INonCopyable
+	class IGameWindow : INonCopyable
 	{
 
 	public:
@@ -50,14 +51,14 @@ namespace Vixen {
 		static const size_t DEF_WINDOW_HEIGHT = 600;
 	};
 
-	class VIX_API IManager
+	class IManager
 	{
 	public:
 		virtual void VStartUp() = 0;
 		virtual void VShutDown() = 0;
 	};
 
-	class VIX_API IContent
+	class IContent
 	{
 	public:
 		//methods
@@ -81,9 +82,8 @@ namespace Vixen {
 	{
 	public:
 
-		virtual void VShutdown() = 0;
-		virtual void VSetClearColor(byte r, byte g, byte b, byte a) = 0;
-		virtual void VSwapBuffers() = 0;
+		virtual void VShutDown() = 0;
+		virtual void VSetClearColor(const Color& c) = 0;
 	};
 
 

@@ -3,19 +3,17 @@
 
 #include <vix_platform.h>
 #include <vix_interfaces.h>
-
+#include <vix_color.h>
 
 
 namespace Vixen {
 
-	class Color;
-
-	class GLRenderer : public IRenderer
+	class VIX_API GLRenderer : public IRenderer
 	{
 	public:
 
-		void VSetClearColor(byte r, byte g, byte b, byte a) override;
-		void VSwapBuffers() override;
+		void VShutDown() override;
+		void VSetClearColor(const Color& c) override;
 	};
 
 }
