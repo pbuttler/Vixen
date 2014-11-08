@@ -2,53 +2,44 @@
 
 namespace Vixen {
 
-
-	//NOTE:
-	//
-	//	Clearly there are more internal formats, and the formats
-	//  for images depend on their compression type, bits, etc.
-	//  Eventually this should take all that into account
-	//
-	GLenum fibToInternalFormat(FIBITMAP* bmp)
+	VIX_FIBitmap* vixFILoadImage(const std::string& filePath)
 	{
-		GLenum format = GL_NONE;
+		VIX_FIBitmap* vix_bmp = new VIX_FIBitmap;
+		vix_bmp->format = FIF_UNKNOWN;
+		vix_bmp->data = NULL;
+		vix_bmp->bitmap = NULL;
+		vix_bmp->width = 0;
+		vix_bmp->height = 0;
+		
+		//Check file signature and deduce format
+		vix_bmp->format = FreeImage_GetFileType(filePath.c_str());
+		if (vix_bmp->format == FIF_UNKNOWN)
+			vix_bmp->format = FreeImage_GetFIFFromFilename(filePath.c_str());
+		//if still unknown, return NULL;
+		if (vix_bmp->format == FIF_UNKNOWN)
+			return NULL;
 
-		size_t bpp = FreeImage_GetBPP(bmp);
-		switch (bpp)
-		{
-		case 24:
-			format = GL_RGB;
-			break;
-		case 32:
-			format = GL_RGBA;
-			break;
-		}
-			
-		return format;
-	}
-
-	//NOTE:
-	//
-	//	Clearly there are more formats, and the formats
-	//  for images depend on their compression type, bits, etc.
-	//  Eventually this should take all that into account
-	//
-	GLenum fibToFormat(FIBITMAP* bmp)
-	{
-		GLenum format = GL_NONE;
-
-		size_t bpp = FreeImage_GetBPP(bmp);
-		switch (bpp)
-		{
-		case 24:
-			format = GL_BGR;
-			break;
-		case 32:
-			format = GL_BGRA;
-			break;
+		//Check if FreeImage has reading capabilities
+		if (FreeImage_FIFSupportsReading(vix_bmp->format)) {
+			//read image into struct pointer
+			vix_bmp->bitmap = FreeImage_Load(vix_bmp->format, filePath.c_str());
 		}
 
-		return format;
+		//If image failed to load, return NULL
+		if (!vix_bmp->bitmap)
+			return NULL;
+
+		//Retrieve image data
+		vix_bmp->data = FreeImage_GetBits(vix_bmp->bitmap);
+		//Retrieve image width
+		vix_bmp->width = FreeImage_GetWidth(vix_bmp->bitmap);
+		//Retrieve image height
+		vix_bmp->height = FreeImage_GetHeight(vix_bmp->bitmap);
+		if (vix_bmp->data == 0 || vix_bmp->width == 0 || vix_bmp->height == 0)
+			return NULL;
+
+		//return bitmap
+		return vix_bmp;
 	}
 
 }

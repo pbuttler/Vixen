@@ -2,9 +2,8 @@
 #define VIX_GL_RENDERER_H
 
 #include <vix_platform.h>
-#include <vix_interfaces.h>
+#include <vix_renderer.h>
 #include <vix_color.h>
-
 
 namespace Vixen {
 
@@ -12,8 +11,9 @@ namespace Vixen {
 	{
 	public:
 
-		void VShutDown() override;
-		void VSetClearColor(const Color& c) override;
+		void VShutDown()                        override;
+		void VSetClearColor(const Color& c)     override;
+		void VClearBuffer(ClearArgs args)       override;
 	};
 
 }

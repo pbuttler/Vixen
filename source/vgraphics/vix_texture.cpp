@@ -12,4 +12,8 @@ namespace Vixen {
 
 	}
 
+	size_t Texture::getWidth() { return m_width;  }
+
+	size_t Texture::getHeight() { return m_height; }
+
 }
