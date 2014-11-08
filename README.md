@@ -1,4 +1,4 @@
 Vixen
 =====
 
-Simple C++ Game Engine
+C++ Game Engine, created for teaching purposes.
