@@ -5,6 +5,8 @@ namespace Vixen {
 	VIX_FIBitmap* vixFILoadImage(const std::string& filePath)
 	{
 		VIX_FIBitmap* vix_bmp = new VIX_FIBitmap;
+		vix_bmp->path = filePath;
+		vix_bmp->name = getFileName(filePath);
 		vix_bmp->format = FIF_UNKNOWN;
 		vix_bmp->data = NULL;
 		vix_bmp->bitmap = NULL;

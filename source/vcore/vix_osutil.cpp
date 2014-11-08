@@ -58,10 +58,10 @@ namespace Vixen {
 		size_t back_slash = 0;
 		char   c_slash;
 #ifdef VIX_SYS_WINDOWS
-		c_slash = '\\';
+		c_slash = WIN_PATH_DELIM;
 		back_slash = dir.find_last_of(c_slash);
 #else
-		c_slash = '/';
+		c_slash = UNIX_PATH_DELIM;
 		back_slash = dir.find_last_of(c_slash);
 #endif
 		if (back_slash != std::string::npos)

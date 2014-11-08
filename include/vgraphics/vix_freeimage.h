@@ -10,6 +10,8 @@ namespace Vixen {
 
 	struct VIX_FIBitmap
 	{
+		std::string       name;
+		std::string       path;
 		FIBITMAP*         bitmap;
 		FREE_IMAGE_FORMAT format;
 		byte*	          data;

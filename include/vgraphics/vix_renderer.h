@@ -4,7 +4,10 @@
 namespace Vixen {
 
 	class Color;
-
+	class Sprite;
+	class Texture;
+	class Transform;
+	class Font;
 
 	class VIX_API IRenderer
 	{
@@ -24,6 +27,7 @@ namespace Vixen {
 		virtual void VShutDown() = 0;
 		virtual void VSetClearColor(const Color& c) = 0;
 		virtual void VClearBuffer(ClearArgs args) = 0;
+
 	};
 
 }

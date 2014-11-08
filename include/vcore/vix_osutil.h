@@ -8,6 +8,9 @@
 
 namespace Vixen {
 
+	static const char WIN_PATH_DELIM = '\\';
+	static const char UNIX_PATH_DELIM = '/';
+
 	VIX_API void        os_mkdir(const std::string& dir);
 	VIX_API bool        os_isdir(const std::string& dir);
 	VIX_API	std::string os_path(const std::string& path);
