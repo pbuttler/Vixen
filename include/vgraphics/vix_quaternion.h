@@ -39,6 +39,7 @@ namespace Vixen {
 		void  Normalize();
 		float Length() const;
 		Quaternion Inverse() const;
+		Quaternion Unit() const;
 
 		//operator overloads
 		inline Quaternion& operator= (const Quaternion& rhs)

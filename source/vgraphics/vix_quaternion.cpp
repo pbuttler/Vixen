@@ -46,7 +46,7 @@ namespace Vixen {
 		return sqrt(Norm());
 	}
 
-	Quaternion Quaternion::Inverse() const
+	Quaternion Quaternion::Unit() const
 	{
 		//Original implementation
 		float norm = Norm();
@@ -59,6 +59,23 @@ namespace Vixen {
 		float z = -m_z * invNorm; //negate vector part
 		
 		
+		return Quaternion(w, x, y, z);
+	}
+
+	Quaternion Quaternion::Inverse() const
+	{
+		float normSq = Norm() * Norm();
+		float invNormSq = 1.0f / normSq;
+
+		/*
+		* Equivalent to:
+		* Conjugate / Norm^2
+		*/
+		float w = m_w * invNormSq;
+		float x = -m_x * invNormSq;
+		float y = -m_y * invNormSq; 
+		float z = -m_z * invNormSq;
+
 		return Quaternion(w, x, y, z);
 	}
 
