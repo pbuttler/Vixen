@@ -2,11 +2,10 @@
 #define VIX_QUATERNION_H
 
 #include <vix_platform.h>
+#include <vix_vector3.h>
 #include <iostream>
 
 namespace Vixen {
-
-	class Vector3;
 
 	class VIX_API Quaternion
 	{
@@ -20,13 +19,28 @@ namespace Vixen {
 		inline Quaternion(float w, float x, float y, float z)
 			: m_w(w), m_x(x), m_y(y), m_z(z)
 		{
+
 		}
 
-		inline Quaternion(const Vector3& vector, float scalar)
+		inline Quaternion(float scalar, const Vector3& vector)
 		{
-
+			m_w = scalar;
+			m_x = vector.m_x;
+			m_y = vector.m_y;
+			m_z = vector.m_z;
 		}
 
+		//static functions
+		static float Dot(const Quaternion& q, const Quaternion& r);
+
+		//member functions
+		float Dot(const Quaternion& q) const;
+		float Norm() const;
+		void  Normalize();
+		float Length() const;
+		Quaternion Inverse() const;
+
+		//operator overloads
 		inline Quaternion& operator= (const Quaternion& rhs)
 		{
 			m_w = rhs.m_w;
@@ -37,16 +51,34 @@ namespace Vixen {
 			return *this;
 		}
 
-		float Norm() const;
-		float Normalize();
+		inline bool operator== (const Quaternion& rhs)
+		{
+			return	(m_w == rhs.m_w) &&
+					(m_x == rhs.m_x) &&
+					(m_y == rhs.m_y) &&
+					(m_z == rhs.m_z);
+		}
 
-		
+		inline bool operator!= (const Quaternion& rhs)
+		{
+			return !(*this == rhs);
+		}
+
 		float  operator[] (const size_t i) const;
 		float& operator[] (const size_t i);
+		Quaternion operator- (void) const;
 		Quaternion operator+ (const Quaternion& rhs) const;
+		Quaternion operator+ (float scalar) const;
 		Quaternion operator- (const Quaternion& rhs) const;
+		Quaternion operator- (float scalar) const;
 		Quaternion operator* (const Quaternion& rhs) const;
 		Quaternion operator* (float scalar) const;
+		Quaternion& operator+= (float scalar);
+		Quaternion& operator+= (const Quaternion& rhs);
+		Quaternion& operator-= (float scalar);
+		Quaternion& operator-= (const Quaternion& rhs);
+		Quaternion& operator*= (float scalar);
+		Quaternion& operator*= (const Quaternion& rhs);
 
 		static const Quaternion Identity;
 		static const Quaternion Zero;
