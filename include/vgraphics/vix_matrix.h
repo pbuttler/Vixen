@@ -36,12 +36,12 @@ namespace Vixen {
 				       m41, m42, m43, m44);
 		}
 
-		Matrix Left()		const;
-		Matrix Right()		const;
-		Matrix Forward()	const;
-		Matrix Backward()	const;
-		Matrix Up()			const;
-		Matrix Down()		const;
+		Vector3 Left()		const;
+		Vector3 Right()		const;
+		Vector3 Forward()	const;
+		Vector3 Backward()	const;
+		Vector3 Up()		const;
+		Vector3 Down()		const;
 
 
 		//operator overloads
@@ -51,7 +51,6 @@ namespace Vixen {
 
 		//static members
 		static const Matrix Identity;
-
 
 
 		inline VIX_API friend std::ostream& operator <<
