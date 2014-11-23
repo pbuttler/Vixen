@@ -52,15 +52,13 @@ namespace Vixen {
 		//static members
 		static const Matrix Identity;
 
+		std::string ToString() const;
 
 		inline VIX_API friend std::ostream& operator <<
 			(std::ostream& o, const Matrix& m)
 		{
 			o << "Matrix\n"
-				<< "[ " << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << ", " << m[0][3] << "]\n"
-				<< "[ " << m[1][0] << ", " << m[1][1] << ", " << m[1][2] << ", " << m[1][3] << "]\n"
-				<< "[ " << m[2][0] << ", " << m[2][1] << ", " << m[2][2] << ", " << m[2][3] << "]\n"
-				<< "[ " << m[3][0] << ", " << m[3][1] << ", " << m[3][2] << ", " << m[3][3] << "]\n";
+				<< m.ToString();
 			return o;
 		}
 
@@ -70,6 +68,19 @@ namespace Vixen {
 						float m31, float m32, float m33, float m34,
 						float m41, float m42, float m43, float m44);
 	};
+
+	inline std::string Matrix::ToString() const
+	{
+		std::stringstream ss;
+		ss  << std::fixed
+			<< std::setprecision(3)
+			<< "[ " << m[0][0] << ", " << m[0][1] << ", " << m[0][2] << ", " << m[0][3] << "]\n"
+			<< "[ " << m[1][0] << ", " << m[1][1] << ", " << m[1][2] << ", " << m[1][3] << "]\n"
+			<< "[ " << m[2][0] << ", " << m[2][1] << ", " << m[2][2] << ", " << m[2][3] << "]\n"
+			<< "[ " << m[3][0] << ", " << m[3][1] << ", " << m[3][2] << ", " << m[3][3] << "]\n";
+
+		return ss.str();
+	}
 }
 
 #endif
