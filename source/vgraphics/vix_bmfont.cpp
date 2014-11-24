@@ -24,6 +24,8 @@
 #include <vix_bmfont.h>
 #include <vix_debugutil.h>
 #include <vix_errglobals.h>
+#include <vix_algorithms.h>
+#include <vix_texture.h>
 
 namespace Vixen {
 
@@ -31,17 +33,134 @@ namespace Vixen {
 	{
 		m_fontFile = LoadFile(filePath);
 
-		/*Create character map*/
-		for (BMFontChar& fontChar : m_fontFile.chars)
-		{
-			char c = (char)fontChar.id;
-			m_charMap[c] = fontChar;
+		/*check for unicode font*/
+		if (m_fontFile.info.unicode) {
+			/*Create unicode character map*/
+			for (BMFontChar& fontChar : m_fontFile.chars)
+			{
+				wchar_t c = (wchar_t)fontChar.id;
+				m_wideCharMap[c] = fontChar;
+			}
+		}
+		else {
+			/*Create ansi character map*/
+			for (BMFontChar& fontChar : m_fontFile.chars)
+			{
+				char c = (char)fontChar.id;
+				m_charMap[c] = fontChar;
+			}
+		}
+		
+	}
+
+	void BMFont::AddPageTexture(Texture* texture)
+	{
+		if (!texture) {
+			DebugPrintF("Cannot add NULL texture");
+			return;
+		}
+
+		/*Check if texture doesn't already exist in collection*/
+		std::vector<Texture*>::iterator it;
+		it = std::find(m_textures.begin(), m_textures.end(), texture);
+		if (it == m_textures.end()) {
+			/*we can safely add the texture to our collection*/
+			m_textures.push_back(texture);
+		}
+		else {
+			DebugPrintF("Texture %s already exists in BMFont collection", texture->name().c_str());
+			return;
 		}
 	}
 
 	const BMFontFile BMFont::FontFile() const
 	{
 		return m_fontFile;
+	}
+
+	/*Returns the pixel unit bounds of a string of text*/
+	Rectangle BMFont::BoundsA(const std::string& text)
+	{
+		Rectangle bounds;
+		int dx = 0;
+		int lineH = m_fontFile.common.lineHeight;
+		int dy = lineH;
+		/*Iterate over characters in text*/
+		for (const char& c : text)
+		{
+			if (c == '\n') {
+				dx = 0;
+				dy += lineH;
+			}
+
+			//Find the font character and advance the
+			//pixel units based on the xAdvance value
+			BMFontChar fc;
+			if (FindCharA(c, fc)) {
+				dx += fc.xAdvance;
+			}
+		}
+
+		bounds.x = 0;
+		bounds.y = 0;
+		bounds.w = dx;
+		bounds.h = dy;
+		
+		return bounds;
+	}
+
+	Rectangle BMFont::BoundsW(const std::wstring& text)
+	{
+		Rectangle bounds;
+		int dx = 0;
+		int lineH = m_fontFile.common.lineHeight;
+		int dy = lineH;
+		/*Iterate over characters in text*/
+		for (const wchar_t& c : text)
+		{
+			if (c == '\n') {
+				dx = 0;
+				dy += lineH;
+			}
+
+			//Find the font character and advance the
+			//pixel units based on the xAdvance value
+			BMFontChar fc;
+			if (FindCharW(c, fc)) {
+				dx += fc.xAdvance;
+			}
+		}
+
+		bounds.x = 0;
+		bounds.y = 0;
+		bounds.w = dx;
+		bounds.h = dy;
+
+		return bounds;
+	}
+
+	bool BMFont::FindCharA(char c, BMFontChar& fc)
+	{
+		BMACharMap::iterator it = m_charMap.find(c);
+		if (it != m_charMap.end())
+		{
+			fc = it->second;
+			return true;
+		}
+		else
+			return false;
+	}
+
+	bool BMFont::FindCharW(wchar_t c, BMFontChar& fc)
+	{
+		BMWCharMap::iterator it = m_wideCharMap.find(c);
+		if (it != m_wideCharMap.end())
+		{
+			fc = it->second;
+			return true;
+		}
+		else
+			return false;
 	}
 
 	BMFontFile BMFont::LoadFile(const std::string& filePath)

@@ -101,6 +101,9 @@ namespace Vixen {
 		//pointer to image data
 		VIX_FIBitmap* image = NULL;
 
+		/*set texture name*/
+		m_name = getFileName(filePath);
+
 		//try and load the buffer with data
 		image = vixFILoadImage(filePath);
 		if (!image)
@@ -112,6 +115,7 @@ namespace Vixen {
 
 		//now that we have our image data, create opengl texture handle
 		glGenTextures(1, &m_id);
+		m_uniqueID = m_id; //store gl texture id as unique id
 
 		//bind opengl texture handle
 		glBindTexture(m_target, m_id);

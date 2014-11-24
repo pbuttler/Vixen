@@ -28,8 +28,10 @@
 #include <vix_platform.h>
 #include <vix_stringutil.h>
 #include <vix_tinyxml.h>
+#include <vix_rectangle.h>
 #include <vector>
 #include <map>
+
 
 namespace Vixen {
 
@@ -211,6 +213,8 @@ namespace Vixen {
 	}
 
 
+	class Texture;
+
 	/**
 	* BMFont class
 	* Desc:
@@ -219,13 +223,21 @@ namespace Vixen {
 	*/
 	class VIX_API BMFont
 	{
-		typedef std::map<char, BMFontChar> BMCharMap;
+		typedef std::map<char, BMFontChar>    BMACharMap;
+		typedef std::map<wchar_t, BMFontChar> BMWCharMap;
 
 	public:
 		BMFont(const std::string& filePath);
 
+		/*Adds a texture to the font page tex collection*/
+		void AddPageTexture(Texture* texture);
+
 		/*Getter functions*/
 		const BMFontFile FontFile() const;
+
+		/*Functions*/
+		Rectangle  BoundsA(const std::string& text);
+		Rectangle  BoundsW(const std::wstring& text);
 
 		/*Static parse functions for reading the XML Font file*/
 		static void ReadFontInfo(XMLDOC& doc, BMFontFile& file);
@@ -240,8 +252,17 @@ namespace Vixen {
 		friend std::ostream& operator << (std::ostream& o, const BMFont& font);
 
 	private:
-		BMCharMap     m_charMap;
-		BMFontFile    m_fontFile;
+		/*Utilities*/
+		
+		/*Finds ansi font character in char map*/
+		bool FindCharA(char c, BMFontChar& fc);
+		bool FindCharW(wchar_t c, BMFontChar& fc);
+
+	private:
+		std::vector<Texture*>   m_textures;
+		BMACharMap              m_charMap;
+		BMWCharMap              m_wideCharMap;
+		BMFontFile              m_fontFile;
 	};
 
 

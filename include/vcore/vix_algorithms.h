@@ -21,26 +21,17 @@
 	SOFTWARE.
 */
 
-#include <vix_texture.h>
+#ifndef VIX_ALGORITHMS_H
+#define VIX_ALGORITHMS_H
+
+#include <vix_platform.h>
+#include <algorithm>
+#include <vector>
 
 namespace Vixen {
 
-	Texture::Texture()
-	{
 
-	}
-
-	Texture::~Texture()
-	{
-
-	}
-	
-	int Texture::uniqueID() const { return m_uniqueID;  }
-
-	std::string Texture::name() const { return m_name;  }
-
-	size_t Texture::getWidth() const { return m_width;  }
-
-	size_t Texture::getHeight() const { return m_height; }
 
 }
+
+#endif

@@ -38,11 +38,20 @@ namespace Vixen {
 
 		virtual ErrCode InitFromFile(const std::string& filePath) = 0;
 
-		size_t  getWidth();
-		size_t  getHeight();
+		int          uniqueID()  const;
+		std::string  name()      const;
+		size_t       getWidth()  const;
+		size_t       getHeight() const;
+
+		bool operator== (const Texture& other)
+		{
+			return this->uniqueID() == other.uniqueID();
+		}
 	protected:
-		size_t  m_width;
-		size_t  m_height;
+		int         m_uniqueID;
+		std::string m_name;
+		size_t      m_width;
+		size_t      m_height;
 	};
 }
 
