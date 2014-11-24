@@ -29,6 +29,7 @@ char const* EnumStrings<ErrCode>::m_array[] =
 {
 	"ERR_FAILURE",
 	"ERR_SUCCESS",
+	"ERR_NULL_PATH",
 	"ERR_FILE_NOT_FOUND",
 	"ERR_FILE_FOUND",
 	"ERR_SDL_INIT",

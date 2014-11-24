@@ -104,7 +104,7 @@ namespace Vixen {
 		//try and load the buffer with data
 		image = vixFILoadImage(filePath);
 		if (!image)
-			return ErrCode::ERR_IMAGE_LOAD_FAILURE;
+			return ErrCode::ERR_IMAGE_LOAD_FAIL;
 
 		//store width and height
 		m_width = image->width;

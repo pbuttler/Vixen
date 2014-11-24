@@ -22,8 +22,59 @@
 */
 
 #include <vix_bmfont.h>
+#include <vix_debugutil.h>
+#include <vix_errglobals.h>
 
 namespace Vixen {
+
+	BMFont::BMFont(const std::string& filePath)
+	{
+		m_fontFile = LoadFile(filePath);
+
+		/*Create character map*/
+		for (BMFontChar& fontChar : m_fontFile.chars)
+		{
+			char c = (char)fontChar.id;
+			m_charMap[c] = fontChar;
+		}
+	}
+
+	const BMFontFile BMFont::FontFile() const
+	{
+		return m_fontFile;
+	}
+
+	BMFontFile BMFont::LoadFile(const std::string& filePath)
+	{
+		using namespace tinyxml2;
+
+		BMFontFile file;
+		if (filePath.empty()) {
+			DebugPrintF("Failed to create BMFont: %s\n",
+				        ErrCodeString(ErrCode::ERR_NULL_PATH).c_str());
+			return file;
+		}
+
+		/*set file attribute of font file*/
+		file.file = filePath;
+
+		/*Try Parse file*/
+		XMLDOC document;
+		XMLError err = document.LoadFile(filePath.c_str());
+		std::string errorString;
+		if (XMLErrCheck(err, errorString)) {
+			DebugPrintF("XMLDocument Load Failed: %s\n", errorString.c_str());
+			return file;
+		}
+
+		/*Read file contents into bmfont file struct*/
+		BMFont::ReadFontInfo(document, file);
+		BMFont::ReadFontCommon(document, file);
+		BMFont::ReadFontPages(document, file);
+		BMFont::ReadFontChars(document, file);
+
+		return file;
+	}
 
 	void BMFont::ReadFontInfo(XMLDOC& doc, BMFontFile& file)
 	{
@@ -53,7 +104,7 @@ namespace Vixen {
 		std::string spacing = infoElement->Attribute("spacing");
 		std::vector<int> spacingValues = parse<int>(spacing, ',');
 		info.spacingX = spacingValues[0];
-		info.spacingY = spacingValues[2];
+		info.spacingY = spacingValues[1];
 		info.outline = infoElement->IntAttribute("outline");
 	}
 

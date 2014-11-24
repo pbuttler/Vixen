@@ -36,7 +36,7 @@ public:
 };
 
 template <typename T>
-const std::string EnumString(T& _enum)
+const std::string EnumString(T _enum)
 {
 	int index = static_cast<int>(_enum);
 

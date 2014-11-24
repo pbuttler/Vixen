@@ -31,22 +31,53 @@ enum class ErrCode
 {
 	ERR_FAILURE,
 	ERR_SUCCESS,
+	ERR_NULL_PATH,
 	ERR_FILE_NOT_FOUND,
-	ERR_FILE_FOUND,
-	ERR_SDL_INIT,
-	ERR_SDL_CREATE_WINDOW,
-	ERR_IMAGE_LOAD_FAILURE
+	ERR_SDL_INIT_FAIL,
+	ERR_SDL_CREATE_FAIL,
+	ERR_IMAGE_LOAD_FAIL
 };
 
-inline bool CheckError(ErrCode err)
+inline std::string ErrCodeString(ErrCode error)
 {
-	if (err != ErrCode::ERR_SUCCESS)
-		return false;
-	else
-		return true;
+	std::string errorMsg;
+
+	switch (error)
+	{
+	case ErrCode::ERR_FAILURE:
+		errorMsg = "ERR_FAILURE";
+		break;
+	case ErrCode::ERR_SUCCESS:
+		errorMsg = "ERR_SUCCESS";
+		break;
+	case ErrCode::ERR_NULL_PATH:
+		errorMsg = "ERR_NULL_PATH";
+		break;
+	case ErrCode::ERR_FILE_NOT_FOUND:
+		errorMsg = "ERR_FILE_NOT_FOUND";
+		break;
+	case ErrCode::ERR_SDL_CREATE_FAIL:
+		errorMsg = "ERR_SDL_CREATE_FAIL";
+		break;
+	case ErrCode::ERR_SDL_INIT_FAIL:
+		errorMsg = "ERR_SDL_INIT_FAIL";
+		break;
+	case ErrCode::ERR_IMAGE_LOAD_FAIL:
+		errorMsg = "ERR_IMAGE_LOAD_FAIL";
+		break;
+
+	default:
+		errorMsg = "UNKNOWN ERROR";
+		break;
+	}
+
+	return errorMsg;
 }
 
-
+inline bool CheckError(ErrCode error)
+{
+	return error != ErrCode::ERR_SUCCESS;
+}
 
 
 #endif
