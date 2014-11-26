@@ -37,7 +37,7 @@ namespace Vixen {
 	
 	int Texture::uniqueID() const { return m_uniqueID;  }
 
-	std::string Texture::name() const { return m_name;  }
+	UString Texture::name() const { return m_name;  }
 
 	size_t Texture::getWidth() const { return m_width;  }
 

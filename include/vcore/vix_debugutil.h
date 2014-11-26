@@ -73,6 +73,15 @@
 
 namespace Vixen {
 
+	inline void ConsoleWriteErr(const UString& text)
+	{
+#if defined(VIX_SYS_WINDOWS) && defined(UNICODE)
+		std::wcerr << text << std::endl;
+#else
+		std::cerr << text << std::endl;
+#endif
+	}
+
 	//NOTE:
 	//  This is declared as an "assumed" virtual definition of the
 	//  debug print function, that way we can make different version
@@ -83,21 +92,25 @@ namespace Vixen {
 	//      we must create a new function with new args if
 	//      we want to have different params
 	//
-	inline int VDebugPrintF(const char* format, va_list argList)
+	inline int VDebugPrintF(const UChar* format, va_list argList)
 	{
-		static char s_buffer[VIX_BUFSIZE];
+		static UChar s_buffer[VIX_BUFSIZE];
 		int written = -1;
 
 #ifdef VIX_SYS_WINDOWS
-		written = vsnprintf_s(s_buffer, VIX_BUFSIZE, format, argList);
+	#ifdef UNICODE
+			written = _vsnwprintf_s(s_buffer, VIX_BUFSIZE, format, argList);
+	#else
+			written = vsnprintf_s(s_buffer, VIX_BUFSIZE, format, argList);
+	#endif
 #else
 		written = vsnprintf(s_buffer, VIX_BUFSIZE, format, argList);
 #endif
 
 		//Call Win32 API with formatted string
 #ifdef VIX_SYS_WINDOWS
-		OutputDebugStringA(s_buffer);
-		std::cerr << s_buffer << std::endl;
+		OutputDebugString(s_buffer);
+		ConsoleWriteErr(UString(s_buffer));
 #else
 		std::cerr << s_buffer << std::endl;
 #endif
@@ -109,7 +122,7 @@ namespace Vixen {
 	//  as the argList param, allowing us to specify as many
 	//  parameters as we want in the buffer
 	//
-	inline int DebugPrintF(const char* format, ...)
+	inline int DebugPrintF(const UChar* format, ...)
 	{
 		va_list argList;
 		va_start(argList, format);
@@ -121,7 +134,7 @@ namespace Vixen {
 	}
 
 	
-	VIX_API std::string DebugTimeStamp();
+	VIX_API UString DebugTimeStamp();
 	
 }
 

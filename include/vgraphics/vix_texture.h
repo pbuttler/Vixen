@@ -36,10 +36,10 @@ namespace Vixen {
 		Texture();
 		virtual ~Texture();
 
-		virtual ErrCode InitFromFile(const std::string& filePath) = 0;
+		virtual ErrCode InitFromFile(const UString& filePath) = 0;
 
 		int          uniqueID()  const;
-		std::string  name()      const;
+		UString      name()      const;
 		size_t       getWidth()  const;
 		size_t       getHeight() const;
 
@@ -49,7 +49,7 @@ namespace Vixen {
 		}
 	protected:
 		int         m_uniqueID;
-		std::string m_name;
+		UString     m_name;
 		size_t      m_width;
 		size_t      m_height;
 	};

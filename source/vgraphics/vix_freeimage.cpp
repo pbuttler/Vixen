@@ -25,7 +25,7 @@
 
 namespace Vixen {
 
-	VIX_FIBitmap* vixFILoadImage(const std::string& filePath)
+	VIX_FIBitmap* vixFILoadImage(const UString& filePath)
 	{
 		VIX_FIBitmap* vix_bmp = new VIX_FIBitmap;
 		vix_bmp->path = filePath;
@@ -35,19 +35,35 @@ namespace Vixen {
 		vix_bmp->bitmap = NULL;
 		vix_bmp->width = 0;
 		vix_bmp->height = 0;
+
+		/*Here we must */
 		
 		//Check file signature and deduce format
+#ifdef UNICODE
+		vix_bmp->format = FreeImage_GetFileTypeU(filePath.c_str());
+#else
 		vix_bmp->format = FreeImage_GetFileType(filePath.c_str());
-		if (vix_bmp->format == FIF_UNKNOWN)
+#endif
+		if (vix_bmp->format == FIF_UNKNOWN) {
+#ifdef UNICODE
+			vix_bmp->format = FreeImage_GetFIFFromFilenameU(filePath.c_str());
+#else
 			vix_bmp->format = FreeImage_GetFIFFromFilename(filePath.c_str());
+#endif
+		}
+			
 		//if still unknown, return NULL;
 		if (vix_bmp->format == FIF_UNKNOWN)
 			return NULL;
 
 		//Check if FreeImage has reading capabilities
 		if (FreeImage_FIFSupportsReading(vix_bmp->format)) {
+#ifdef UNICODE
 			//read image into struct pointer
+			vix_bmp->bitmap = FreeImage_LoadU(vix_bmp->format, filePath.c_str());
+#else
 			vix_bmp->bitmap = FreeImage_Load(vix_bmp->format, filePath.c_str());
+#endif
 		}
 
 		//If image failed to load, return NULL

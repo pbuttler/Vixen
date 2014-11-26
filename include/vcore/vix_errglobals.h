@@ -38,36 +38,36 @@ enum class ErrCode
 	ERR_IMAGE_LOAD_FAIL
 };
 
-inline std::string ErrCodeString(ErrCode error)
+inline UString ErrCodeString(ErrCode error)
 {
-	std::string errorMsg;
+	UString errorMsg;
 
 	switch (error)
 	{
 	case ErrCode::ERR_FAILURE:
-		errorMsg = "ERR_FAILURE";
+		errorMsg = VTEXT("ERR_FAILURE");
 		break;
 	case ErrCode::ERR_SUCCESS:
-		errorMsg = "ERR_SUCCESS";
+		errorMsg = VTEXT("ERR_SUCCESS");
 		break;
 	case ErrCode::ERR_NULL_PATH:
-		errorMsg = "ERR_NULL_PATH";
+		errorMsg = VTEXT("ERR_NULL_PATH");
 		break;
 	case ErrCode::ERR_FILE_NOT_FOUND:
-		errorMsg = "ERR_FILE_NOT_FOUND";
+		errorMsg = VTEXT("ERR_FILE_NOT_FOUND");
 		break;
 	case ErrCode::ERR_SDL_CREATE_FAIL:
-		errorMsg = "ERR_SDL_CREATE_FAIL";
+		errorMsg = VTEXT("ERR_SDL_CREATE_FAIL");
 		break;
 	case ErrCode::ERR_SDL_INIT_FAIL:
-		errorMsg = "ERR_SDL_INIT_FAIL";
+		errorMsg = VTEXT("ERR_SDL_INIT_FAIL");
 		break;
 	case ErrCode::ERR_IMAGE_LOAD_FAIL:
-		errorMsg = "ERR_IMAGE_LOAD_FAIL";
+		errorMsg = VTEXT("ERR_IMAGE_LOAD_FAIL");
 		break;
 
 	default:
-		errorMsg = "UNKNOWN ERROR";
+		errorMsg = VTEXT("UNKNOWN ERROR");
 		break;
 	}
 

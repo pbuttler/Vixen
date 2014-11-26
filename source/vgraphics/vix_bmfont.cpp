@@ -26,37 +26,28 @@
 #include <vix_errglobals.h>
 #include <vix_algorithms.h>
 #include <vix_texture.h>
+#include <codecvt>
+
+
 
 namespace Vixen {
 
-	BMFont::BMFont(const std::string& filePath)
+	BMFont::BMFont(const UString& filePath)
 	{
 		m_fontFile = LoadFile(filePath);
 
-		/*check for unicode font*/
-		if (m_fontFile.info.unicode) {
-			/*Create unicode character map*/
-			for (BMFontChar& fontChar : m_fontFile.chars)
-			{
-				wchar_t c = (wchar_t)fontChar.id;
-				m_wideCharMap[c] = fontChar;
-			}
+		/*Create character map*/
+		for (BMFontChar& fontChar : m_fontFile.chars)
+		{
+			UChar c = (UChar)fontChar.id;
+			m_charMap[c] = fontChar;
 		}
-		else {
-			/*Create ansi character map*/
-			for (BMFontChar& fontChar : m_fontFile.chars)
-			{
-				char c = (char)fontChar.id;
-				m_charMap[c] = fontChar;
-			}
-		}
-		
 	}
 
 	void BMFont::AddPageTexture(Texture* texture)
 	{
 		if (!texture) {
-			DebugPrintF("Cannot add NULL texture");
+			DebugPrintF(VTEXT("Cannot add NULL texture"));
 			return;
 		}
 
@@ -68,7 +59,8 @@ namespace Vixen {
 			m_textures.push_back(texture);
 		}
 		else {
-			DebugPrintF("Texture %s already exists in BMFont collection", texture->name().c_str());
+			DebugPrintF(VTEXT("Texture %s already exists in BMFont collection"),
+				        texture->name().c_str());
 			return;
 		}
 	}
@@ -78,15 +70,23 @@ namespace Vixen {
 		return m_fontFile;
 	}
 
+	const Texture* BMFont::PageTexture(int index) const
+	{
+		if (index > m_textures.size())
+			return nullptr;
+
+		return m_textures[index];
+	}
+
 	/*Returns the pixel unit bounds of a string of text*/
-	Rectangle BMFont::BoundsA(const std::string& text)
+	Rectangle BMFont::Bounds(const UString& text)
 	{
 		Rectangle bounds;
 		int dx = 0;
 		int lineH = m_fontFile.common.lineHeight;
 		int dy = lineH;
 		/*Iterate over characters in text*/
-		for (const char& c : text)
+		for (const UChar& c : text)
 		{
 			if (c == '\n') {
 				dx = 0;
@@ -96,7 +96,7 @@ namespace Vixen {
 			//Find the font character and advance the
 			//pixel units based on the xAdvance value
 			BMFontChar fc;
-			if (FindCharA(c, fc)) {
+			if (FindChar(c, fc)) {
 				dx += fc.xAdvance;
 			}
 		}
@@ -109,39 +109,9 @@ namespace Vixen {
 		return bounds;
 	}
 
-	Rectangle BMFont::BoundsW(const std::wstring& text)
+	bool BMFont::FindChar(UChar c, BMFontChar& fc)
 	{
-		Rectangle bounds;
-		int dx = 0;
-		int lineH = m_fontFile.common.lineHeight;
-		int dy = lineH;
-		/*Iterate over characters in text*/
-		for (const wchar_t& c : text)
-		{
-			if (c == '\n') {
-				dx = 0;
-				dy += lineH;
-			}
-
-			//Find the font character and advance the
-			//pixel units based on the xAdvance value
-			BMFontChar fc;
-			if (FindCharW(c, fc)) {
-				dx += fc.xAdvance;
-			}
-		}
-
-		bounds.x = 0;
-		bounds.y = 0;
-		bounds.w = dx;
-		bounds.h = dy;
-
-		return bounds;
-	}
-
-	bool BMFont::FindCharA(char c, BMFontChar& fc)
-	{
-		BMACharMap::iterator it = m_charMap.find(c);
+		BMCharMap::iterator it = m_charMap.find(c);
 		if (it != m_charMap.end())
 		{
 			fc = it->second;
@@ -151,25 +121,13 @@ namespace Vixen {
 			return false;
 	}
 
-	bool BMFont::FindCharW(wchar_t c, BMFontChar& fc)
-	{
-		BMWCharMap::iterator it = m_wideCharMap.find(c);
-		if (it != m_wideCharMap.end())
-		{
-			fc = it->second;
-			return true;
-		}
-		else
-			return false;
-	}
-
-	BMFontFile BMFont::LoadFile(const std::string& filePath)
+	BMFontFile BMFont::LoadFile(const UString& filePath)
 	{
 		using namespace tinyxml2;
 
 		BMFontFile file;
 		if (filePath.empty()) {
-			DebugPrintF("Failed to create BMFont: %s\n",
+			DebugPrintF(VTEXT("Failed to create BMFont: %s\n"),
 				        ErrCodeString(ErrCode::ERR_NULL_PATH).c_str());
 			return file;
 		}
@@ -179,10 +137,14 @@ namespace Vixen {
 
 		/*Try Parse file*/
 		XMLDOC document;
+		/*TinyXML doesn't support UNICODE, so we use convert here*/
+		/*UConverter cv;
+		std::string nw_path = cv.to_bytes(filePath);*/
 		XMLError err = document.LoadFile(filePath.c_str());
-		std::string errorString;
+		UString errorString;
 		if (XMLErrCheck(err, errorString)) {
-			DebugPrintF("XMLDocument Load Failed: %s\n", errorString.c_str());
+			DebugPrintF(VTEXT("XMLDocument Load Failed: %s\n"),
+				        errorString.c_str());
 			return file;
 		}
 
@@ -203,16 +165,30 @@ namespace Vixen {
 
 		/*Populate font info struct of file with parsed info*/
 		BMFontInfo& info = file.info;
-		info.face = infoElement->Attribute("face");
+		UConverter cv;
+		const char* _face = infoElement->Attribute("face");
+		const char* _charset = infoElement->Attribute("charset");
+		const char* _padding = infoElement->Attribute("padding");
+		const char* _spacing = infoElement->Attribute("spacing");
+		UString spacing;
+#ifdef UNICODE
+		info.face = cv.from_bytes(_face);
+		info.charset = cv.from_bytes(_charset);
+		info.padding = cv.from_bytes(_padding);
+		spacing = cv.from_bytes(_spacing);
+#else
+		info.face = _face;
+		info.charset = _charset;
+		info.padding = _padding;
+		spacing = _spacing;
+#endif
 		info.size = infoElement->IntAttribute("size");
 		info.bold = infoElement->IntAttribute("bold");
 		info.italic = infoElement->IntAttribute("italic");
-		info.charset = infoElement->Attribute("charset");
 		info.unicode = infoElement->IntAttribute("unicode");
 		info.stretchH = infoElement->IntAttribute("stretchH");
 		info.smooth = infoElement->IntAttribute("smooth");
 		info.antiAliasing = infoElement->IntAttribute("aa");
-		info.padding = infoElement->Attribute("padding");
 		/*Need to parse the padding values*/
 		std::vector<int> paddingValues = parse<int>(info.padding, ',');
 		info.padX = paddingValues[0];
@@ -220,8 +196,7 @@ namespace Vixen {
 		info.padW = paddingValues[2];
 		info.padH = paddingValues[3];
 		/*Need to parse the spacing values*/
-		std::string spacing = infoElement->Attribute("spacing");
-		std::vector<int> spacingValues = parse<int>(spacing, ',');
+		std::vector<int> spacingValues = parse<int>(spacing, L',');
 		info.spacingX = spacingValues[0];
 		info.spacingY = spacingValues[1];
 		info.outline = infoElement->IntAttribute("outline");
@@ -291,7 +266,13 @@ namespace Vixen {
 		{
 			BMFontPage p;
 			p.id = pageElement->IntAttribute("id");
-			p.file = pageElement->Attribute("file");
+			const char* _file = pageElement->Attribute("file");
+			UConverter cv;
+#ifdef UNICODE 
+			p.file = cv.from_bytes(_file);
+#else
+			p.file = _file;
+#endif
 			pages.push_back(p);
 			
 			/*Try and move to next page element*/

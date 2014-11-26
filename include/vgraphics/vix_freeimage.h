@@ -33,8 +33,8 @@ namespace Vixen {
 
 	struct VIX_FIBitmap
 	{
-		std::string       name;
-		std::string       path;
+		UString       name;
+		UString       path;
 		FIBITMAP*         bitmap;
 		FREE_IMAGE_FORMAT format;
 		byte*	          data;
@@ -48,7 +48,7 @@ namespace Vixen {
 		}
 	};
 
-	VIX_API VIX_FIBitmap* vixFILoadImage(const std::string& filePath);
+	VIX_API VIX_FIBitmap* vixFILoadImage(const UString& filePath);
 }
 
 #endif

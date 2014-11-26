@@ -37,14 +37,14 @@ namespace Vixen {
 	* @param wd 
 	* Flag determines if user wants (.) included in extension
 	*/
-	VIX_API std::string	getFileExtension(const std::string& filePath, bool wd = true);
+	VIX_API UString getFileExtension(const UString& filePath, bool wd = true);
 
 	/*
 	* Retrieves filename with extension.
 	* @param filePath
 	* Path of file
 	*/
-	VIX_API std::string getFileName(const std::string& filePath);
+	VIX_API UString getFileName(const UString& filePath);
 
 }
 

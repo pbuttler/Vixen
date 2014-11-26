@@ -50,10 +50,10 @@ namespace Vixen {
 		int page;
 		int channel;
 
-		friend std::ostream& operator << (std::ostream& o, const BMFontChar& c);
+		friend UOStream& operator << (UOStream& o, const BMFontChar& c);
 	};
 
-	std::ostream& operator << (std::ostream& o, const BMFontChar& c)
+	UOStream& operator << (UOStream& o, const BMFontChar& c)
 	{
 		o << "[BMFontChar]\n"
 			<< "\tID=" << c.id << "\n"
@@ -73,16 +73,16 @@ namespace Vixen {
 
 	struct VIX_API BMFontInfo
 	{
-		std::string    face;
+		UString    face;
 		int            size;
 		int            bold;
 		int            italic;
-		std::string    charset;
+		UString    charset;
 		int            unicode;
 		int            stretchH;
 		int            smooth;
 		int            antiAliasing;
-		std::string    padding;
+		UString    padding;
 		int            padX;
 		int            padY;
 		int            padW;
@@ -91,10 +91,10 @@ namespace Vixen {
 		int            spacingY;
 		int            outline;
 
-		friend std::ostream& operator << (std::ostream& o, const BMFontInfo& i);
+		friend UOStream& operator << (UOStream& o, const BMFontInfo& i);
 	};
 
-	std::ostream& operator << (std::ostream& o, const BMFontInfo& i)
+	UOStream& operator << (UOStream& o, const BMFontInfo& i)
 	{
 		o << "[BMFontInfo]\n"
 			<< "\tFace=" << i.face << "\n"
@@ -131,10 +131,10 @@ namespace Vixen {
 		int greenChannel;
 		int blueChannel;
 
-		friend std::ostream& operator << (std::ostream& o, const BMFontCommon& c);
+		friend UOStream& operator << (UOStream& o, const BMFontCommon& c);
 	};
 
-	std::ostream& operator << (std::ostream& o, const BMFontCommon& c)
+	UOStream& operator << (UOStream& o, const BMFontCommon& c)
 	{
 		o << "[BMFontCommon]\n"
 			<< "\tLineHeight=" << c.lineHeight << "\n"
@@ -154,12 +154,12 @@ namespace Vixen {
 	struct VIX_API BMFontPage
 	{
 		int         id;
-		std::string file;
+		UString     file;
 
-		friend std::ostream& operator << (std::ostream& o, const BMFontPage& p);
+		friend UOStream& operator << (UOStream& o, const BMFontPage& p);
 	};
 
-	std::ostream& operator << (std::ostream& o, const BMFontPage& p)
+	UOStream& operator << (UOStream& o, const BMFontPage& p)
 	{
 		o << "[BMFontPage]\n"
 			<< "\tID=" << p.id << "\n"
@@ -174,10 +174,10 @@ namespace Vixen {
 		int  second;
 		int  amount;
 
-		friend std::ostream& operator << (std::ostream& o, const BMFontKerning& k);
+		friend UOStream& operator << (UOStream& o, const BMFontKerning& k);
 	};
 
-	std::ostream& operator << (std::ostream& o, const BMFontKerning& k)
+	UOStream& operator << (UOStream& o, const BMFontKerning& k)
 	{
 		o << "[BMFontKerning]\n"
 			<< "\tFirst=" << k.first << "\n"
@@ -189,19 +189,19 @@ namespace Vixen {
 
 	struct VIX_API BMFontFile
 	{
-		std::string                 file;
+		UString                     file;
 		BMFontInfo                  info;
 		BMFontCommon                common;
 		std::vector<BMFontPage>     pages;
 		std::vector<BMFontChar>     chars;
 		std::vector<BMFontKerning>  kernings;
 
-		std::string ToString() const;
+		UString ToString() const;
 	};
 
-	inline std::string BMFontFile::ToString() const
+	inline UString BMFontFile::ToString() const
 	{
-		std::stringstream ss;
+		USStream ss;
 		ss << "---BMFontFile---" << "\n" << "\n"
 			<< "File: " << file << "\n"
 			<< info << "\n" << common;
@@ -223,11 +223,11 @@ namespace Vixen {
 	*/
 	class VIX_API BMFont
 	{
-		typedef std::map<char, BMFontChar>    BMACharMap;
-		typedef std::map<wchar_t, BMFontChar> BMWCharMap;
+		typedef std::map<UChar, BMFontChar>    BMCharMap;
 
 	public:
-		BMFont(const std::string& filePath);
+		/*Constructor for BMFont*/
+		BMFont(const UString& filePath);
 
 		/*Adds a texture to the font page tex collection*/
 		void AddPageTexture(Texture* texture);
@@ -235,9 +235,10 @@ namespace Vixen {
 		/*Getter functions*/
 		const BMFontFile FontFile() const;
 
+		const Texture*   PageTexture(int index) const;
+
 		/*Functions*/
-		Rectangle  BoundsA(const std::string& text);
-		Rectangle  BoundsW(const std::wstring& text);
+		Rectangle  Bounds(const UString& text);
 
 		/*Static parse functions for reading the XML Font file*/
 		static void ReadFontInfo(XMLDOC& doc, BMFontFile& file);
@@ -246,27 +247,25 @@ namespace Vixen {
 		static void ReadFontChars(XMLDOC& doc, BMFontFile& file);
 
 		/*Static load function for loading BMFont file*/
-		static BMFontFile LoadFile(const std::string& filePath);
+		static BMFontFile LoadFile(const UString& filePath);
 
 
-		friend std::ostream& operator << (std::ostream& o, const BMFont& font);
+		friend UOStream& operator << (UOStream& o, const BMFont& font);
 
 	private:
 		/*Utilities*/
 		
-		/*Finds ansi font character in char map*/
-		bool FindCharA(char c, BMFontChar& fc);
-		bool FindCharW(wchar_t c, BMFontChar& fc);
+		/*Find font character in char map*/
+		bool FindChar(UChar c, BMFontChar& fc);
 
 	private:
 		std::vector<Texture*>   m_textures;
-		BMACharMap              m_charMap;
-		BMWCharMap              m_wideCharMap;
+		BMCharMap               m_charMap;
 		BMFontFile              m_fontFile;
 	};
 
 
-	inline std::ostream& operator << (std::ostream& o, const BMFont& font)
+	inline UOStream& operator << (UOStream& o, const BMFont& font)
 	{
 		o << font.FontFile().ToString();
 

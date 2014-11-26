@@ -32,71 +32,71 @@
 
 namespace Vixen {
 
-	inline bool VIX_API XMLErrCheck(tinyxml2::XMLError error, std::string& errorMsg)
+	inline bool VIX_API XMLErrCheck(tinyxml2::XMLError error, UString& errorMsg)
 	{
 		bool fail = true;
 		switch (error)
 		{
 		case tinyxml2::XML_NO_ERROR:
-			errorMsg = "XML_NO_ERROR";
+			errorMsg = VTEXT("XML_NO_ERROR");
 			fail = false;
 			break;
 		case tinyxml2::XML_NO_ATTRIBUTE:
-			errorMsg = "XML_NO_ATTRIBUTE";
+			errorMsg = VTEXT("XML_NO_ATTRIBUTE");
 			break;
 		case tinyxml2::XML_WRONG_ATTRIBUTE_TYPE:
-			errorMsg = "XML_WRONG_ATTRIBUTE_TYPE";
+			errorMsg = VTEXT("XML_WRONG_ATTRIBUTE_TYPE");
 			break;
 		case tinyxml2::XML_ERROR_FILE_NOT_FOUND:
-			errorMsg = "XML_ERROR_FILE_NOT_FOUND";
+			errorMsg = VTEXT("XML_ERROR_FILE_NOT_FOUND");
 			break;
 		case tinyxml2::XML_ERROR_FILE_COULD_NOT_BE_OPENED:
-			errorMsg = "XML_ERROR_FILE_COULD_NOT_BE_OPENED";
+			errorMsg = VTEXT("XML_ERROR_FILE_COULD_NOT_BE_OPENED");
 			break;
 		case tinyxml2::XML_ERROR_FILE_READ_ERROR:
-			errorMsg = "XML_ERROR_FILE_READ_ERROR";
+			errorMsg = VTEXT("XML_ERROR_FILE_READ_ERROR");
 			break;
 		case tinyxml2::XML_ERROR_ELEMENT_MISMATCH:
-			errorMsg = "XML_ERROR_ELEMENT_MISMATCH";
+			errorMsg = VTEXT("XML_ERROR_ELEMENT_MISMATCH");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_ELEMENT:
-			errorMsg = "XML_ERROR_PARSING_ELEMENT";
+			errorMsg = VTEXT("XML_ERROR_PARSING_ELEMENT");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_ATTRIBUTE:
-			errorMsg = "XML_ERROR_PARSING_ATTRIBUTE";
+			errorMsg = VTEXT("XML_ERROR_PARSING_ATTRIBUTE");
 			break;
 		case tinyxml2::XML_ERROR_IDENTIFYING_TAG:
-			errorMsg = "XML_ERROR_IDENTIFYING_TAG";
+			errorMsg = VTEXT("XML_ERROR_IDENTIFYING_TAG");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_TEXT:
-			errorMsg = "XML_ERROR_PARSING_TEXT";
+			errorMsg = VTEXT("XML_ERROR_PARSING_TEXT");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_CDATA:
-			errorMsg = "XML_ERROR_PARSING_CDATA";
+			errorMsg = VTEXT("XML_ERROR_PARSING_CDATA");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_COMMENT:
-			errorMsg = "XML_ERROR_PARSING_COMMENT";
+			errorMsg = VTEXT("XML_ERROR_PARSING_COMMENT");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_DECLARATION:
-			errorMsg = "XML_ERROR_PARSING_DECLARATION";
+			errorMsg = VTEXT("XML_ERROR_PARSING_DECLARATION");
 			break;
 		case tinyxml2::XML_ERROR_PARSING_UNKNOWN:
-			errorMsg = "XML_ERROR_PARSING_UNKNOWN";
+			errorMsg = VTEXT("XML_ERROR_PARSING_UNKNOWN");
 			break;
 		case tinyxml2::XML_ERROR_EMPTY_DOCUMENT:
-			errorMsg = "XML_ERROR_EMPTY_DOCUMENT";
+			errorMsg = VTEXT("XML_ERROR_EMPTY_DOCUMENT");
 			break;
 		case tinyxml2::XML_ERROR_MISMATCHED_ELEMENT:
-			errorMsg = "XML_ERROR_MISMATCHED_ELEMENT";
+			errorMsg = VTEXT("XML_ERROR_MISMATCHED_ELEMENT");
 			break;
 		case tinyxml2::XML_ERROR_PARSING:
-			errorMsg = "XML_ERROR_PARSING";
+			errorMsg = VTEXT("XML_ERROR_PARSING");
 			break;
 		case tinyxml2::XML_CAN_NOT_CONVERT_TEXT:
-			errorMsg = "XML_CAN_NOT_CONVERT_TEXT";
+			errorMsg = VTEXT("XML_CAN_NOT_CONVERT_TEXT");
 			break;
 		case tinyxml2::XML_NO_TEXT_NODE:
-			errorMsg = "XML_NO_TEXT_NODE";
+			errorMsg = VTEXT("XML_NO_TEXT_NODE");
 			break;
 		}
 		

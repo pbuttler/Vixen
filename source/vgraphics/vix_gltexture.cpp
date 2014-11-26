@@ -80,7 +80,7 @@ namespace Vixen {
 		m_height = 0;
 	}
 
-	GLTexture::GLTexture(const std::string& filePath, GLenum target /* = GL_TEXTURE_2D */)
+	GLTexture::GLTexture(const UString& filePath, GLenum target /* = GL_TEXTURE_2D */)
 	{
 		m_width = 0;
 		m_height = 0;
@@ -96,7 +96,7 @@ namespace Vixen {
 		glDeleteTextures(1, &m_id);
 	}
 
-	ErrCode GLTexture::InitFromFile(const std::string& filePath)
+	ErrCode GLTexture::InitFromFile(const UString& filePath)
 	{
 		//pointer to image data
 		VIX_FIBitmap* image = NULL;

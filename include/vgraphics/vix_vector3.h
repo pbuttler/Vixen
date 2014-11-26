@@ -68,7 +68,7 @@ namespace Vixen {
 				    Math::IsNaN(m_z) || !Math::IsFinite(m_z));
 		}
 
-		std::string ToString() const;
+		UString ToString() const;
 
 		//constants
 		static const Vector3 Zero;
@@ -84,8 +84,8 @@ namespace Vixen {
 		static const Vector3 Backward;
 
 
-		inline VIX_API friend std::ostream& operator <<
-			(std::ostream& o, const Vector3& v)
+		inline VIX_API friend UOStream& operator <<
+			(UOStream& o, const Vector3& v)
 		{
 			o << "Vector3 [ "
 				<< v.ToString()
@@ -94,10 +94,10 @@ namespace Vixen {
 		}
 	};
 
-	inline std::string Vector3::ToString() const
+	inline UString Vector3::ToString() const
 	{
-		std::stringstream ss;
-		ss << std::fixed
+		USStream ss;
+		ss <<  std::fixed
 			<< std::setprecision(3)
 			<< "X=" << m_x << " "
 			<< "Y=" << m_y << " "

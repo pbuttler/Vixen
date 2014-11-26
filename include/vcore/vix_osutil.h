@@ -31,13 +31,13 @@
 
 namespace Vixen {
 
-	static const char WIN_PATH_DELIM = '\\';
-	static const char UNIX_PATH_DELIM = '/';
+	static const UString WIN_PATH_DELIM  = VTEXT("\\");
+	static const UString UNIX_PATH_DELIM = VTEXT("/");
 
-	VIX_API void        os_mkdir(const std::string& dir);
-	VIX_API bool        os_isdir(const std::string& dir);
-	VIX_API	std::string os_path(const std::string& path);
-	VIX_API std::string os_dir(const std::string& path, bool wt = true);
+	VIX_API void        os_mkdir(const UString& dir);
+	VIX_API bool        os_isdir(const UString& dir);
+	VIX_API	UString     os_path(const UString& path);
+	VIX_API UString     os_dir(const UString& path, bool wt = true);
 }
 
 
