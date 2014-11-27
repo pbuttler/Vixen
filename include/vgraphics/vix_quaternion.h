@@ -108,8 +108,8 @@ namespace Vixen {
 		static const Quaternion Zero;
 
 
-		inline VIX_API friend std::ostream& operator <<
-			(std::ostream& o, const Quaternion& q)
+		inline VIX_API friend UOStream& operator <<
+			(UOStream& o, const Quaternion& q)
 		{
 			o << "Quaternion [ "
 				<< "w:" << q.m_w << ", "

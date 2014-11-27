@@ -267,6 +267,7 @@ namespace Vixen {
 
 	inline UOStream& operator << (UOStream& o, const BMFont& font)
 	{
+		/*Will fail if UNICODE and outputting to console window without UTF-8 locale set*/
 		o << font.FontFile().ToString();
 
 		return o;

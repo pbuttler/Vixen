@@ -2,9 +2,12 @@
 #define VIX_RECTANGLE_H
 
 #include <vix_platform.h>
-#include <iostream>
+#include <vix_stringutil.h>
 
 namespace Vixen {
+
+	class   Rectangle;
+	typedef Rectangle Rect;
 
 	class VIX_API Rectangle
 	{
@@ -41,12 +44,13 @@ namespace Vixen {
 		static const Rectangle EMPTY;
 
 
-		inline VIX_API friend std::ostream& operator << (std::ostream& o, const Rectangle& r)
+		inline VIX_API friend UOStream& operator <<
+			(UOStream& o, const Rect& r)
 		{
 			o << "Rectangle [ "
 				<< "X=" << r.x << " "
-				<< "Y=" << r.y << " " 
-				<< "W=" << r.w << " " 
+				<< "Y=" << r.y << " "
+				<< "W=" << r.w << " "
 				<< "H=" << r.h
 				<< " ]";
 			return o;

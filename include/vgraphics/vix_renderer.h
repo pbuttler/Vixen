@@ -51,7 +51,6 @@ namespace Vixen {
 		virtual void VShutDown() = 0;
 		virtual void VSetClearColor(const Color& c) = 0;
 		virtual void VClearBuffer(ClearArgs args) = 0;
-
 	};
 
 }

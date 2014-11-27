@@ -137,9 +137,8 @@ namespace Vixen {
 
 		/*Try Parse file*/
 		XMLDOC document;
-		/*TinyXML doesn't support UNICODE, so we use convert here*/
-		/*UConverter cv;
-		std::string nw_path = cv.to_bytes(filePath);*/
+		/*TinyXML now supports paths containing UTF-8 encoded characters due to
+		  change I've made in the source. */
 		XMLError err = document.LoadFile(filePath.c_str());
 		UString errorString;
 		if (XMLErrCheck(err, errorString)) {
