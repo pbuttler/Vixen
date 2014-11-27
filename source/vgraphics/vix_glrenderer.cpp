@@ -23,6 +23,7 @@
 
 #include <vix_glrenderer.h>
 #include <vix_gl.h>
+#include <vix_debugutil.h>
 #include <FreeImage.h>
 
 namespace Vixen {
@@ -31,6 +32,22 @@ namespace Vixen {
 	{
 		//set clear color
 		glClearColor(c.r, c.g, c.b, c.a);
+	}
+
+	ErrCode GLRenderer::VInit()
+	{
+		ErrCode error = ErrCode::ERR_SUCCESS;
+
+		/*initialize glew*/
+		GLenum glewErr = glewInit();
+		if (glewErr != GLEW_OK) {
+			DebugPrintF(VTEXT("Glew failed to initialize: %s\n%s\n"),
+				glewGetErrorString(glewErr), 
+				ErrCodeString(ErrCode::ERR_GLEW_INIT_FAIL));
+			return ErrCode::ERR_GLEW_INIT_FAIL;
+		}
+
+		return error;
 	}
 
 	void GLRenderer::VClearBuffer(ClearArgs args)

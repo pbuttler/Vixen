@@ -30,6 +30,8 @@
 /*include for TinyXML2*/
 #include <tinyxml2.h>
 
+typedef tinyxml2::XMLDocument XMLDOC;
+
 namespace Vixen {
 
 	inline bool VIX_API XMLErrCheck(tinyxml2::XMLError error, UString& errorMsg)

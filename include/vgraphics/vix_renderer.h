@@ -24,6 +24,9 @@
 #ifndef VIX_RENDERER_H
 #define VIX_RENDERER_H
 
+#include <vix_platform.h>
+#include <vix_errglobals.h>
+
 namespace Vixen {
 
 	class Color;
@@ -48,9 +51,10 @@ namespace Vixen {
 	{
 	public:
 
-		virtual void VShutDown() = 0;
-		virtual void VSetClearColor(const Color& c) = 0;
-		virtual void VClearBuffer(ClearArgs args) = 0;
+		virtual ErrCode VInit() = 0;
+		virtual void    VShutDown() = 0;
+		virtual void    VSetClearColor(const Color& c) = 0;
+		virtual void    VClearBuffer(ClearArgs args) = 0;
 	};
 
 }

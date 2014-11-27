@@ -20,7 +20,9 @@ namespace Vixen {
 		SDL_GW_Params WindowArgs() const;
 
 	private:
-		ErrCode LoadConfig(const UString& path);
+		ErrCode       LoadConfig(const UString& path);
+		ErrCode       ParseConfig(const XMLDOC& doc);
+		SDL_GW_Params ParseWindow(const XMLDOC& doc);
 
 	private:
 		SDL_GW_Params m_windowArgs;

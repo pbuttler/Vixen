@@ -22,7 +22,7 @@ namespace Vixen {
 
 	struct VIX_API SDL_GW_Params
 	{
-		const char* title;
+		UString title;
 		int x;
 		int y;
 		int width;
@@ -33,23 +33,31 @@ namespace Vixen {
 	class VIX_API SDLGameWindow : public IGameWindow
 	{
 	public:
-		SDLGameWindow();
+		SDLGameWindow(const SDL_GW_Params& params);
 
 		~SDLGameWindow();
 
 		ErrCode             VInit()                                override;
+		ErrCode             VRun()                                 override;
 		void                VSetVisible(bool flag)                 override;
 		void                VSetFullscreen(bool flag)              override;
 		void                VSwapBuffers()                         override;
 		const UString&      VGetTitle()                            override;
 		const Rect&         VGetClientBounds()                     override;
+		bool                VIsRunning()                           override;
+		bool                VIsHidden()                            override;
+		bool                VIsPaused()                            override;
+		void                VClose()                               override;
 
 	private:
 		UString       m_title;
 		bool          m_hidden;
+		bool          m_running;
+		bool          m_paused;
 		Rect          m_clientRect;
 		SDL_Window*   m_windowHandle;
 		SDL_GLContext m_context;
+		SDL_GW_Params m_params;
 	};
 
 }

@@ -34,9 +34,10 @@ namespace Vixen {
 	{
 	public:
 
-		void VShutDown()                        override;
-		void VSetClearColor(const Color& c)     override;
-		void VClearBuffer(ClearArgs args)       override;
+		ErrCode VInit()                            override;
+		void    VShutDown()                        override;
+		void    VSetClearColor(const Color& c)     override;
+		void    VClearBuffer(ClearArgs args)       override;
 	};
 
 }

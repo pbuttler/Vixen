@@ -35,7 +35,6 @@
 
 namespace Vixen {
 
-	typedef tinyxml2::XMLDocument XMLDOC;
 
 	struct VIX_API BMFontChar
 	{
