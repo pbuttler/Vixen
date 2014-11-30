@@ -33,24 +33,24 @@ namespace Vixen {
 	class VIX_API Quaternion
 	{
 	public:
-		float m_w;
-		float m_x;
-		float m_y;
-		float m_z;
+		float w;
+		float x;
+		float y;
+		float z;
 
 	public:
 		inline Quaternion(float w, float x, float y, float z)
-			: m_w(w), m_x(x), m_y(y), m_z(z)
+			: w(w), x(x), y(y), z(z)
 		{
 
 		}
 
 		inline Quaternion(float scalar, const Vector3& vector)
 		{
-			m_w = scalar;
-			m_x = vector.m_x;
-			m_y = vector.m_y;
-			m_z = vector.m_z;
+			w = scalar;
+			x = vector.x;
+			y = vector.y;
+			z = vector.z;
 		}
 
 		//static functions
@@ -67,20 +67,20 @@ namespace Vixen {
 		//operator overloads
 		inline Quaternion& operator= (const Quaternion& rhs)
 		{
-			m_w = rhs.m_w;
-			m_x = rhs.m_x;
-			m_y = rhs.m_y;
-			m_z = rhs.m_z;
+			w = rhs.w;
+			x = rhs.x;
+			y = rhs.y;
+			z = rhs.z;
 
 			return *this;
 		}
 
 		inline bool operator== (const Quaternion& rhs)
 		{
-			return	(m_w == rhs.m_w) &&
-					(m_x == rhs.m_x) &&
-					(m_y == rhs.m_y) &&
-					(m_z == rhs.m_z);
+			return	(w == rhs.w) &&
+					(x == rhs.x) &&
+					(y == rhs.y) &&
+					(z == rhs.z);
 		}
 
 		inline bool operator!= (const Quaternion& rhs)
@@ -112,10 +112,10 @@ namespace Vixen {
 			(UOStream& o, const Quaternion& q)
 		{
 			o << "Quaternion [ "
-				<< "w:" << q.m_w << ", "
-				<< "x:" << q.m_x << ", "
-				<< "y:" << q.m_y << ", "
-				<< "z:" << q.m_z << " ]";
+				<< "w:" << q.w << ", "
+				<< "x:" << q.x << ", "
+				<< "y:" << q.y << ", "
+				<< "z:" << q.z << " ]";
 			return o;
 		}
 	};

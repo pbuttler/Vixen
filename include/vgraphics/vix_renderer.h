@@ -26,6 +26,7 @@
 
 #include <vix_platform.h>
 #include <vix_errglobals.h>
+#include <vix_glm.h>
 
 namespace Vixen {
 
@@ -55,6 +56,13 @@ namespace Vixen {
 		virtual void    VShutDown() = 0;
 		virtual void    VSetClearColor(const Color& c) = 0;
 		virtual void    VClearBuffer(ClearArgs args) = 0;
+		virtual void    VSetProjection(Mat4 p) = 0;
+
+
+		const Mat4 Projection() const { return m_projection;  }
+		
+	protected:
+		Mat4  m_projection;
 	};
 
 }

@@ -1,6 +1,8 @@
 #include <vix_sdlwindow.h>
 #include <vix_debugutil.h>
 #include <vix_glrenderer.h>
+#include <vix_glshaderprogram.h>
+#include <vix_gltexturebatcher.h>
 
 namespace Vixen {
 
@@ -14,7 +16,7 @@ namespace Vixen {
 
 	SDLGameWindow::~SDLGameWindow()
 	{
-
+		delete m_renderer;
 	}
 
 	ErrCode SDLGameWindow::VInit()
@@ -65,6 +67,8 @@ namespace Vixen {
 				ErrCodeString(error));
 			return error;
 		}
+
+
 
 
 		return error;
@@ -125,7 +129,7 @@ namespace Vixen {
 
 	const UString& SDLGameWindow::VGetTitle()
 	{
-		return VTEXT("");
+		return m_title;
 	}
 
 	const Rect& SDLGameWindow::VGetClientBounds()

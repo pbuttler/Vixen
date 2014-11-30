@@ -32,28 +32,28 @@ namespace Vixen {
 
 	float Quaternion::Dot(const Quaternion& q) const
 	{
-		return	(m_w * q.m_w) +
-				(m_x * q.m_x) +
-				(m_y * q.m_y) +
-				(m_z * q.m_z);
+		return	(w * q.w) +
+				(x * q.x) +
+				(y * q.y) +
+				(z * q.z);
 	}
 
 	float Quaternion::Dot(const Quaternion& q, const Quaternion& r)
 	{
-		return	(q.m_w * r.m_w) +
-				(q.m_x * r.m_x) +
-				(q.m_y * r.m_y) +
-				(q.m_z * r.m_z);
+		return	(q.w * r.w) +
+				(q.x * r.x) +
+				(q.y * r.y) +
+				(q.z * r.z);
 	}
 
 	float Quaternion::Norm() const
 	{
-		float w = m_w * m_w;
-		float x = m_x * m_x;
-		float y = m_y * m_y;
-		float z = m_z * m_z;
+		float _w = w * w;
+		float _x = x * x;
+		float _y = y * y;
+		float _z = z * z;
 
-		return sqrt(w + x + y + z);
+		return sqrt(_w + _x + _y + _z);
 	}
 
 	void Quaternion::Normalize()
@@ -76,13 +76,13 @@ namespace Vixen {
 		assert(norm != 0.0f);
 
 		float invNorm = 1.0f / norm;
-		float w = m_w * invNorm;
-		float x = -m_x * invNorm; //negate vector part
-		float y = -m_y * invNorm; //negate vector part
-		float z = -m_z * invNorm; //negate vector part
+		float _w = w * invNorm;
+		float _x = -x * invNorm; //negate vector part
+		float _y = -y * invNorm; //negate vector part
+		float _z = -z * invNorm; //negate vector part
 		
 		
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::Inverse() const
@@ -94,120 +94,120 @@ namespace Vixen {
 		* Equivalent to:
 		* Conjugate / Norm^2
 		*/
-		float w = m_w * invNormSq;
-		float x = -m_x * invNormSq;
-		float y = -m_y * invNormSq; 
-		float z = -m_z * invNormSq;
+		float _w = w * invNormSq;
+		float _x = -x * invNormSq;
+		float _y = -y * invNormSq; 
+		float _z = -z * invNormSq;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	float Quaternion::operator[] (const size_t i) const
 	{
 		assert(i < 4); //only 3 members
 
-		return *(&m_x + i);
+		return *(&x + i);
 	}
 
 	float& Quaternion::operator[] (const size_t i)
 	{
 		assert(i < 4); //only 3 members
 
-		return *(&m_x + i);
+		return *(&x + i);
 	}
 
 	Quaternion Quaternion::operator- (void) const
 	{
-		float w = -m_w;
-		float x = -m_x;
-		float y = -m_y;
-		float z = -m_z;
+		float _w = -w;
+		float _x = -x;
+		float _y = -y;
+		float _z = -z;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator+ (const Quaternion& rhs) const
 	{
-		float w = m_w + rhs.m_w;
-		float x = m_x + rhs.m_x;
-		float y = m_y + rhs.m_y;
-		float z = m_z + rhs.m_z;
+		float _w = w + rhs.w;
+		float _x = x + rhs.x;
+		float _y = y + rhs.y;
+		float _z = z + rhs.z;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator+ (float scalar) const
 	{
-		float w = m_w + scalar;
-		float x = m_x + scalar;
-		float y = m_y + scalar;
-		float z = m_z + scalar;
+		float _w = w + scalar;
+		float _x = x + scalar;
+		float _y = y + scalar;
+		float _z = z + scalar;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator- (const Quaternion& rhs) const
 	{
-		float w = m_w - rhs.m_w;
-		float x = m_x - rhs.m_x;
-		float y = m_y - rhs.m_y;
-		float z = m_z - rhs.m_z;
+		float _w = w - rhs.w;
+		float _x = x - rhs.x;
+		float _y = y - rhs.y;
+		float _z = z - rhs.z;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator- (float scalar) const
 	{
-		float w = m_w - scalar;
-		float x = m_x - scalar;
-		float y = m_y - scalar;
-		float z = m_z - scalar;
+		float _w = w - scalar;
+		float _x = x - scalar;
+		float _y = y - scalar;
+		float _z = z - scalar;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator* (float scalar) const
 	{
-		float w = m_w * scalar;
-		float x = m_x * scalar;
-		float y = m_y * scalar;
-		float z = m_z * scalar;
+		float _w = w * scalar;
+		float _x = x * scalar;
+		float _y = y * scalar;
+		float _z = z * scalar;
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion Quaternion::operator* (const Quaternion& rhs) const
 	{
-		float w = 0.0f;
-		float x = 0.0f;
-		float y = 0.0f;
-		float z = 0.0f;
+		float _w = 0.0f;
+		float _x = 0.0f;
+		float _y = 0.0f;
+		float _z = 0.0f;
 
 		//calculate new w
-		w = (rhs.m_w * m_w) - 
-			(rhs.m_x * m_x) - 
-			(rhs.m_y * m_y) - 
-			(rhs.m_z * m_z);
+		_w = (rhs.w * w) - 
+			(rhs.x * x) - 
+			(rhs.y * y) - 
+			(rhs.z * z);
 
 		//calculate new x
-		x = (rhs.m_w * m_x) +
-			(rhs.m_x * m_w) -
-			(rhs.m_y * m_z) +
-			(rhs.m_z * m_y);
+		_x = (rhs.w * x) +
+			(rhs.x * w) -
+			(rhs.y * z) +
+			(rhs.z * y);
 
 		//calculate new y
-		y = (rhs.m_w * m_y) +
-			(rhs.m_x * m_z) +
-			(rhs.m_y * m_w) -
-			(rhs.m_z * m_x);
+		_y = (rhs.w * y) +
+			(rhs.x * z) +
+			(rhs.y * w) -
+			(rhs.z * x);
 
 		//calculate new z
-		z = (rhs.m_w * m_z) -
-			(rhs.m_x * m_y) +
-			(rhs.m_y * m_x) +
-			(rhs.m_z * m_w);
+		_z = (rhs.w * z) -
+			(rhs.x * y) +
+			(rhs.y * x) +
+			(rhs.z * w);
 
-		return Quaternion(w, x, y, z);
+		return Quaternion(_w, _x, _y, _z);
 	}
 
 	Quaternion& Quaternion::operator*= (const Quaternion& rhs)

@@ -23,6 +23,7 @@
 
 
 #include <vix_gltexture.h>
+#include <vix_debugutil.h>
 
 namespace Vixen {
 
@@ -78,15 +79,19 @@ namespace Vixen {
 	{
 		m_width = 0;
 		m_height = 0;
+		m_target = target;
 	}
 
 	GLTexture::GLTexture(const UString& filePath, GLenum target /* = GL_TEXTURE_2D */)
 	{
 		m_width = 0;
 		m_height = 0;
+		m_target = target;
 
-		if (!CheckError(InitFromFile(filePath))) {
-			//Debug Log a error message for texture initialization
+		ErrCode error = InitFromFile(filePath);
+		if (CheckError(InitFromFile(filePath))) {
+			DebugPrintF(VTEXT("Texture failed to initialize: %s\n"),
+				ErrCodeString(error));
 		}
 	}
 

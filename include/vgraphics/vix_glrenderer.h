@@ -28,6 +28,7 @@
 #include <vix_renderer.h>
 #include <vix_color.h>
 
+
 namespace Vixen {
 
 	class VIX_API GLRenderer : public IRenderer
@@ -38,6 +39,9 @@ namespace Vixen {
 		void    VShutDown()                        override;
 		void    VSetClearColor(const Color& c)     override;
 		void    VClearBuffer(ClearArgs args)       override;
+		void    VSetProjection(Mat4 projection)    override;
+
+
 	};
 
 }

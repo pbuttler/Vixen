@@ -27,10 +27,11 @@
 #include <vix_platform.h>
 #include <vix_errglobals.h>
 #include <vix_freeimage.h>
+#include <vix_content.h>
 
 namespace Vixen {
 
-	class VIX_API Texture
+	class VIX_API Texture : IContent
 	{
 	public:
 		Texture();

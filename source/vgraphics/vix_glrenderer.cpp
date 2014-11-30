@@ -87,4 +87,10 @@ namespace Vixen {
 	}
 
 
+	void GLRenderer::VSetProjection(Mat4 projection)
+	{
+		m_projection = projection;
+	}
+
+
 }

@@ -43,6 +43,20 @@ namespace Vixen {
 
 		static const Rectangle EMPTY;
 
+		/*operators*/
+
+		inline bool operator== (const Rectangle& rhs)
+		{
+			return (x == rhs.x &&
+				    y == rhs.y &&
+				    w == rhs.w &&
+				    h == rhs.h);
+		}
+
+		inline bool operator!= (const Rectangle& rhs)
+		{
+			return !(*this == rhs);
+		}
 
 		inline VIX_API friend UOStream& operator <<
 			(UOStream& o, const Rect& r)

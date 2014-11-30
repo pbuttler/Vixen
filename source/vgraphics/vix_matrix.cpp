@@ -75,9 +75,9 @@ namespace Vixen {
 	{
 		Vector3 v;
 
-		v.m_x = -m[0][0];
-		v.m_y = -m[0][1];
-		v.m_z = -m[0][2];
+		v.x = -m[0][0];
+		v.y = -m[0][1];
+		v.z = -m[0][2];
 
 		return v;
 	}

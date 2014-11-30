@@ -33,9 +33,9 @@ namespace Vixen {
 	class VIX_API Vector3
 	{
 	public:
-		float m_x;
-		float m_y;
-		float m_z;
+		float x;
+		float y;
+		float z;
 	public:
 
 #ifdef ENABLE_NAN_DIAGNOSTICS
@@ -50,25 +50,57 @@ namespace Vixen {
 #endif
 
 		inline Vector3()
-			: m_x(0), m_y(0), m_z(0)
+			: x(0), y(0), z(0)
 		{
 			DiagnosticNanCheck();
 		}
 
-		inline Vector3(float x, float y, float z)
-			: m_x(x), m_y(y), m_z(z)
+		inline Vector3(float _x, float _y, float _z)
+			: x(x), y(y), z(z)
 		{
 			DiagnosticNanCheck();
 		}
 
 		inline bool ContainsNaN() const
 		{
-			return (Math::IsNaN(m_x) || !Math::IsFinite(m_x) ||
-				    Math::IsNaN(m_y) || !Math::IsFinite(m_y) ||
-				    Math::IsNaN(m_z) || !Math::IsFinite(m_z));
+			return (Math::IsNaN(x) || !Math::IsFinite(x) ||
+				    Math::IsNaN(y) || !Math::IsFinite(y) ||
+				    Math::IsNaN(z) || !Math::IsFinite(z));
 		}
 
 		UString ToString() const;
+
+		/*operators*/
+
+		/*
+
+		////////////////////
+
+		          [1]       [2]
+			    /    \     /   \
+			  [3]   [4]   [1]  [9]
+			   |     |
+			  [0]   [5]
+
+			  GameObject----
+			      
+
+				  MeshComponent    [Component]
+				  PhysicsComponent [Component]
+
+		*/
+
+		inline bool operator== (const Vector3& rhs)
+		{
+			return ( x == rhs.x &&
+				     y == rhs.y &&
+				     z == rhs.z );
+		}
+
+		inline bool operator!= (const Vector3& rhs)
+		{
+			return !(*this == rhs);
+		}
 
 		//constants
 		static const Vector3 Zero;
@@ -99,9 +131,9 @@ namespace Vixen {
 		USStream ss;
 		ss <<  std::fixed
 			<< std::setprecision(3)
-			<< "X=" << m_x << " "
-			<< "Y=" << m_y << " "
-			<< "Z=" << m_z;
+			<< "X=" << x << " "
+			<< "Y=" << y << " "
+			<< "Z=" << z;
 		
 		return ss.str();
 	}
