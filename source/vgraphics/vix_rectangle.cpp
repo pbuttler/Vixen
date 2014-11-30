@@ -5,10 +5,10 @@ namespace Vixen {
 	const Rectangle Rectangle::EMPTY(0, 0, 0, 0);
 
 	/*Checks whether given point is bounded by Rectangle*/
-	bool Rectangle::Contains(int x, int y)
+	bool Rectangle::Contains(int _x, int _y)
 	{
-		return ((((this->x <= x) && (x < (this->x + this->w)))
-			   && (this->y <= y)) && (y < (this->y + this->h)));
+		return ((((this->x <= _x) && (_x < (this->x + this->w)))
+			   && (this->y <= _y)) && (_y < (this->y + this->h)));
 	}
 
 	/*Checks whether Rectangle has any value*/

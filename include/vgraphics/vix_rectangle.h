@@ -39,7 +39,7 @@ namespace Vixen {
 
 		bool HasValue();
 
-		bool Contains(int x, int y);
+		bool Contains(int _x, int _y);
 
 		static const Rectangle EMPTY;
 
