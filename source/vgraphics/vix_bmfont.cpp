@@ -32,6 +32,80 @@
 
 namespace Vixen {
 
+	VIX_API UOStream& operator << (UOStream& o, const BMFontInfo& i)
+	{
+		o << "[BMFontInfo]\n"
+			<< "\tFace=" << i.face << "\n"
+			<< "\tSize=" << i.size << "\n"
+			<< "\tBold=" << i.bold << "\n"
+			<< "\tItalic=" << i.italic << "\n"
+			<< "\tCharSet=" << i.charset << "\n"
+			<< "\tUnicode=" << i.unicode << "\n"
+			<< "\tStretchH=" << i.stretchH << "\n"
+			<< "\tSmooth=" << i.smooth << "\n"
+			<< "\tAA=" << i.antiAliasing << "\n"
+			<< "\tPadding=" << i.padding << "\n"
+			<< "\tPadX=" << i.padX << "\n"
+			<< "\tPadY=" << i.padY << "\n"
+			<< "\tPadW=" << i.padW << "\n"
+			<< "\tPadH=" << i.padH << "\n"
+			<< "\tSpacingX=" << i.spacingX << "\n"
+			<< "\tSpacingY=" << i.spacingY << "\n"
+			<< "\tOutline=" << i.outline << "\n";
+
+		return o;
+	}
+
+	VIX_API UOStream& operator << (UOStream& o, const BMFontCommon& c)
+	{
+		o << "[BMFontCommon]\n"
+		<< "\tLineHeight=" << c.lineHeight << "\n"
+		<< "\tBase=" << c.base << "\n"
+		<< "\tScaleW=" << c.scaleW << "\n"
+		<< "\tScaleH=" << c.scaleH << "\n"
+		<< "\tPages=" << c.pages << "\n"
+		<< "\tPacked=" << c.packed << "\n"
+		<< "\tAlpha=" << c.alphaChannel << "\n"
+		<< "\tRed=" << c.redChannel << "\n"
+		<< "\tGreen=" << c.greenChannel << "\n"
+		<< "\tBlue=" << c.blueChannel << "\n";
+
+		return o;
+	}
+
+
+	VIX_API UOStream& operator << (UOStream& o, const BMFontPage& p)
+	{
+		o << "[BMFontPage]\n"
+		<< "\tID=" << p.id << "\n"
+		<< "\tFile=" << p.file << "\n";
+
+		return o;
+	}
+
+	VIX_API UOStream& operator << (UOStream& o, const BMFontKerning& k)
+	{
+		o << "[BMFontKerning]\n"
+			<< "\tFirst=" << k.first << "\n"
+			<< "\tSecond=" << k.second << "\n"
+			<< "\tAmount=" << k.amount << "\n";
+
+		return o;
+	}
+
+	UString BMFontFile::ToString() const
+	{
+		USStream ss;
+		ss << "---BMFontFile---" << "\n" << "\n"
+			<< "File: " << file << "\n"
+			<< info << "\n" << common;
+		for (const BMFontPage& page : pages)
+		{
+			ss << page << "\n";
+		}
+		return ss.str();
+	}
+
 	BMFont::BMFont(const UString& filePath)
 	{
 		m_fontFile = LoadFile(filePath);

@@ -24,6 +24,16 @@ namespace Vixen {
 		glDeleteProgram(m_program);
 	}
 
+	void GLShaderProgram::Bind()
+	{
+		glUseProgram(m_program);
+	}
+
+	void GLShaderProgram::Unbind()
+	{
+		glUseProgram(NULL);
+	}
+
 	ErrCode GLShaderProgram::VCreateShadersFromArgs()
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;

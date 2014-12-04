@@ -46,9 +46,12 @@ namespace Vixen {
 	protected:
 		ErrCode VCreateShadersFromArgs() override;
 	    
+		/*attach OpenGL shader to program*/
 		void    AttachShader(Shader* shader);
+
+		/*try and OpenGL link shader to program*/
 		ErrCode LinkShader(Shader* shader);
-		
+
 	private:
 		GLuint m_program;
 

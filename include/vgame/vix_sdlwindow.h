@@ -27,6 +27,7 @@
 #include <vix_platform.h>
 #include <vix_gamewindow.h>
 #include <SDL.h>
+#undef main
 
 namespace Vixen {
 

@@ -31,14 +31,17 @@
 #include <vix_debugutil.h>
 #include <vix_gltexture.h>
 #include <vix_bmfont.h>
+#include <vix_manager.h>
 #include <map>
 
 namespace Vixen {
 
 	class IContent;
 
-	class VIX_API ContentManager : public Singleton < ContentManager >
+	class VIX_API ContentManager : public Singleton < ContentManager >, IManager
 	{
+		friend class Singleton < ContentManager >;
+
 		typedef std::map<UString, IContent*> ContentMap;
 	public:
 		ContentManager();
@@ -49,6 +52,10 @@ namespace Vixen {
 		T* Load(const UString& path);
 
 		void DumpTextures();
+
+		ErrCode VStartUp()   override;
+
+		ErrCode VShutDown()  override;
 
 	private:
 		ContentMap  m_textures;
@@ -102,7 +109,7 @@ namespace Vixen {
 		return NULL;
 	}
 
-	extern ContentManager& g_ContentManager;
+	extern ContentManager&  g_ContentManager;
 }
 
 #endif

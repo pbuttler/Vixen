@@ -24,8 +24,7 @@
 #include <vix_contentmanager.h>
 
 namespace Vixen {
-	
-	ContentManager& g_ContentManager = ContentManager::instance();
+
 
 	ContentManager::ContentManager()
 	{
@@ -35,6 +34,20 @@ namespace Vixen {
 	ContentManager::~ContentManager()
 	{
 
+	}
+
+	ErrCode ContentManager::VStartUp()
+	{
+		DebugPrintF(VTEXT("ContentManager starting up..."));
+
+		return ErrCode::ERR_SUCCESS;
+	}
+
+	ErrCode ContentManager::VShutDown()
+	{
+		DebugPrintF(VTEXT("ContentManager shutting down..."));
+
+		return ErrCode::ERR_SUCCESS;
 	}
 
 	void ContentManager::DumpTextures()

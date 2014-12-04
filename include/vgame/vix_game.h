@@ -28,6 +28,7 @@
 #include <vix_gamewindow.h>
 #include <vix_gameconfig.h>
 
+
 namespace Vixen {
 
 	class VIX_API Game

@@ -27,7 +27,7 @@ namespace Vixen {
 
 	AudioManager::AudioManager()
 	{
-
+		id += 1;
 	}
 
 	AudioManager::~AudioManager()
@@ -35,9 +35,21 @@ namespace Vixen {
 
 	}
 
+	int AudioManager::ID()
+	{
+		return id;
+	}
+
+	FMOD::System* const AudioManager::System()
+	{
+		return m_system;
+	}
+
 	ErrCode AudioManager::VStartUp()
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
+
+		DebugPrintF(VTEXT("AudioManager starting up..."));
 		
 		/*create fmod sound system*/
 		error = FMOD_CheckError(FMOD::System_Create(&m_system));
@@ -56,12 +68,19 @@ namespace Vixen {
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
 
+		DebugPrintF(VTEXT("AudioManager shutting down..."));
+
 		/*close sound system*/
 		error = FMOD_CheckError(m_system->close());
 		/*release sound system*/
 		error = FMOD_CheckError(m_system->release());
 
 		return error;
+	}
+
+	void AudioManager::CreateSound(const UString& path)
+	{
+		m_sounds[path] = new SoundClip(m_system, path);
 	}
 
 }

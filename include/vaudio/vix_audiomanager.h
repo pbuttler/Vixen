@@ -28,13 +28,16 @@
 #include <vix_manager.h>
 #include <vix_singleton.h>
 #include <vix_fmod.h>
-
+#include <vix_soundclip.h>
+#include <map>
 
 namespace Vixen {
 
 	class VIX_API AudioManager : public Singleton <AudioManager>, IManager
 	{
 		friend class Singleton <AudioManager>;
+
+		typedef std::map<UString, SoundClip*> SoundMap;
 
 		const int MAX_CHANNELS = 100;
 
@@ -45,18 +48,28 @@ namespace Vixen {
 		/*desturctor (NOTE: destruction occurs in VShutDown()*/
 		~AudioManager();
 
+		/*retrieve FMOD sound system object*/
+		FMOD::System* const System();
+
+		/*retrieve manager id*/
+		int ID();
+
 		/*Initialize AudioManager*/
 		ErrCode VStartUp()  override;
 
 		/*Destruct AudioManager*/
 		ErrCode VShutDown() override;
 
+		/*create sound*/
+		void CreateSound(const UString& path);
+
 	private:
 		FMOD::System* m_system;
+		SoundMap      m_sounds;
+		int id;
 	};
 
-	AudioManager& g_AudioManager = AudioManager::instance();
-
+	extern AudioManager& g_AudioManager;
 }
 
 #endif

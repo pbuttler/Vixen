@@ -21,39 +21,25 @@
 	SOFTWARE.
 */
 
-#ifndef VIX_LUASCRIPTMANAGER_H
-#define VIX_LUASCRIPTMANAGER_H
+#ifndef VIX_SOUNDCLIP_H
+#define VIX_SOUNDCLIP_H
 
 #include <vix_platform.h>
-#include <vix_singleton.h>
-#include <vix_luaengine.h>
-#include <vix_manager.h>
+#include <vix_fmod.h>
 
 namespace Vixen {
 
-	class VIX_API LuaScriptManager : public Singleton < LuaScriptManager >, IManager
+	class VIX_API SoundClip
 	{
-		friend class Singleton < LuaScriptManager >;
-
 	public:
-		/*constructor (NOTE: intialization occurs in VStartUp()*/
-		LuaScriptManager();
+		SoundClip(FMOD::System* system, const UString& path);
 
-		/*desturctor (NOTE: destruction occurs in VShutDown()*/
-		~LuaScriptManager();
+		~SoundClip();
 
-		/*Initialize LuaScriptManager*/
-		ErrCode VStartUp()  override;
-
-		/*Destruct LuaScriptManager*/
-		ErrCode VShutDown() override;
-
-		LuaEngine* const Engine();
 	private:
-		LuaEngine*  m_engine;
+		FMOD::Sound*  m_clip;
 	};
 
-	extern LuaScriptManager& g_LuaScriptManager;
 }
 
 #endif

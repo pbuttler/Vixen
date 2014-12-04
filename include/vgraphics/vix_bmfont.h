@@ -53,7 +53,7 @@ namespace Vixen {
 		friend UOStream& operator << (UOStream& o, const BMFontChar& c);
 	};
 
-	UOStream& operator << (UOStream& o, const BMFontChar& c)
+	/*UOStream& operator << (UOStream& o, const BMFontChar& c)
 	{
 		o << "[BMFontChar]\n"
 			<< "\tID=" << c.id << "\n"
@@ -68,7 +68,7 @@ namespace Vixen {
 			<< "\tChannel=" << c.channel << "\n";
 
 		return o;
-	}
+	}*/
 
 
 	struct VIX_API BMFontInfo
@@ -91,32 +91,9 @@ namespace Vixen {
 		int            spacingY;
 		int            outline;
 
-		friend UOStream& operator << (UOStream& o, const BMFontInfo& i);
+		friend VIX_API UOStream& operator << (UOStream& o, const BMFontInfo& i);
 	};
 
-	UOStream& operator << (UOStream& o, const BMFontInfo& i)
-	{
-		o << "[BMFontInfo]\n"
-			<< "\tFace=" << i.face << "\n"
-			<< "\tSize=" << i.size << "\n"
-			<< "\tBold=" << i.bold << "\n"
-			<< "\tItalic=" << i.italic << "\n"
-			<< "\tCharSet=" << i.charset << "\n"
-			<< "\tUnicode=" << i.unicode << "\n"
-			<< "\tStretchH=" << i.stretchH << "\n"
-			<< "\tSmooth=" << i.smooth << "\n"
-			<< "\tAA=" << i.antiAliasing << "\n"
-			<< "\tPadding=" << i.padding << "\n"
-			<< "\tPadX=" << i.padX << "\n"
-			<< "\tPadY=" << i.padY << "\n"
-			<< "\tPadW=" << i.padW << "\n"
-			<< "\tPadH=" << i.padH << "\n"
-			<< "\tSpacingX=" << i.spacingX << "\n"
-			<< "\tSpacingY=" << i.spacingY << "\n"
-			<< "\tOutline=" << i.outline << "\n";
-
-		return o;
-	}
 
 	struct VIX_API BMFontCommon
 	{
@@ -131,42 +108,19 @@ namespace Vixen {
 		int greenChannel;
 		int blueChannel;
 
-		friend UOStream& operator << (UOStream& o, const BMFontCommon& c);
+		friend VIX_API UOStream& operator << (UOStream& o, const BMFontCommon& c);
 	};
 
-	UOStream& operator << (UOStream& o, const BMFontCommon& c)
-	{
-		o << "[BMFontCommon]\n"
-			<< "\tLineHeight=" << c.lineHeight << "\n"
-			<< "\tBase=" << c.base << "\n"
-			<< "\tScaleW=" << c.scaleW << "\n"
-			<< "\tScaleH=" << c.scaleH << "\n"
-			<< "\tPages=" << c.pages << "\n"
-			<< "\tPacked=" << c.packed << "\n"
-			<< "\tAlpha=" << c.alphaChannel << "\n"
-			<< "\tRed=" << c.redChannel << "\n"
-			<< "\tGreen=" << c.greenChannel << "\n"
-			<< "\tBlue=" << c.blueChannel << "\n";
-
-		return o;
-	}
+	
 
 	struct VIX_API BMFontPage
 	{
 		int         id;
 		UString     file;
 
-		friend UOStream& operator << (UOStream& o, const BMFontPage& p);
+		friend VIX_API UOStream& operator << (UOStream& o, const BMFontPage& p);
 	};
 
-	UOStream& operator << (UOStream& o, const BMFontPage& p)
-	{
-		o << "[BMFontPage]\n"
-			<< "\tID=" << p.id << "\n"
-			<< "\tFile=" << p.file << "\n";
-
-		return o;
-	}
 
 	struct VIX_API BMFontKerning
 	{
@@ -174,18 +128,10 @@ namespace Vixen {
 		int  second;
 		int  amount;
 
-		friend UOStream& operator << (UOStream& o, const BMFontKerning& k);
+		friend VIX_API UOStream& operator << (UOStream& o, const BMFontKerning& k);
 	};
 
-	UOStream& operator << (UOStream& o, const BMFontKerning& k)
-	{
-		o << "[BMFontKerning]\n"
-			<< "\tFirst=" << k.first << "\n"
-			<< "\tSecond=" << k.second << "\n"
-			<< "\tAmount=" << k.amount << "\n";
-
-		return o;
-	}
+	
 
 	struct VIX_API BMFontFile
 	{
@@ -198,19 +144,6 @@ namespace Vixen {
 
 		UString ToString() const;
 	};
-
-	inline UString BMFontFile::ToString() const
-	{
-		USStream ss;
-		ss << "---BMFontFile---" << "\n" << "\n"
-			<< "File: " << file << "\n"
-			<< info << "\n" << common;
-		for (const BMFontPage& page : pages)
-		{
-			ss << page << "\n";
-		}
-		return ss.str();
-	}
 
 
 	class Texture;

@@ -26,6 +26,7 @@
 #include <vix_glrenderer.h>
 #include <vix_glshaderprogram.h>
 #include <vix_gltexturebatcher.h>
+#include <vix_audiomanager.h>
 
 namespace Vixen {
 
@@ -100,6 +101,8 @@ namespace Vixen {
 	ErrCode SDLGameWindow::VRun()
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
+
+		int x = g_AudioManager.ID();
 
 		/*try and initialize window*/
 		error = VInit();
