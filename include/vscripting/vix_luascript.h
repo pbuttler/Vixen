@@ -4,9 +4,18 @@
 #include <vix_platform.h>
 #include <vix_lua.h>
 #include <vix_stringutil.h>
-#include <map>
+#include <vix_errglobals.h>
+#include <vix_tinyxml.h>
 
 namespace Vixen {
+
+	struct LuaScriptInfo
+	{
+		UString file;
+		UString raw;
+	};
+
+	class LuaEngine;
 
 	/* LuaScript class
 	*
@@ -27,17 +36,43 @@ namespace Vixen {
 	{
 		typedef LuaIntf::LuaRef LuaRef;
 
+		/*CONTANTS*/
 	public:
-		LuaScript(const UString& path);
+		static const UString OBJECT_TABLE;
+		static const UString AWAKE_FUNC;
+		static const UString UPDATE_FUNC;
+		static const UString LATEUPDATE_FUNC;
+		static const UString AWAKE_FULL_SIGN;
+		static const UString UPDATE_FULL_SIGN;
+		static const UString LATEUPDATE_FULL_SIGN;
+
+	public:
+		LuaScript(LuaScriptInfo info);
 
 		~LuaScript();
 
 		/*load script file*/
-		ErrCode LoadFromFile()
+		ErrCode Load(LuaEngine* engine, LuaScriptInfo info);
+
+		/*get script info*/
+		LuaScriptInfo Info();
+
+		/*awake*/
+		ErrCode Awake();
+
+		/*update*/
+		ErrCode Update();
+
+		/*late update*/
+		ErrCode LateUpdate();
+
 	private:
-		LuaRef* m_awakeFunc;
-		LuaRef* m_updateFunc;
-		LuaRef* m_lateUpdateFunc;
+		LuaScriptInfo      m_info;
+		LuaRef*            m_awakeFunc;
+		LuaRef*            m_updateFunc;
+		LuaRef*            m_lateUpdateFunc;
+
+		ErrCode InitFuncRefs(LuaEngine* engine);
 	};
 
 }
