@@ -26,8 +26,12 @@
 #define VIX_GLTEXTUREBATCHER_H
 
 #include <vix_platform.h>
+#include <vix_gl.h>
 #include <vix_stringutil.h>
-#include <vix_glshader.h>
+#include <vix_glshaderprogram.h>
+#include <vix_glbuffers.h>
+#include <vix_gltexture.h>
+#include <vix_glm.h>
 
 namespace Vixen {
 
@@ -61,6 +65,79 @@ namespace Vixen {
 		VTEXT(".st) * ") + OUT_COLOR + VTEXT(";\n") +
 		VTEXT("}\n");
 
+	enum class BatchSortMode
+	{
+		IMMEDITATE,
+		DEFERED,
+		BACK_TO_FRONT,
+		FRONT_TO_BACK
+	};
+
+	struct BatchInfo
+	{
+		float x, y;
+		float r, g, b, a;
+		float sX, sY, sW, sH;
+		float originX, originY;
+		float scaleX, scaleY;
+		float rotation;
+		float depth;
+	};
+
+	struct Vertex2D
+	{
+		float x, y;
+		float r, g, b, a;
+		float u, v;
+
+		Vertex2D() {
+			x = 0; y = 0;
+			r = 0; g = 0; b = 0; a = 0;
+			u = 0; v = 0;
+		}
+
+		Vertex2D(float _x, float _y,
+			float _r, float _g, float _b, float _a,
+			float _u, float _v)
+		{
+			x = _x; y = _y;
+			r = _r; g = _g; b = _b; a = _a;
+			u = _u; v = _v;
+		}
+
+		static void Enable(bool flag)
+		{
+			if (flag) {
+				glEnableVertexAttribArray(0); //pos
+				glEnableVertexAttribArray(1); //color
+				glEnableVertexAttribArray(2); //tex
+			}
+			else {
+				glDisableVertexAttribArray(0);
+				glDisableVertexAttribArray(1);
+				glDisableVertexAttribArray(2);
+			}
+		}
+
+		static void Render(GLsizei index_cnt)
+		{
+			size_t stride = sizeof(Vertex2D);
+			int    offset = 0;
+			
+			/*POSITION*/
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*COLOR*/
+			offset += sizeof(float) * 2; //update offset
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*TEXTURE*/
+			offset += sizeof(float) * 4; //update offset
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+
+			/*RENDER*/
+			glDrawElements(GL_TRIANGLES, index_cnt, GL_UNSIGNED_SHORT, NULL);
+		}
+	};
+
 	class VIX_API GLTextureBatcher
 	{
 	public:
@@ -68,6 +145,60 @@ namespace Vixen {
 
 		~GLTextureBatcher();
 
+	private:
+		/*shader program*/
+		GLShaderProgram*       m_program;
+
+		/*sort mode*/
+		BatchSortMode          m_sortMode;
+
+		/*number of textures rendered*/
+		size_t                 m_textureCount;
+
+		/*batch info collection*/
+		std::vector<BatchInfo> m_textures;
+
+		/*currently rendered texture*/
+		GLTexture*               m_texture;
+
+		/*Vertex buffer*/
+		GLVertexBuffer<Vertex2D>*  m_vBuffer;
+		
+		/*Index buffer*/
+		GLIndexBuffer*             m_iBuffer;
+
+		/*Projection matrix*/
+		Mat4                      m_projection;
+
+		/*-----------private utility functions-----------*/
+
+		
+		/*INITIALIZE SHADER PROGRAM*/
+		ErrCode init_shader_program();
+
+		/*FLUSH BUFFERED TEXTURES*/
+		void flush();
+
+		/*SORT TEXTURES BASED ON BATCH SORT MODE*/
+		void sort_textures();
+
+		/*BUILD TEXTURE FOR RENDERING*/
+		void build_texture(BatchInfo info, size_t index);
+
+		/*RENDER BATCHED TEXTURES*/
+		void render_textures();
+
+	private:
+
+		/*STATIC CONSTANTS*/
+
+		static const size_t MAX_BATCH_SIZE = 1048;
+		static const size_t MIN_BATCH_SIZE = 128;
+		static const size_t VERTS_PER_TEX = 4;
+		static const size_t INDICES_PER_TEX = 6;
+		static const size_t INIT_QUEUE_SIZE = 64;
+		static const size_t MAX_VERT_COUNT = MAX_BATCH_SIZE * VERTS_PER_TEX;
+		static const size_t MAX_INDEX_COUNT = MAX_BATCH_SIZE * INDICES_PER_TEX;
 	};
 
 }

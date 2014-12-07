@@ -43,12 +43,16 @@ namespace Vixen {
 		/*unbind gl program from render pipeline*/
 		void Unbind();
 
+		/*retrive uniform location*/
+		ErrCode GetUniformLoc(const GLchar* name, GLuint& location);
+
 	protected:
 		ErrCode VCreateShadersFromArgs() override;
 	    
 		/*attach OpenGL shader to program*/
 		void    AttachShader(Shader* shader);
 
+		
 		/*try and OpenGL link shader to program*/
 		ErrCode LinkShader(Shader* shader);
 

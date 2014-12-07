@@ -101,6 +101,17 @@ namespace Vixen {
 		glDeleteTextures(1, &m_id);
 	}
 
+	void GLTexture::Bind(GLenum unit)
+	{
+		m_unit = unit;
+		glBindMultiTextureEXT(m_unit, m_target, m_id);
+	}
+
+	void GLTexture::Unbind()
+	{
+		glBindMultiTextureEXT(m_unit, m_target, NULL);
+	}
+
 	ErrCode GLTexture::InitFromFile(const UString& filePath)
 	{
 		//pointer to image data

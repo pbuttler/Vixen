@@ -72,6 +72,16 @@ namespace Vixen {
 		}
 	}
 
+	ErrCode GLShaderProgram::GetUniformLoc(const GLchar* name, GLuint& location)
+	{
+		location = glGetUniformLocation(m_program, name);
+		if (location < 0) {
+			return ErrCode::ERR_FAILURE;
+		}
+
+		return ErrCode::ERR_SUCCESS;
+	}
+
 	ErrCode GLShaderProgram::LinkShader(Shader* shader)
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;

@@ -41,9 +41,14 @@ namespace Vixen {
 
 	public:
 		GLTexture(GLenum target = GL_TEXTURE_2D);
+
 		GLTexture(const UString& filePath, GLenum target = GL_TEXTURE_2D);
 
 		~GLTexture();
+
+		void Bind(GLenum unit);
+
+		void Unbind();
 
 		ErrCode InitFromFile(const UString& filePath);
 	};
