@@ -64,7 +64,7 @@ namespace Vixen {
 
 		bool Contains(int _x, int _y);
 
-		static const Rectangle EMPTY;
+		
 
 		/*operators*/
 
@@ -92,6 +92,8 @@ namespace Vixen {
 				<< " ]";
 			return o;
 		}
+
+		static const Rectangle EMPTY;
 	};
 
 }

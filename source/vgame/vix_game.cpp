@@ -47,7 +47,6 @@ namespace Vixen {
 			g_AudioManager.VStartUp();
 			g_ContentManager.VStartUp();
 			g_ScriptManager.VStartUp();
-			g_AudioManager.CreateSound(VTEXT("battletoads.mp3"));
 			ErrCode error = m_window->VRun();
 			g_AudioManager.VShutDown();
 			g_ContentManager.VShutDown();

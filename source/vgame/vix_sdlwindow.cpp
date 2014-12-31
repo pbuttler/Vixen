@@ -1,4 +1,4 @@
-/*
+﻿/*
 	The MIT License(MIT)
 
 	Copyright(c) 2014 Matt Guerrette
@@ -27,6 +27,7 @@
 #include <vix_glshaderprogram.h>
 #include <vix_gltexturebatcher.h>
 #include <vix_audiomanager.h>
+#include <vix_contentmanager.h>
 
 namespace Vixen {
 
@@ -67,7 +68,7 @@ namespace Vixen {
 											m_params.y <= 0 ? SDL_WINDOWPOS_CENTERED : m_params.y,
 											m_params.width,
 											m_params.height,
-											SDL_WINDOW_OPENGL);
+											SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 		if (!m_windowHandle) {
 			SDL_Quit();
 			DebugPrintF(VTEXT("Failed to created SDL_Window handle: %s\n"),
@@ -102,8 +103,6 @@ namespace Vixen {
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
 
-		int x = g_AudioManager.ID();
-
 		/*try and initialize window*/
 		error = VInit();
 		if (CheckError(error)) {
@@ -111,6 +110,11 @@ namespace Vixen {
 				ErrCodeString(error));
 			return error;
 		}
+
+		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("test.fnt"));
+
+		m_renderer->VSetClearColor(Colors::Black);
 
 		/*run application loop*/
 		m_running = true;
@@ -128,6 +132,18 @@ namespace Vixen {
 			}
 
 			m_renderer->VClearBuffer(ClearArgs::COLOR_BUFFER);
+			/*((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,
+				Vector2(200, 300),
+				Rect(0, 0, 32, 32),
+				Vector2(0, 0),
+				Vector2(1,1),
+				0.0f,
+				Colors::White,
+				0.0f);*/
+			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
+				Vector2(0, 0),
+				0.0f,
+				Colors::Red);
 
 			SDL_GL_SwapWindow(m_windowHandle);
 		}

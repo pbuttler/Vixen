@@ -144,7 +144,7 @@ namespace Vixen {
 		return m_fontFile;
 	}
 
-	const Texture* BMFont::PageTexture(size_t index) const
+	Texture* const BMFont::PageTexture(size_t index) const
 	{
 		if (index > m_textures.size())
 			return nullptr;

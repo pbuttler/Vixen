@@ -168,7 +168,7 @@ namespace Vixen {
 		/*Getter functions*/
 		const BMFontFile FontFile() const;
 
-		const Texture*   PageTexture(size_t index) const;
+		Texture* const PageTexture(size_t index) const;
 
 		/*Functions*/
 		Rectangle  Bounds(const UString& text);
@@ -185,9 +185,6 @@ namespace Vixen {
 
 		friend UOStream& operator << (UOStream& o, const BMFont& font);
 
-	private:
-		/*Utilities*/
-		
 		/*Find font character in char map*/
 		bool FindChar(UChar c, BMFontChar& fc);
 

@@ -47,6 +47,11 @@ namespace Vixen {
 			return ErrCode::ERR_GLEW_INIT_FAIL;
 		}
 
+		/*init camera2D*/
+		m_camera2D = new GLCamera2D(0, 800, 0, 600);
+		/*init textureBatcher*/
+		m_Render2DBatcher = new GLTextureBatcher(m_camera2D);
+
 		return error;
 	}
 
@@ -92,5 +97,84 @@ namespace Vixen {
 		m_projection = projection;
 	}
 
+	void GLRenderer::Render2DTexture(GLTexture* texture,
+									 const Vector2&  position,
+									 const Rect&     source,
+									 const Vector2&  origin,
+									 const Vector2&  scale,
+									 float           rotation,
+									 const Color&    color,
+									 float           depth)
+	{
+		BatchInfo info;
+		info.x = position.x;
+		info.y = position.y;
+		info.sX = source.x;
+		info.sY = source.y;
+		info.sW = source.w;
+		info.sH = source.h;
+		info.originX = origin.x;
+		info.originY = origin.y;
+		info.scaleX = scale.x;
+		info.scaleY = scale.y;
+		info.rotation = rotation;
+		info.r = color.r;
+		info.g = color.g;
+		info.b = color.b;
+		info.a = color.a;
+		info.depth = depth;
+
+		m_Render2DBatcher->Begin(BatchSortMode::IMMEDITATE);
+		/*batch using info*/
+		m_Render2DBatcher->Draw(texture, info);
+		m_Render2DBatcher->End();
+	}
+
+	void GLRenderer::Render2DText(BMFont * font, UString& text, const Vector2 & position, float rotation, const Color & color)
+	{
+		m_Render2DBatcher->Begin(BatchSortMode::IMMEDITATE);
+
+		BatchInfo info;
+		
+		float dx = position.x;
+		float dy = position.y;
+		for (UChar &c : text)
+		{
+			if (c == '\n')
+			{
+				dx = position.x;
+				dy += font->FontFile().common.lineHeight;
+				continue;
+			}
+
+			BMFontChar fc;
+			if (font->FindChar(c, fc))
+			{
+				BatchInfo info;
+				info.x = dx + fc.xOffset;
+				info.y = dy + fc.yOffset;
+				info.sX = (float)fc.x;
+				info.sY = (float)fc.y;
+				info.sW = (float)fc.width;
+				info.sH = (float)fc.height;
+				info.originX = 0;
+				info.originY = 0;
+				info.scaleX = 1;
+				info.scaleY = 1;
+				info.rotation = 0.0f;
+				info.r = color.r;
+				info.g = color.g;
+				info.b = color.b;
+				info.a = color.a;
+				info.depth = 1;
+				
+				m_Render2DBatcher->Draw(font->PageTexture(fc.page), info);
+		
+				dx += fc.xAdvance;
+			}
+		}
+
+		m_Render2DBatcher->End();
+	}
 
 }

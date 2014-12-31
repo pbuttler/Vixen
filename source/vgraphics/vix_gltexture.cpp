@@ -133,6 +133,8 @@ namespace Vixen {
 		glGenTextures(1, &m_id);
 		m_uniqueID = m_id; //store gl texture id as unique id
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		//bind opengl texture handle
 		glBindTexture(m_target, m_id);
 
@@ -144,8 +146,8 @@ namespace Vixen {
 		//hand opengl the image
 		glTexImage2D(m_target, 0, internalFormat, image->width, image->height, 0, format, GL_UNSIGNED_BYTE, image->data);
 		glGenerateMipmap(m_target);
-		glTexParameteri(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameterf(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameterf(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 		//cleanup image allocation
 		if (image)

@@ -70,6 +70,8 @@ namespace Vixen {
 		if (!vix_bmp->bitmap)
 			return NULL;
 
+		FreeImage_FlipVertical(vix_bmp->bitmap);
+
 		//Retrieve image data
 		vix_bmp->data = FreeImage_GetBits(vix_bmp->bitmap);
 		//Retrieve image width

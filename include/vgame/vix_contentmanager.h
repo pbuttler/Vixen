@@ -32,6 +32,7 @@
 #include <vix_gltexture.h>
 #include <vix_bmfont.h>
 #include <vix_manager.h>
+#include <vix_paths.h>
 #include <map>
 
 namespace Vixen {
@@ -50,6 +51,12 @@ namespace Vixen {
 
 		template <typename T>
 		T* Load(const UString& path);
+
+		template <>
+		BMFont* Load(const UString& path);
+
+		template <>
+		Texture* Load(const UString& path);
 
 		void DumpTextures();
 
@@ -72,14 +79,23 @@ namespace Vixen {
 			return NULL;
 		}
 
-		ContentMap::iterator it = m_fonts.find(path);
+		UString _path = os_path(FONT_FOLDER_PATH + path);
+		UString _texPath = os_path(FONT_FOLDER_PATH + TEX_FOLDER_PATH);
+
+		ContentMap::iterator it = m_fonts.find(_path);
 		if (it != m_fonts.end()) {
 			return (BMFont*)it->second;
 		}
 		else {
-			/*create new texture*/
-			BMFont* font = new BMFont(path);
-			m_fonts[path] = (IContent*)font;
+			/*create new font*/
+			BMFont* font = new BMFont(_path);
+			/*load textures for font*/
+			for (auto& page : font->FontFile().pages) {
+				Texture* tex = Load<Texture>(_texPath + page.file);
+				if (tex)
+					font->AddPageTexture(tex);
+			}
+			m_fonts[_path] = (IContent*)font;
 			return font;
 		}
 
@@ -95,14 +111,16 @@ namespace Vixen {
 			return NULL;
 		}
 
-		ContentMap::iterator it = m_textures.find(path);
+		UString _path = os_path(path);
+
+		ContentMap::iterator it = m_textures.find(_path);
 		if (it != m_textures.end()) {
 			return (Texture*)it->second;
 		}
 		else {
 			/*create new texture*/
-			Texture* texture = new GLTexture(path);
-			m_textures[path] = (IContent*)texture;
+			Texture* texture = new GLTexture(_path);
+			m_textures[_path] = (IContent*)texture;
 			return texture;
 		}
 

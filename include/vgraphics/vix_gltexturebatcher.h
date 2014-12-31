@@ -32,6 +32,7 @@
 #include <vix_glbuffers.h>
 #include <vix_gltexture.h>
 #include <vix_glm.h>
+#include <vix_glcamera2d.h>
 
 namespace Vixen {
 
@@ -141,9 +142,18 @@ namespace Vixen {
 	class VIX_API GLTextureBatcher
 	{
 	public:
-		GLTextureBatcher();
+		GLTextureBatcher(GLCamera2D* camera);
 
 		~GLTextureBatcher();
+
+		/*prepare batcher for rendering*/
+		void Begin(BatchSortMode mode);
+
+		/*render texure*/
+		void Draw(Texture* texture, BatchInfo info);
+
+		/*flush batched textures*/
+		void End();
 
 	private:
 		/*shader program*/
@@ -167,8 +177,11 @@ namespace Vixen {
 		/*Index buffer*/
 		GLIndexBuffer*             m_iBuffer;
 
-		/*Projection matrix*/
-		Mat4                      m_projection;
+		/*camera*/
+		GLCamera2D*              m_camera;
+
+		/*Begin/End flag*/
+		bool                      m_BEFlag;
 
 		/*-----------private utility functions-----------*/
 

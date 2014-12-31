@@ -4,13 +4,26 @@
 
 namespace Vixen {
 
-	GLTextureBatcher::GLTextureBatcher()
+	GLTextureBatcher::GLTextureBatcher(GLCamera2D* camera)
 	{
 		m_vBuffer = new GLVertexBuffer<Vertex2D>(MAX_VERT_COUNT);
 		m_iBuffer = new GLIndexBuffer(MAX_INDEX_COUNT);
 		m_texture = NULL;
 		m_textureCount = 0;
-		m_projection = Mat4(0.0f);
+		m_camera = camera;
+
+		//populate index buffer
+		for (unsigned short i = 0, j = 0; i < MAX_BATCH_SIZE; i++, j += VERTS_PER_TEX)
+		{
+			//each sprite is made up of 6 indices, 3 per triangle, 2 tri's per sprite
+			const std::array<unsigned short, INDICES_PER_TEX> temp =
+			{
+				0 + j, 1 + j, 2 + j,
+				2 + j, 1 + j, 3 + j
+			};
+			size_t offset = m_iBuffer->get_stride() * i * INDICES_PER_TEX;
+			m_iBuffer->set(offset, INDICES_PER_TEX, temp.data());
+		}
 
 		/*initialize shader program*/
 		init_shader_program();
@@ -19,6 +32,52 @@ namespace Vixen {
 	GLTextureBatcher::~GLTextureBatcher()
 	{
 		delete m_program;
+		delete m_vBuffer;
+		delete m_iBuffer;
+	}
+
+	void GLTextureBatcher::Begin(BatchSortMode mode)
+	{
+		m_sortMode = mode;
+		m_BEFlag = true;
+	}
+
+	void GLTextureBatcher::Draw(Texture* texture, BatchInfo info)
+	{
+		if (!texture)
+			return;
+
+		if (m_textureCount >= MAX_BATCH_SIZE || m_texture && (m_texture != texture))
+		{
+			/*sort textures*/
+			sort_textures();
+			/*flush*/
+			flush();
+		}
+
+		/*add texture to collection*/
+		m_textures.push_back(info);
+		m_textureCount++;
+
+		/*cache texture*/
+		m_texture = (GLTexture*)texture;
+
+		/*if immediate mode, flush*/
+		if (m_sortMode == BatchSortMode::IMMEDITATE)
+			flush();
+	}
+
+	void GLTextureBatcher::End()
+	{
+		if (m_sortMode != BatchSortMode::IMMEDITATE) {
+			/*sort textures*/
+			sort_textures();
+
+			/*flush*/
+			flush();
+		}
+
+		m_BEFlag = false;
 	}
 
 	ErrCode GLTextureBatcher::init_shader_program()
@@ -75,8 +134,8 @@ namespace Vixen {
 	void GLTextureBatcher::build_texture(BatchInfo info, size_t index)
 	{
 		/*cache texture width and height*/
-		const float tex_width = m_texture->getWidth();
-		const float tex_height = m_texture->getHeight();
+		const float tex_width = (float)m_texture->getWidth();
+		const float tex_height = (float)m_texture->getHeight();
 		const float inv_tex_width = 1.0f / tex_width;
 		const float inv_tex_height = 1.0f / tex_height;
 
@@ -105,7 +164,7 @@ namespace Vixen {
 		float fy = -info.originY;
 		float fx2;
 		float fy2;
-		if (info.sW || info.sH) {
+		if (info.sW != 0 || info.sH != 0) {
 			fx2 = info.sW - info.originX;
 			fy2 = info.sH - info.originY;
 		}
@@ -198,8 +257,8 @@ namespace Vixen {
 		if (src_rect.HasValue()) {
 			u = info.sX * inv_tex_width;
 			v = info.sY * inv_tex_height;
-			u2 = info.sX + info.sW;
-			v2 = info.sY + info.sH;
+			u2 = (info.sX + info.sW) * inv_tex_width;
+			v2 = (info.sY + info.sH) * inv_tex_height;
 		}
 		else {
 			u = 0.0f;
@@ -234,14 +293,14 @@ namespace Vixen {
 
 		/*setup uniform variables*/
 		GLuint projLoc;
-#if defined UNICODE && defined VIX_SYS_WINDOWS
-		UConverter cv;
-		const GLchar* proj = cv.to_bytes(UNIFORM_PROJECTION).c_str();
-#else
-		const GLchar* proj = UNIFORM_PROJECTION.c_str();
-#endif
-		m_program->GetUniformLoc(proj, projLoc);
-		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(m_projection));
+//#if defined UNICODE && defined VIX_SYS_WINDOWS
+//		UConverter cv;
+//		const char* proj = cv.to_bytes(UNIFORM_PROJECTION).c_str();
+//#else
+//		const char* proj = UNIFORM_PROJECTION.c_str();
+//#endif
+		m_program->GetUniformLoc("gProjection", projLoc);
+		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(m_camera->Projection()));
 
 		/*enable vertex attributes*/
 		Vertex2D::Enable(true);
@@ -259,6 +318,12 @@ namespace Vixen {
 		m_program->Unbind();
 		/*unbind texture*/
 		m_texture->Unbind();
+
+		m_textureCount = 0;
+
+		m_textures.clear();
+
+		m_texture = NULL;
 	}
 
 	void GLTextureBatcher::flush()

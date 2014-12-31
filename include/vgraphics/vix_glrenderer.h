@@ -27,7 +27,11 @@
 #include <vix_platform.h>
 #include <vix_renderer.h>
 #include <vix_color.h>
-
+#include <vix_gltexturebatcher.h>
+#include <vix_vector2.h>
+#include <vix_rectangle.h>
+#include <vix_glcamera2d.h>
+#include <vix_bmfont.h>
 
 namespace Vixen {
 
@@ -41,7 +45,24 @@ namespace Vixen {
 		void    VClearBuffer(ClearArgs args)       override;
 		void    VSetProjection(Mat4 projection)    override;
 
+		void    Render2DTexture(GLTexture* texture,
+								const Vector2&  position,
+								const Rect&     source,
+								const Vector2&  origin,
+								const Vector2&  scale,
+								float           rotation,
+								const Color&    color,
+								float           depth);
 
+		void   Render2DText(BMFont* font,
+			                UString& text,
+							const Vector2& position,
+							float          rotation,
+							const Color&   color);
+
+	private:
+		GLCamera2D*        m_camera2D;
+		GLTextureBatcher*  m_Render2DBatcher;
 	};
 
 }
