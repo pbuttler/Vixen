@@ -132,18 +132,18 @@ namespace Vixen {
 			}
 
 			m_renderer->VClearBuffer(ClearArgs::COLOR_BUFFER);
-			/*((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,
+			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,
 				Vector2(200, 300),
 				Rect(0, 0, 32, 32),
 				Vector2(0, 0),
 				Vector2(1,1),
-				0.0f,
+				1.0f,
 				Colors::White,
-				0.0f);*/
+				0.0f);
 			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(0, 0),
 				0.0f,
-				Colors::Red);
+				Colors::CornflowerBlue);
 
 			SDL_GL_SwapWindow(m_windowHandle);
 		}

@@ -28,6 +28,7 @@
 #include <vix_noncopy.h>
 #include <cassert>
 #include <memory>
+#include <atomic>
 
 namespace Vixen {
 

@@ -33,9 +33,9 @@
 
 namespace Vixen {
 
-	class VIX_API AudioManager : public Singleton <AudioManager>, IManager
+	class VIX_API AudioManager : public IManager
 	{
-		friend class Singleton <AudioManager>;
+		//friend class Singleton <AudioManager>;
 
 		typedef std::map<UString, SoundClip*> SoundMap;
 
@@ -68,8 +68,6 @@ namespace Vixen {
 		SoundMap      m_sounds;
 		int id;
 	};
-
-	extern AudioManager& g_AudioManager;
 }
 
 #endif
