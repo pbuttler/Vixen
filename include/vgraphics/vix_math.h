@@ -41,6 +41,8 @@ namespace Vixen {
 
 		static bool IsNaN(float n);
 		static bool IsFinite(float n);
+		static float ToRadians(float angle);
+		static float ToDegrees(float angle);
 	};
 }
 

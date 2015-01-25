@@ -67,17 +67,20 @@ namespace Vixen {
 		void                VSetFullscreen(bool flag)              override;
 		void                VSwapBuffers()                         override;
 		const UString&      VGetTitle()                            override;
-		const Rect&         VGetClientBounds()                     override;
+		const Rect          VGetClientBounds()                     override;
 		bool                VIsRunning()                           override;
 		bool                VIsHidden()                            override;
 		bool                VIsPaused()                            override;
 		void                VClose()                               override;
+
+		void                OutputDisplayModes();
 
 	private:
 		UString       m_title;
 		bool          m_hidden;
 		bool          m_running;
 		bool          m_paused;
+		bool          m_fullscreen;
 		Rect          m_clientRect;
 		SDL_Window*   m_windowHandle;
 		SDL_GLContext m_context;

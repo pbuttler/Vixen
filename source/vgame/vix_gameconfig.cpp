@@ -45,7 +45,7 @@ namespace Vixen {
 		if (XMLErrCheck(err, errMsg)) {
 			DebugPrintF(VTEXT("GameConfig file failed to load: %s\n"),
 				errMsg.c_str());
-			return ErrCode::ERR_XML_LOAD_FAIL;
+			return ErrCode::ERR_XML_READ_FAIL;
 		}
 
 		/*Parse config file*/

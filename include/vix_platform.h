@@ -33,6 +33,7 @@
 #ifdef _WIN32
 	//Windows platform
 	#define VIX_SYS_WINDOWS
+	#define WIN32_LEAN_AND_MEAN
 	#include <windows.h>
 	#ifndef NOMINMAX
 	#define NOMINMAX

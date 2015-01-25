@@ -51,9 +51,6 @@ namespace Vixen {
 		/*retrieve FMOD sound system object*/
 		FMOD::System* const System();
 
-		/*retrieve manager id*/
-		int ID();
-
 		/*Initialize AudioManager*/
 		ErrCode VStartUp()  override;
 
@@ -66,7 +63,6 @@ namespace Vixen {
 	private:
 		FMOD::System* m_system;
 		SoundMap      m_sounds;
-		int id;
 	};
 }
 

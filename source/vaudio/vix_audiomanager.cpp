@@ -27,7 +27,7 @@ namespace Vixen {
 
 	AudioManager::AudioManager()
 	{
-		id += 1;
+		
 	}
 
 	AudioManager::~AudioManager()
@@ -35,10 +35,6 @@ namespace Vixen {
 
 	}
 
-	int AudioManager::ID()
-	{
-		return id;
-	}
 
 	FMOD::System* const AudioManager::System()
 	{

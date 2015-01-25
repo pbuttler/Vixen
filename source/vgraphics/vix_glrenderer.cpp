@@ -24,7 +24,8 @@
 #include <vix_glrenderer.h>
 #include <vix_gl.h>
 #include <vix_debugutil.h>
-#include <FreeImage.h>
+#include <vix_math.h>
+#include <vix_freeimage.h>
 
 namespace Vixen {
 
@@ -49,6 +50,7 @@ namespace Vixen {
 
 		/*init camera2D*/
 		m_camera2D = new GLCamera2D(0, 800, 0, 600);
+		
 		/*init textureBatcher*/
 		m_Render2DBatcher = new GLTextureBatcher(m_camera2D);
 
@@ -97,6 +99,13 @@ namespace Vixen {
 		m_projection = projection;
 	}
 
+	void GLRenderer::VSetClientRect(const Rect& client)
+	{
+		m_client = client;
+		//glViewport(0, 0, m_client.w, m_client.h);
+		m_camera2D->SetBounds(m_client.x, m_client.w, m_client.y, m_client.h);
+	}
+
 	void GLRenderer::Render2DTexture(GLTexture* texture,
 									 const Vector2&  position,
 									 const Rect&     source,
@@ -109,15 +118,15 @@ namespace Vixen {
 		BatchInfo info;
 		info.x = position.x;
 		info.y = position.y;
-		info.sX = source.x;
-		info.sY = source.y;
-		info.sW = source.w;
-		info.sH = source.h;
+		info.sX = static_cast<float>(source.x);
+		info.sY = static_cast<float>(source.y);
+		info.sW = static_cast<float>(source.w);
+		info.sH = static_cast<float>(source.h);
 		info.originX = origin.x;
 		info.originY = origin.y;
 		info.scaleX = scale.x;
 		info.scaleY = scale.y;
-		info.rotation = rotation;
+		info.rotation = Math::ToRadians(rotation);
 		info.r = color.r;
 		info.g = color.g;
 		info.b = color.b;
@@ -130,12 +139,10 @@ namespace Vixen {
 		m_Render2DBatcher->End();
 	}
 
-	void GLRenderer::Render2DText(BMFont * font, UString& text, const Vector2 & position, float rotation, const Color & color)
+	void GLRenderer::Render2DText(BMFont * font, UString& text, const Vector2 & position, const Color & color)
 	{
 		m_Render2DBatcher->Begin(BatchSortMode::IMMEDITATE);
 
-		BatchInfo info;
-		
 		float dx = position.x;
 		float dy = position.y;
 		for (UChar &c : text)
@@ -167,6 +174,7 @@ namespace Vixen {
 				info.b = color.b;
 				info.a = color.a;
 				info.depth = 1;
+				
 				
 				m_Render2DBatcher->Draw(font->PageTexture(fc.page), info);
 		

@@ -45,7 +45,7 @@ namespace Vixen {
 		virtual void               VSetVisible(bool flag) = 0;
 		virtual void               VSwapBuffers() = 0;
 		virtual const UString&     VGetTitle() = 0;
-		virtual const Rect&        VGetClientBounds() = 0;
+		virtual const Rect         VGetClientBounds() = 0;
 		virtual bool               VIsRunning() = 0;
 		virtual bool               VIsPaused() = 0;
 		virtual bool               VIsHidden() = 0;

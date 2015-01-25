@@ -37,7 +37,7 @@ namespace Vixen {
 		UString       path;
 		FIBITMAP*         bitmap;
 		FREE_IMAGE_FORMAT format;
-		byte*	          data;
+		unsigned char*	  data;
 		size_t            width;
 		size_t            height;
 

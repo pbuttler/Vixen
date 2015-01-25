@@ -31,6 +31,7 @@
 #include <tinyxml2.h>
 
 typedef tinyxml2::XMLDocument XMLDOC;
+typedef tinyxml2::XMLPrinter  XMLPRINT;
 
 namespace Vixen {
 

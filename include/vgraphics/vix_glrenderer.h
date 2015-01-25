@@ -44,6 +44,7 @@ namespace Vixen {
 		void    VSetClearColor(const Color& c)     override;
 		void    VClearBuffer(ClearArgs args)       override;
 		void    VSetProjection(Mat4 projection)    override;
+		void    VSetClientRect(const Rect& client) override;
 
 		void    Render2DTexture(GLTexture* texture,
 								const Vector2&  position,
@@ -57,10 +58,10 @@ namespace Vixen {
 		void   Render2DText(BMFont* font,
 			                UString& text,
 							const Vector2& position,
-							float          rotation,
 							const Color&   color);
 
 	private:
+		Rect               m_clientInfo;
 		GLCamera2D*        m_camera2D;
 		GLTextureBatcher*  m_Render2DBatcher;
 	};

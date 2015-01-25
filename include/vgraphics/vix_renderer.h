@@ -27,15 +27,10 @@
 #include <vix_platform.h>
 #include <vix_errglobals.h>
 #include <vix_glm.h>
+#include <vix_color.h>
+#include <vix_rectangle.h>
 
 namespace Vixen {
-
-	class Color;
-	class Sprite;
-	class Texture;
-	class Transform;
-	class Font;
-
 
 	enum class ClearArgs
 	{
@@ -57,11 +52,13 @@ namespace Vixen {
 		virtual void    VSetClearColor(const Color& c) = 0;
 		virtual void    VClearBuffer(ClearArgs args) = 0;
 		virtual void    VSetProjection(Mat4 p) = 0;
+		virtual void    VSetClientRect(const Rect& client) = 0;
 
 
 		const Mat4 Projection() const { return m_projection;  }
 		
 	protected:
+		Rect  m_client;
 		Mat4  m_projection;
 	};
 

@@ -25,6 +25,12 @@ namespace Vixen {
 		/*return view*/
 		const Mat4&  View();
 
+		/*update bounds*/
+		void SetBounds(float L,
+					   float R,
+					   float T,
+					   float B);
+
 	private:
 		Mat4  m_projection;
 		Mat4  m_view;

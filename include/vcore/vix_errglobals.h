@@ -36,7 +36,8 @@ enum class ErrCode
 	ERR_SDL_INIT_FAIL,
 	ERR_SDL_CREATE_FAIL,
 	ERR_IMAGE_LOAD_FAIL,
-	ERR_XML_LOAD_FAIL,
+	ERR_XML_READ_FAIL,
+	ERR_XML_WRITE_FAIL,
 	ERR_GLEW_INIT_FAIL,
 };
 
@@ -68,8 +69,12 @@ inline UString ErrCodeString(ErrCode error)
 		errorMsg = VTEXT("ERR_IMAGE_LOAD_FAIL");
 		break;
 
-	case ErrCode::ERR_XML_LOAD_FAIL:
-		errorMsg = VTEXT("ERR_XML_LOAD_FAIL");
+	case ErrCode::ERR_XML_READ_FAIL:
+		errorMsg = VTEXT("ERR_XML_READ_FAIL");
+		break;
+
+	case ErrCode::ERR_XML_WRITE_FAIL:
+		errorMsg = VTEXT("ERR_XML_WRITE_FAIL");
 		break;
 
 	case ErrCode::ERR_GLEW_INIT_FAIL:

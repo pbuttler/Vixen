@@ -28,6 +28,7 @@
 #include <vix_gltexturebatcher.h>
 #include <vix_audiomanager.h>
 #include <vix_contentmanager.h>
+#include <vix_math.h>
 
 namespace Vixen {
 
@@ -68,7 +69,7 @@ namespace Vixen {
 											m_params.y <= 0 ? SDL_WINDOWPOS_CENTERED : m_params.y,
 											m_params.width,
 											m_params.height,
-											SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
+											SDL_WINDOW_OPENGL);
 		if (!m_windowHandle) {
 			SDL_Quit();
 			DebugPrintF(VTEXT("Failed to created SDL_Window handle: %s\n"),
@@ -112,7 +113,9 @@ namespace Vixen {
 		}
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("test.fnt"));
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_16.fnt"));
+
+		OutputDisplayModes();
 
 		m_renderer->VSetClearColor(Colors::Black);
 
@@ -128,23 +131,24 @@ namespace Vixen {
 				case SDL_QUIT:
 					VClose();
 					break;
+
+				case SDL_KEYDOWN:
+					switch (event.key.keysym.sym)
+					{
+					case SDLK_F5:
+						VSetFullscreen(!m_fullscreen);
+						break;
+					}
+					break;
 				}
 			}
 
 			m_renderer->VClearBuffer(ClearArgs::COLOR_BUFFER);
-			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,
-				Vector2(200, 300),
-				Rect(0, 0, 32, 32),
-				Vector2(0, 0),
-				Vector2(1,1),
-				1.0f,
-				Colors::White,
-				0.0f);
-			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
-				Vector2(0, 0),
-				0.0f,
-				Colors::CornflowerBlue);
 
+			
+			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, Everyone.\n\n\nThis is a font test to showcase the rendering capabilities of Vixen.")),
+				Vector2(20, 20),
+				Colors::White);
 			SDL_GL_SwapWindow(m_windowHandle);
 		}
 
@@ -153,7 +157,13 @@ namespace Vixen {
 
 	void SDLGameWindow::VSetFullscreen(bool flag)
 	{
-		
+		m_fullscreen = flag;
+		if (flag) {
+			SDL_SetWindowFullscreen(m_windowHandle, SDL_WINDOW_FULLSCREEN);
+		}
+		else {
+			SDL_SetWindowFullscreen(m_windowHandle, 0);
+		}
 	}
 
 	void SDLGameWindow::VSetVisible(bool flag)
@@ -174,9 +184,12 @@ namespace Vixen {
 		return m_title;
 	}
 
-	const Rect& SDLGameWindow::VGetClientBounds()
+	const Rect SDLGameWindow::VGetClientBounds()
 	{
-		return Rect();
+		Rect r;
+		SDL_GetWindowPosition(m_windowHandle, &r.x, &r.y);
+		SDL_GetWindowSize(m_windowHandle, &r.w, &r.h);
+		return r;
 	}
 
 	bool SDLGameWindow::VIsPaused()
@@ -199,6 +212,17 @@ namespace Vixen {
 		m_running = false;
 		SDL_GL_DeleteContext(m_context);
 		SDL_Quit();
+	}
+
+	void SDLGameWindow::OutputDisplayModes()
+	{
+		int numModes = SDL_GetNumDisplayModes(0);
+		for (int i = 0; i < numModes; i++)
+		{
+			SDL_DisplayMode mode;
+			SDL_GetDisplayMode(0, i, &mode);
+			DebugPrintF(VTEXT("DisplayMode[%i]: <W: %i, H: %i>\n"), i, mode.w, mode.h);
+		}
 	}
 
 }

@@ -35,4 +35,18 @@ namespace Vixen {
 		return std::isfinite(n);
 	}
 
+	float Math::ToRadians(float angle)
+	{
+		const float rad_conv = PI / 180.0f;
+
+		return rad_conv * angle;
+	}
+
+	float Math::ToDegrees(float angle)
+	{
+		const float deg_conv = 180.0f / PI;
+
+		return deg_conv * angle;
+	}
+
 }

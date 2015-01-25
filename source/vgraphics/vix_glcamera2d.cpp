@@ -7,6 +7,14 @@ namespace Vixen {
 						   float T,
 						   float B)
 	{
+		SetBounds(L, R, T, B);
+	}
+
+	void GLCamera2D::SetBounds(float L,
+							   float R,
+							   float T,
+							   float B)
+	{
 		m_left = L;
 		m_right = R;
 		m_top = T;
