@@ -55,11 +55,9 @@ namespace Vixen {
 		virtual void    VSetClientRect(const Rect& client) = 0;
 
 
-		const Mat4 Projection() const { return m_projection;  }
 		
 	protected:
 		Rect  m_client;
-		Mat4  m_projection;
 	};
 
 }

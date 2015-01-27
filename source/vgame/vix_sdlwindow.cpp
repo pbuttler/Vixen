@@ -26,7 +26,7 @@
 #include <vix_glrenderer.h>
 #include <vix_glshaderprogram.h>
 #include <vix_gltexturebatcher.h>
-#include <vix_audiomanager.h>
+//#include <vix_audiomanager.h>
 #include <vix_contentmanager.h>
 #include <vix_math.h>
 
@@ -113,9 +113,7 @@ namespace Vixen {
 		}
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_16.fnt"));
-
-		OutputDisplayModes();
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_28.fnt"));
 
 		m_renderer->VSetClearColor(Colors::Black);
 
@@ -146,7 +144,7 @@ namespace Vixen {
 			m_renderer->VClearBuffer(ClearArgs::COLOR_BUFFER);
 
 			
-			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, Everyone.\n\n\nThis is a font test to showcase the rendering capabilities of Vixen.")),
+			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(20, 20),
 				Colors::White);
 			SDL_GL_SwapWindow(m_windowHandle);

@@ -96,7 +96,7 @@ namespace Vixen {
 
 	void GLRenderer::VSetProjection(Mat4 projection)
 	{
-		m_projection = projection;
+		
 	}
 
 	void GLRenderer::VSetClientRect(const Rect& client)

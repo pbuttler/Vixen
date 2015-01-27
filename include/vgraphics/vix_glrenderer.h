@@ -31,6 +31,7 @@
 #include <vix_vector2.h>
 #include <vix_rectangle.h>
 #include <vix_glcamera2d.h>
+#include <vix_glcamera3d.h>
 #include <vix_bmfont.h>
 
 namespace Vixen {
@@ -63,6 +64,7 @@ namespace Vixen {
 	private:
 		Rect               m_clientInfo;
 		GLCamera2D*        m_camera2D;
+		GLCamera3D*        m_camera3D;
 		GLTextureBatcher*  m_Render2DBatcher;
 	};
 

@@ -63,9 +63,7 @@ namespace Vixen {
 
 		inline bool ContainsNaN() const
 		{
-			return (Math::IsNaN(x) || !Math::IsFinite(x) ||
-				    Math::IsNaN(y) || !Math::IsFinite(y) ||
-				    Math::IsNaN(z) || !Math::IsFinite(z));
+			return false;
 		}
 
 		UString ToString() const;

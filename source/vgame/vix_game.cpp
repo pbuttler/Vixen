@@ -24,14 +24,13 @@
 #include <vix_game.h>
 #include <vix_sdlwindow.h>
 #include <vix_debugutil.h>
-#include <vix_audiomanager.h>
 #include <vix_contentmanager.h>
-#include <vix_luascriptmanager.h>
+
 
 namespace Vixen {
 
 	ContentManager&   g_ContentManager = ContentManager::instance();
-	LuaScriptManager& g_ScriptManager = LuaScriptManager::instance();
+	
 
 	Game::Game()
 	{
@@ -44,10 +43,8 @@ namespace Vixen {
 		/*if application window exists*/
 		if (m_window) {
 			g_ContentManager.VStartUp();
-			g_ScriptManager.VStartUp();
 			ErrCode error = m_window->VRun();
 			g_ContentManager.VShutDown();
-			g_ScriptManager.VShutDown();
 			if (CheckError(error)) {
 				DebugPrintF(VTEXT("Application loop encountered error: %s\n"),
 					ErrCodeString(error));

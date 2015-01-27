@@ -27,7 +27,7 @@
 #include <vix_platform.h>
 #include <vix_gamewindow.h>
 #include <vix_gameconfig.h>
-#include <vix_audiomanager.h>
+//#include <vix_audiomanager.h>
 
 
 namespace Vixen {
@@ -42,7 +42,6 @@ namespace Vixen {
 	private:
 		GameConfig*   m_config;
 		IGameWindow*  m_window;
-		AudioManager* m_audioManager;
 	};
 
 }

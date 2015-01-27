@@ -27,12 +27,12 @@ namespace Vixen {
 
 	bool Math::IsNaN(float n)
 	{
-		return std::isnan(n);
+		return n != n;
 	}
 
 	bool Math::IsFinite(float n)
 	{
-		return std::isfinite(n);
+		return false;
 	}
 
 	float Math::ToRadians(float angle)
