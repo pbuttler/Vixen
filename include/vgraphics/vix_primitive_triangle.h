@@ -17,7 +17,7 @@ namespace Vixen {
 
 		~PrimitiveTriangle();
 
-		void Rotate();
+		void Rotate(float dt);
 
 		void SetPosition(float x, float y, float z);
 

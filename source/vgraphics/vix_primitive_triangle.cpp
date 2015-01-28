@@ -43,9 +43,9 @@ namespace Vixen {
 		m_position = Vec3(x, y, z);
 	}
 
-	void PrimitiveTriangle::Rotate()
+	void PrimitiveTriangle::Rotate(float dt)
 	{
-		m_rotation += 1.0;
+		m_rotation += dt * 5.0f;
 	}
 
 	void PrimitiveTriangle::init_shader_program()

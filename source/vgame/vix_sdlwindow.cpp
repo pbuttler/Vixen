@@ -52,7 +52,7 @@ namespace Vixen {
 
 		/* Initialize SDL
 		*/
-		if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
 			DebugPrintF(VTEXT("SDL Failed to Initialize: %s\n"),
 				        ErrCodeString(ErrCode::ERR_SDL_INIT_FAIL));
 			return ErrCode::ERR_SDL_INIT_FAIL;
@@ -127,10 +127,19 @@ namespace Vixen {
 
 		m_renderer->VSetClearColor(Colors::LightSlateGray);
 
+		int curTime = 0;
+		int prevTime = 0;
+		float deltaTime = 0.0f;
+
 		/*run application loop*/
 		m_running = true;
 		while (m_running)
 		{
+			
+			curTime = SDL_GetTicks();
+			deltaTime = (float)(curTime - prevTime) / 1000.0f;
+			prevTime = curTime;
+
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
@@ -155,11 +164,12 @@ namespace Vixen {
 
 			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
 			tri->Render(camera);
-			tri->Rotate();
+			tri->Rotate(deltaTime);
 			
 			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(20, 20),
 				Colors::Snow);
+
 			SDL_GL_SwapWindow(m_windowHandle);
 		}
 
