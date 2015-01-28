@@ -159,7 +159,7 @@ namespace Vixen {
 			
 			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(20, 20),
-				Colors::IndianRed);
+				Colors::Snow);
 			SDL_GL_SwapWindow(m_windowHandle);
 		}
 

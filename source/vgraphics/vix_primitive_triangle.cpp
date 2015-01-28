@@ -45,7 +45,7 @@ namespace Vixen {
 
 	void PrimitiveTriangle::Rotate()
 	{
-		m_rotation += 0.01f;
+		m_rotation += 1.0;
 	}
 
 	void PrimitiveTriangle::init_shader_program()
