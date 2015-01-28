@@ -50,6 +50,12 @@ namespace Vixen {
 
 		/*init camera2D*/
 		m_camera2D = new GLCamera2D(0, 800, 0, 600);
+
+		/*init 3d camera*/
+		m_camera3D = new GLCamera3D;
+		m_camera3D->SetPerspective(static_cast<float>(800)/
+			                       static_cast<float>(600), 45.0f, 0.05f, 1000.0f);
+		m_camera3D->SetView(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		/*init textureBatcher*/
 		m_Render2DBatcher = new GLTextureBatcher(m_camera2D);
@@ -86,6 +92,16 @@ namespace Vixen {
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 			break;
 		}
+	}
+
+	GLCamera3D* GLRenderer::Camera3D() const
+	{
+		return m_camera3D;
+	}
+
+	GLCamera2D* GLRenderer::Camera2D() const
+	{
+		return m_camera2D;
 	}
 
 	void GLRenderer::VShutDown()

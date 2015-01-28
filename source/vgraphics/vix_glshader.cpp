@@ -121,8 +121,15 @@ namespace Vixen {
 			/*output shader log info*/
 			GLchar* log = new GLchar[length + 1];
 			glGetShaderInfoLog(shader, length, &length, log);
+#ifdef UNICODE
+			std::string log_text(log);
+			UConverter converter;
+			UString log_string = converter.from_bytes(log_text);
+			DebugPrintF(log_string.c_str());
+#else
 			DebugPrintF(VTEXT("Shader Log: %s\n%s\n"),
 						log, ErrCodeString(error));
+#endif
 			delete[] log;
 
 			return error;

@@ -61,6 +61,9 @@ namespace Vixen {
 							const Vector2& position,
 							const Color&   color);
 
+		GLCamera2D* Camera2D() const;
+		GLCamera3D* Camera3D() const;
+
 	private:
 		Rect               m_clientInfo;
 		GLCamera2D*        m_camera2D;

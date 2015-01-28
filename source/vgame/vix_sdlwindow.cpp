@@ -26,6 +26,7 @@
 #include <vix_glrenderer.h>
 #include <vix_glshaderprogram.h>
 #include <vix_gltexturebatcher.h>
+#include <vix_primitive_triangle.h>
 //#include <vix_audiomanager.h>
 #include <vix_contentmanager.h>
 #include <vix_math.h>
@@ -104,6 +105,7 @@ namespace Vixen {
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
 
+
 		/*try and initialize window*/
 		error = VInit();
 		if (CheckError(error)) {
@@ -112,10 +114,18 @@ namespace Vixen {
 			return error;
 		}
 
-		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_28.fnt"));
+		//glEnable(GL_CULL_FACE); //ENABLE FACE CULLING
+		glFrontFace(GL_CW);	    //SET FRONT FACES TO CLOCKWISE WOUND
+		glCullFace(GL_BACK);    //CULL ALL BACKFACING POLYGONS
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //BLEND IMAGE FOR TRANSPARENCY
 
-		m_renderer->VSetClearColor(Colors::Black);
+		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_16.fnt"));
+
+		PrimitiveTriangle* tri = new PrimitiveTriangle;
+
+		m_renderer->VSetClearColor(Colors::LightSlateGray);
 
 		/*run application loop*/
 		m_running = true;
@@ -141,12 +151,15 @@ namespace Vixen {
 				}
 			}
 
-			m_renderer->VClearBuffer(ClearArgs::COLOR_BUFFER);
+			m_renderer->VClearBuffer(ClearArgs::COLOR_DEPTH_BUFFER);
 
+			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
+			tri->Render(camera);
+			tri->Rotate();
 			
 			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(20, 20),
-				Colors::White);
+				Colors::IndianRed);
 			SDL_GL_SwapWindow(m_windowHandle);
 		}
 

@@ -299,7 +299,7 @@ namespace Vixen {
 //#else
 //		const char* proj = UNIFORM_PROJECTION.c_str();
 //#endif
-		m_program->GetUniformLoc("gProjection", projLoc);
+		m_program->GetUniformLoc(SHADER_GLOBAL_PROJECTION, projLoc);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(m_camera->Projection()));
 
 		/*enable vertex attributes*/

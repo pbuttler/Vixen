@@ -28,6 +28,10 @@
 #include <vix_shaderprogram.h>
 #include <vix_glshader.h>
 
+#define SHADER_GLOBAL_PROJECTION "gProjection"
+#define SHADER_GLOBAL_WORLD      "gWorld"
+#define SHADER_GLOBAL_VIEW       "gView"
+
 namespace Vixen {
 
 	class VIX_API GLShaderProgram : public ShaderProgram

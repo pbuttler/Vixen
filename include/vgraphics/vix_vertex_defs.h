@@ -41,9 +41,9 @@ namespace Vixen {
 			int    offset = 0;
 			
 			/*POSITION*/
-			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
 			/*COLOR*/
-			offset += sizeof(float) * 2; //update offset
+			offset += sizeof(float) * 3; //update offset
 			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
 
 			/*RENDER*/
@@ -51,9 +51,109 @@ namespace Vixen {
 		}
 	};
 
+	struct VertexPositionTexture
+	{
+		float x, y, z;
+		float u, v;
+
+		VertexPositionTexture() {
+			x = 0.0f; y = 0.0f; z = 0.0f;
+			u = 0.0f; v = 0.0f;
+		}
+
+		VertexPositionTexture(float _x, float _y, float _z,
+			                  float _u, float _v)
+		{
+			x = _x; y = _y; z = _z;
+			u = _u; v = _v;
+		}
+
+		static void Enable(bool flag)
+		{
+			if (flag) {
+				glEnableVertexAttribArray(0); //position
+				glEnableVertexAttribArray(1); //texture
+			}
+			else {
+				glDisableVertexAttribArray(0); //position
+				glDisableVertexAttribArray(1); //texture
+			}
+		}
+
+		static void Render(GLsizei index_cnt)
+		{
+			size_t stride = sizeof(VertexPositionTexture);
+			int    offset = 0;
+
+			/*POSITION*/
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*TEXTURE*/
+			offset += sizeof(float) * 3; //update offset
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+
+			/*RENDER*/
+			glDrawElements(GL_TRIANGLES, index_cnt, GL_UNSIGNED_SHORT, NULL);
+		}
+	};
+
+	struct VertexPositionColorTexture
+	{
+		float x, y, z;
+		float r, g, b, a;
+		float u, v;
+
+		VertexPositionColorTexture() {
+			x = 0.0f; y = 0.0f; z = 0.0f;
+			r = 0.0f; g = 0.0f; b = 0.0f; a = 1.0f;
+			u = 0.0f; v = 0.0f;
+		}
+
+		VertexPositionColorTexture(float _x, float _y, float _z,
+			float _r, float _g, float _b, float _a,
+			float _u, float _v)
+		{
+			x = _x; y = _y; z = _z;
+			r = _r; g = _g; b = _b; a = _a;
+			u = _u; v = _v;
+		}
+
+		static void Enable(bool flag)
+		{
+			if (flag) {
+				glEnableVertexAttribArray(0); //position
+				glEnableVertexAttribArray(1); //color
+				glEnableVertexAttribArray(2); //texture
+			}
+			else {
+				glDisableVertexAttribArray(0);
+				glDisableVertexAttribArray(1);
+				glDisableVertexAttribArray(2);
+			}
+		}
+
+		static void Render(GLsizei index_cnt)
+		{
+			size_t stride = sizeof(VertexPositionColorTexture);
+			int    offset = 0;
+
+			/*POSITION*/
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*COLOR*/
+			offset += sizeof(float) * 3; //update offset
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*TEXTURE*/
+			offset += sizeof(float) * 4;
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+
+			/*RENDER*/
+			glDrawElements(GL_TRIANGLES, index_cnt, GL_UNSIGNED_SHORT, NULL);
+		}
+	};
 
 	/*USEFULL TYPEDEFS FOR VERTEX TYPES*/
-	typedef GLVertexBuffer<VertexPositionColor> VertexPosColorBuffer;
+	typedef GLVertexBuffer<VertexPositionColor>			VertPosColBuffer;
+	typedef GLVertexBuffer<VertexPositionTexture>		VertPosTexBuffer;
+	typedef GLVertexBuffer<VertexPositionColorTexture>	VertPosColTexBuffer;
 
 }
 
