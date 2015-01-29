@@ -27,6 +27,7 @@
 #include <vix_glshaderprogram.h>
 #include <vix_gltexturebatcher.h>
 #include <vix_primitive_triangle.h>
+#include <vix_primitive_cube.h>
 //#include <vix_audiomanager.h>
 #include <vix_contentmanager.h>
 #include <vix_math.h>
@@ -39,6 +40,7 @@ namespace Vixen {
 		m_running = false;
 		m_hidden = false;
 		m_paused = false;
+		m_fullscreen = false;
 	}
 
 	SDLGameWindow::~SDLGameWindow()
@@ -114,16 +116,16 @@ namespace Vixen {
 			return error;
 		}
 
-		//glEnable(GL_CULL_FACE); //ENABLE FACE CULLING
+		glEnable(GL_CULL_FACE); //ENABLE FACE CULLING
 		glFrontFace(GL_CW);	    //SET FRONT FACES TO CLOCKWISE WOUND
 		glCullFace(GL_BACK);    //CULL ALL BACKFACING POLYGONS
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); //BLEND IMAGE FOR TRANSPARENCY
+		
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
 		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_16.fnt"));
 
 		PrimitiveTriangle* tri = new PrimitiveTriangle;
+		PrimitiveCube* cube = new PrimitiveCube;
 
 		m_renderer->VSetClearColor(Colors::LightSlateGray);
 
@@ -155,6 +157,9 @@ namespace Vixen {
 					case SDLK_F5:
 						VSetFullscreen(!m_fullscreen);
 						break;
+					case SDLK_ESCAPE:
+						VClose();
+						break;
 					}
 					break;
 				}
@@ -163,12 +168,16 @@ namespace Vixen {
 			m_renderer->VClearBuffer(ClearArgs::COLOR_DEPTH_BUFFER);
 
 			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
-			tri->Render(camera);
-			tri->Rotate(deltaTime);
-			
+			cube->Render(camera);
+			cube->RotateX(deltaTime);
+			cube->RotateY(deltaTime);
+			cube->RotateZ(deltaTime);
+
 			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Hello, World")),
 				Vector2(20, 20),
 				Colors::Snow);
+			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex, Vector2(50, 50), Rect(32, 32, 32, 32), Vector2(16, 16),
+				Vector2(1, 1), 0.0f, Colors::White, 0.0f);
 
 			SDL_GL_SwapWindow(m_windowHandle);
 		}
@@ -180,10 +189,20 @@ namespace Vixen {
 	{
 		m_fullscreen = flag;
 		if (flag) {
-			SDL_SetWindowFullscreen(m_windowHandle, SDL_WINDOW_FULLSCREEN);
+			SDL_SetWindowFullscreen(m_windowHandle, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			glViewport(0, 0, 1920, 1080);
+			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
+			camera->SetPerspective((float)1920/(float)1080, 45.0f, 0.05f, 1000.0f);
+			GLCamera2D* camera2D = ((GLRenderer*)m_renderer)->Camera2D();
+			camera2D->SetBounds(0, (float)1920, 0, (float)1080);
 		}
 		else {
 			SDL_SetWindowFullscreen(m_windowHandle, 0);
+			glViewport(0, 0, 800, 600);
+			GLCamera3D* camera3D = ((GLRenderer*)m_renderer)->Camera3D();
+			camera3D->SetPerspective((float)800/(float)600, 45.0f, 0.05f, 1000.0f);
+			GLCamera2D* camera2D = ((GLRenderer*)m_renderer)->Camera2D();
+			camera2D->SetBounds(0, (float)800, 0, (float)600);
 		}
 	}
 

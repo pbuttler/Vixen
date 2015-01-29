@@ -5,7 +5,9 @@ namespace Vixen {
 
 	PrimitiveCube::PrimitiveCube()
 	{
-		m_rotation = 0.0f;
+		m_rotationX = 0.0f;
+		m_rotationY = 0.0f;
+		m_rotationZ = 0.0f;
 		m_position = Vec3(0.0f, 0.0f, -5);
 		m_vBuffer = new VertPosColBuffer(COLOR_VERT_COUNT);
 		m_iBuffer = new GLIndexBuffer(COLOR_INDEX_COUNT);
@@ -13,6 +15,7 @@ namespace Vixen {
 		
 
 		init_shader_program();
+		init_color_vi_buffers();
 	}
 
 	PrimitiveCube::~PrimitiveCube()
@@ -20,9 +23,19 @@ namespace Vixen {
 
 	}
 
-	void PrimitiveCube::Rotate()
+	void PrimitiveCube::RotateX(float dt)
 	{
-		m_rotation += 0.01f;
+		m_rotationX += dt * 1.0f;
+	}
+
+	void PrimitiveCube::RotateY(float dt)
+	{
+		m_rotationY += dt * 1.0f;
+	}
+
+	void PrimitiveCube::RotateZ(float dt)
+	{
+		m_rotationZ += dt * 1.0f;
 	}
 
 	void PrimitiveCube::SetPosition(float x, float y, float z)
@@ -42,19 +55,43 @@ namespace Vixen {
 			   Colors::Yellow.r, Colors::Yellow.g, Colors::Yellow.b, Colors::Yellow.a),
 			VertexPositionColor(1.0f, -1.0f, 1.0f,
 			   Colors::Pink.r, Colors::Pink.g, Colors::Pink.b, Colors::Pink.a),
+
 			VertexPositionColor(1.0f, 1.0f, -1.0f,
 			   Colors::Green.r, Colors::Green.g, Colors::Green.b, Colors::Green.a),
 			VertexPositionColor(-1.0f, 1.0f, -1.0f,
 			   Colors::Orange.r, Colors::Orange.g, Colors::Orange.b, Colors::Orange.a),
 			VertexPositionColor(1.0, -1.0f, -1.0f,
 			   Colors::Aqua.r, Colors::Aqua.g, Colors::Aqua.b, Colors::Aqua.a),
-			VertexPositionColor()
+			VertexPositionColor(-1.0f, -1.0f, -1.0f,
+			   Colors::Purple.r, Colors::Purple.g, Colors::Purple.b, Colors::Purple.a)
 		};
 		m_vBuffer->set(0, COLOR_VERT_COUNT, vTemp.data());
 
 		const std::array<unsigned short, COLOR_INDEX_COUNT> iTemp =
 		{
-			0, 1, 2
+			//FRONT FACE
+			0, 1, 2,
+			2, 1, 3,
+
+			//BACK FACE
+			4, 5, 6,
+			6, 5, 7,
+
+			//LEFT FACE
+			5, 0, 7,
+			7, 0, 2,
+
+			//RIGHT FACE
+			1, 4, 3,
+			3, 4, 6,
+
+			//TOP FACE
+			5, 4, 0,
+			0, 4, 1,
+
+			//BOTTOM FACE
+			6, 7, 3, 
+			3, 7, 2
 		};
 		m_iBuffer->set(0, COLOR_INDEX_COUNT, iTemp.data());
 	}
@@ -95,7 +132,9 @@ namespace Vixen {
 		Mat4 world = Mat4(0.0f);
 		world =
 			glm::translate(Mat4(1.0f), m_position) * //apply position
-			glm::rotate(glm::mat4(1.0f), m_rotation, glm::vec3(0, 1, 0));
+			glm::rotate(Mat4(1.0f), m_rotationX, Vec3(1, 0, 0)) *
+			glm::rotate(Mat4(1.0f), m_rotationY, Vec3(0, 1, 0)) *
+			glm::rotate(Mat4(1.0f), m_rotationZ, Vec3(0, 0, 1));
 
 		/*apply value from camera*/
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->Projection()));

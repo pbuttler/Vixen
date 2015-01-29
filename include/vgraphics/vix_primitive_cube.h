@@ -17,7 +17,9 @@ namespace Vixen {
 
 		~PrimitiveCube();
 
-		void Rotate();
+		void RotateX(float dt);
+		void RotateY(float dt);
+		void RotateZ(float dt);
 
 		void SetPosition(float x, float y, float z);
 
@@ -28,7 +30,9 @@ namespace Vixen {
 		GLShaderProgram*       m_program;
 		VertPosColBuffer*      m_vBuffer;
 		GLIndexBuffer*         m_iBuffer;
-		float                  m_rotation;
+		float                  m_rotationX;
+		float                  m_rotationY;
+		float                  m_rotationZ;
 
 		/*UTILITY FUNCTIONS*/
 
@@ -41,7 +45,7 @@ namespace Vixen {
 		/*STATIC CONSTANTS*/
 
 		static const size_t COLOR_VERT_COUNT = 8;
-		static const size_t COLOR_INDEX_COUNT = 32;
+		static const size_t COLOR_INDEX_COUNT = 36;
 	};
 
 }
