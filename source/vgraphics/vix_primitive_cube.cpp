@@ -12,7 +12,6 @@ namespace Vixen {
 		m_vBuffer = new VertPosColBuffer(COLOR_VERT_COUNT);
 		m_iBuffer = new GLIndexBuffer(COLOR_INDEX_COUNT);
 
-		
 
 		init_shader_program();
 		init_color_vi_buffers();
@@ -25,17 +24,17 @@ namespace Vixen {
 
 	void PrimitiveCube::RotateX(float dt)
 	{
-		m_rotationX += dt * 1.0f;
+		m_rotationX += dt * 50.0f;
 	}
 
 	void PrimitiveCube::RotateY(float dt)
 	{
-		m_rotationY += dt * 1.0f;
+		m_rotationY += dt * 50.0f;
 	}
 
 	void PrimitiveCube::RotateZ(float dt)
 	{
-		m_rotationZ += dt * 1.0f;
+		m_rotationZ += dt * 50.0f;
 	}
 
 	void PrimitiveCube::SetPosition(float x, float y, float z)
