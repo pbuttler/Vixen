@@ -114,16 +114,17 @@ namespace Vixen {
 		glBindTexture(m_target, NULL);
 	}
 
+	
 	ErrCode GLTexture::InitFromFile(const UString& filePath)
 	{
 		//pointer to image data
-		VIX_FIBitmap* image = NULL;
+		FREEIMAGE_BMP* image = NULL;
 
 		/*set texture name*/
 		m_name = getFileName(filePath);
 
 		//try and load the buffer with data
-		image = vixFILoadImage(filePath);
+		image = FREEIMAGE_LoadImage(filePath);
 		if (!image)
 			return ErrCode::ERR_IMAGE_LOAD_FAIL;
 

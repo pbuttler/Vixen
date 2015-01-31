@@ -25,9 +25,9 @@
 
 namespace Vixen {
 
-	VIX_FIBitmap* vixFILoadImage(const UString& filePath)
+	FREEIMAGE_BMP* FREEIMAGE_LoadImage(const UString& filePath)
 	{
-		VIX_FIBitmap* vix_bmp = new VIX_FIBitmap;
+		FREEIMAGE_BMP* vix_bmp = new FREEIMAGE_BMP;
 		vix_bmp->path = filePath;
 		vix_bmp->name = getFileName(filePath);
 		vix_bmp->format = FIF_UNKNOWN;
@@ -84,5 +84,48 @@ namespace Vixen {
 		//return bitmap
 		return vix_bmp;
 	}
+
+
+	FREEIMAGE_BMP* FREEIMAGE_LoadImage(const UString& filePath, BYTE* raw_data, int len)
+	{
+		if (!raw_data)
+			return NULL;
+
+		FREEIMAGE_BMP* vix_bmp = new FREEIMAGE_BMP;
+		vix_bmp->path = filePath;
+		vix_bmp->name = getFileName(filePath);
+		vix_bmp->format = FIF_PNG;
+		vix_bmp->data = new BYTE[8192];
+		memcpy(vix_bmp->data, raw_data, 8192);
+		vix_bmp->bitmap = NULL;
+		vix_bmp->width = 0;
+		vix_bmp->height = 0;
+
+		//Check if FreeImage has reading capabilities
+		if (FreeImage_FIFSupportsReading(vix_bmp->format)) {
+			//FIMEMORY* m = FreeImage_OpenMemory(raw_data, len);
+			vix_bmp->bitmap = FreeImage_ConvertFromRawBits(raw_data, 512, 512, 0, 32, 0, 0, 0);
+			//vix_bmp->bitmap = FreeImage_LoadFromMemory(vix_bmp->format, m);
+		}
+
+		//If image failed to load, return NULL
+		if (!vix_bmp->bitmap)
+			return NULL;
+
+		FreeImage_FlipVertical(vix_bmp->bitmap);
+
+		//Retrieve image data
+		vix_bmp->data = FreeImage_GetBits(vix_bmp->bitmap);
+		//Retrieve image width
+		vix_bmp->width = FreeImage_GetWidth(vix_bmp->bitmap);
+		//Retrieve image height
+		vix_bmp->height = FreeImage_GetHeight(vix_bmp->bitmap);
+		if (vix_bmp->data == 0 || vix_bmp->width == 0 || vix_bmp->height == 0)
+			return NULL;
+
+		//return bitmap
+		return vix_bmp;
+	}
+
 
 }

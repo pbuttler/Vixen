@@ -127,7 +127,7 @@ namespace Vixen {
 		
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_24.fnt"));
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("HanWan_24.fnt"));
 
 		PrimitiveTriangle* tri = new PrimitiveTriangle;
 		PrimitiveCube* cube = new PrimitiveCube;
@@ -179,7 +179,10 @@ namespace Vixen {
 			cube->RotateY(deltaTime);
 			cube->RotateZ(deltaTime);
 
-			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("Vixen")),
+			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,Vector2(50, 50),
+				Rect(32, 32, 32, 32), Vector2(16, 16), Vector2(1, 1),
+				0.0f, Colors::White, 0.0f);
+			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("我的名字是好累放")),
 				Vector2(20, 20),  Colors::Snow);
 
 			VSwapBuffers();

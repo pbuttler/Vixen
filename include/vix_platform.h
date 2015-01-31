@@ -86,4 +86,9 @@
 	#define VIX_API
 #endif
 
+/*BYTE define for non Windows platforms*/
+#ifndef _WIN32
+typedef unsigned char BYTE
+#endif
+
 #endif

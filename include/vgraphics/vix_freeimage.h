@@ -31,24 +31,25 @@
 
 namespace Vixen {
 
-	struct VIX_FIBitmap
+	struct FREEIMAGE_BMP
 	{
-		UString       name;
-		UString       path;
+		UString           name;
+		UString           path;
 		FIBITMAP*         bitmap;
 		FREE_IMAGE_FORMAT format;
-		unsigned char*	  data;
+		BYTE*			  data;
 		size_t            width;
 		size_t            height;
 
-		~VIX_FIBitmap()
+		~FREEIMAGE_BMP()
 		{
 			if (bitmap)
 				FreeImage_Unload(bitmap);
 		}
 	};
 
-	VIX_API VIX_FIBitmap* vixFILoadImage(const UString& filePath);
+	VIX_API FREEIMAGE_BMP* FREEIMAGE_LoadImage(const UString& filePath);
+	VIX_API FREEIMAGE_BMP* FREEIMAGE_LoadImage(const UString& filePath, BYTE* raw_data, int len);
 }
 
 #endif
