@@ -129,8 +129,8 @@ namespace Vixen {
 			return ErrCode::ERR_IMAGE_LOAD_FAIL;
 
 		//store width and height
-		m_width = image->width;
-		m_height = image->height;
+		m_width = image->header.width;
+		m_height = image->header.height;
 
 		//now that we have our image data, create opengl texture handle
 		glGenTextures(1, &m_id);
@@ -147,7 +147,7 @@ namespace Vixen {
 		GLenum format = vixFIBmpToFormat(image->bitmap);
 		
 		//hand opengl the image
-		glTexImage2D(m_target, 0, internalFormat, image->width, image->height, 0, format, GL_UNSIGNED_BYTE, image->data);
+		glTexImage2D(m_target, 0, internalFormat, image->header.width, image->header.height, 0, format, GL_UNSIGNED_BYTE, image->data);
 		glGenerateMipmap(m_target);
 		glTexParameterf(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameterf(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

@@ -21,6 +21,15 @@ VIX_API
 int ZLIB_NumFiles(const char* zipPath);
 
 VIX_API
-BYTE* ZLIB_GrabFileData(const char* zipPath, const char* file);
+BYTE* ZLIB_OpenRaw(const char* zipPath, const char* file);
+
+VIX_API
+FILE* ZLIB_OpenFile(const char* zipPath, const char* file);
+
+VIX_API
+void ZLIB_FreeRaw(BYTE* raw);
+
+VIX_API
+void ZLIB_FreeFile(FILE* fp);
 
 #endif

@@ -26,6 +26,7 @@
 
 #include <vix_platform.h>
 #include <vix_gamewindow.h>
+#include <vix_sdltimer.h>
 #include <SDL.h>
 #undef main
 
@@ -85,6 +86,7 @@ namespace Vixen {
 		SDL_Window*   m_windowHandle;
 		SDL_GLContext m_context;
 		SDL_GW_Params m_params;
+		SDLTimer      m_timer;
 	};
 
 }

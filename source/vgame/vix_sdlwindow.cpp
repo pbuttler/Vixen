@@ -134,19 +134,15 @@ namespace Vixen {
 
 		m_renderer->VSetClearColor(Colors::LightSlateGray);
 
-		int curTime = 0;
-		int prevTime = 0;
-		float deltaTime = 0.0f;
 
+		m_timer.Start();
 
 		/*run application loop*/
 		m_running = true;
 		while (m_running)
 		{
+			m_timer.Tick();
 			
-			curTime = SDL_GetTicks();
-			deltaTime = (float)(curTime - prevTime) / 1000.0f;
-			prevTime = curTime;
 
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
@@ -175,17 +171,22 @@ namespace Vixen {
 
 			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
 			cube->Render(camera);
-			cube->RotateX(deltaTime);
-			cube->RotateY(deltaTime);
-			cube->RotateZ(deltaTime);
+			cube->RotateX(m_timer.DeltaTime());
+			cube->RotateY(m_timer.DeltaTime());
+			cube->RotateZ(m_timer.DeltaTime());
+
+			USStream ss;
+			ss << "FPS: " << m_timer.FPS();
 
 			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,Vector2(50, 50),
 				Rect(32, 32, 32, 32), Vector2(16, 16), Vector2(1, 1),
 				0.0f, Colors::White, 0.0f);
-			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("我的名字是好累放")),
+			((GLRenderer*)m_renderer)->Render2DText(font, ss.str(),
 				Vector2(20, 20),  Colors::Snow);
 
 			VSwapBuffers();
+
+			m_timer.CalculateFPS();
 		}
 
 		return error;
