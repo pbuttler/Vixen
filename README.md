@@ -6,7 +6,7 @@ OpenGL C++ Game Engine.
 Dependencies
 =====
 
-SDL
+SDL \n
 FreeImage
 zlib
 TinyXML2
