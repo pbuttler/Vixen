@@ -127,12 +127,12 @@ namespace Vixen {
 		
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("HanWan_24.fnt"));
+		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_24.fnt"));
 
 		PrimitiveTriangle* tri = new PrimitiveTriangle;
 		PrimitiveCube* cube = new PrimitiveCube;
 
-		m_renderer->VSetClearColor(Colors::LightSlateGray);
+		m_renderer->VSetClearColor(Colors::DarkSlateGray);
 
 
 		m_timer.Start();
@@ -143,7 +143,6 @@ namespace Vixen {
 		{
 			m_timer.Tick();
 			
-
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
@@ -162,6 +161,7 @@ namespace Vixen {
 					case SDLK_ESCAPE:
 						VClose();
 						break;
+						
 					}
 					break;
 				}
@@ -175,14 +175,18 @@ namespace Vixen {
 			cube->RotateY(m_timer.DeltaTime());
 			cube->RotateZ(m_timer.DeltaTime());
 
-			USStream ss;
-			ss << "FPS: " << m_timer.FPS();
+			camera->Move(C3D_DIRECTION::BACKWARD);
 
-			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex,Vector2(50, 50),
-				Rect(32, 32, 32, 32), Vector2(16, 16), Vector2(1, 1),
-				0.0f, Colors::White, 0.0f);
+			USStream ss;
+			ss << "_FPS: " << m_timer.FPS() << "\n"
+			   << "Author: Matt Guerrette" << "\n"
+			   << "Date: 2/2/2015" << "\n"
+			   << "Hello, World";
 			((GLRenderer*)m_renderer)->Render2DText(font, ss.str(),
 				Vector2(20, 20),  Colors::Snow);
+
+			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("<>: ")),
+				Vector2(20, VGetClientBounds().h-50), Colors::Snow);
 
 			VSwapBuffers();
 

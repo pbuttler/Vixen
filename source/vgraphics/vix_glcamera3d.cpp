@@ -33,6 +33,27 @@ namespace Vixen {
 		m_view = glm::lookAt(m_position, m_target, m_up);
 	}
 
+	void GLCamera3D::Move(C3D_DIRECTION cam_dir)
+	{
+		switch (cam_dir)
+		{
+		case Vixen::C3D_DIRECTION::UP:
+			break;
+		case Vixen::C3D_DIRECTION::DOWN:
+			break;
+		case Vixen::C3D_DIRECTION::LEFT:
+			break;
+		case Vixen::C3D_DIRECTION::RIGHT:
+			break;
+		case Vixen::C3D_DIRECTION::FORWARD:
+			break;
+		case Vixen::C3D_DIRECTION::BACKWARD:
+			break;
+		default:
+			break;
+		}
+	}
+
 	const Mat4& GLCamera3D::Projection() const
 	{
 		return m_projection;

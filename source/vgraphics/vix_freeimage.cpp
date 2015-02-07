@@ -48,7 +48,7 @@ namespace Vixen {
 
 		header->width = (raw_data[16] << 24) + (raw_data[17] << 16) + (raw_data[18] << 8) + (raw_data[19] << 0);
 		header->height = (raw_data[20] << 24) + (raw_data[21] << 16) + (raw_data[22] << 8) + (raw_data[23] << 0);
-		header->bpp = (raw_data[24]);
+		header->bitdepth = (raw_data[24]);
 	}
 
 	void
@@ -109,11 +109,6 @@ namespace Vixen {
 			
 		}
 
-		size_t width = FreeImage_GetWidth(vix_bmp->bitmap);
-		size_t height = FreeImage_GetHeight(vix_bmp->bitmap);
-		size_t bpp = FreeImage_GetBPP(vix_bmp->bitmap);
-		size_t pitch = FreeImage_GetPitch(vix_bmp->bitmap);
-
 		//If image failed to load, return NULL
 		if (!vix_bmp->bitmap)
 			return NULL;
@@ -144,8 +139,7 @@ namespace Vixen {
 		vix_bmp->path = filePath;
 		vix_bmp->name = getFileName(filePath);
 		vix_bmp->format = FREEIMAGE_FormatFromExtension(getFileExtension(filePath, false));
-		/*vix_bmp->data = new BYTE[8192];
-		memcpy(vix_bmp->data, raw_data, 8192);*/
+		vix_bmp->data = NULL;
 		vix_bmp->bitmap = NULL;
 		switch (vix_bmp->format)
 		{
@@ -164,16 +158,14 @@ namespace Vixen {
 
 		//Check if FreeImage has reading capabilities
 		if (FreeImage_FIFSupportsReading(vix_bmp->format)) {
-			//FIMEMORY* m = FreeImage_OpenMemory(raw_data, len);
 
-			int pitch = ((((8 * 512) + 31) / 32) * 4);
+			int pitch = ((vix_bmp->header.bitdepth * vix_bmp->header.width + 31) / 32) * 4;
 			vix_bmp->bitmap = FreeImage_ConvertFromRawBits(raw_data,
 				                                           vix_bmp->header.width,
 				                                           vix_bmp->header.height,
 														   pitch,
-														   32, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
-			//vix_bmp->bitmap = FreeImage_LoadFromMemory(vix_bmp->format, m);
-		}
+														   vix_bmp->header.bitdepth * 4, FI_RGBA_RED_MASK, FI_RGBA_GREEN_MASK, FI_RGBA_BLUE_MASK);
+		} 
 
 		//If image failed to load, return NULL
 		if (!vix_bmp->bitmap)

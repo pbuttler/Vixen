@@ -6,6 +6,17 @@
 
 namespace Vixen {
 
+	enum class C3D_DIRECTION
+	{
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		FORWARD,
+		BACKWARD
+	};
+
+
 	class VIX_API GLCamera3D
 	{
 	public:
@@ -22,6 +33,12 @@ namespace Vixen {
 
 		/*Set View Lens*/
 		void SetView(const Vec3& pos, const Vec3& target, const Vec3& up);
+
+		/*Move Camera*/
+		void Move(C3D_DIRECTION cam_dir);
+
+		/*Update Camera*/
+		void Update(float dt);
 
 	private:
 		Mat4	m_projection;

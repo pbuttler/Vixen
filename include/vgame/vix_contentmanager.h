@@ -87,6 +87,7 @@ namespace Vixen {
 			return (BMFont*)it->second;
 		}
 		else {
+
 			/*create new font*/
 			BMFont* font = new BMFont(_path);
 			/*load textures for font*/

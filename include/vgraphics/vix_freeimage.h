@@ -35,7 +35,7 @@ namespace Vixen {
 	{
 		size_t width;
 		size_t height;
-		size_t bpp;
+		size_t bitdepth;
 	};
 
 	struct FREEIMAGE_BMP
