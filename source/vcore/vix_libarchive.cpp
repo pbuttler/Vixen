@@ -1,4 +1,5 @@
 #include <vix_libarchive.h>
+#include <vix_debugutil.h>
 
 void
 ARCHIVE_Extract(char* zip, char* file, BYTE* buffer)
@@ -13,7 +14,7 @@ ARCHIVE_Extract(char* zip, char* file, BYTE* buffer)
 	archive_write_disk_set_options(ext, ARCHIVE_EXTRACT_PERM);
 	
 	if ((ret = archive_read_open_filename(a, zip, LARGE_BUFSIZE)))
-		printf("err: archive_read_open_filename %s \n",
+		Vixen::DebugPrintF(VTEXT("err: archive_read_open_filename %s \n"),
 		        archive_error_string(a));
 	for (;;) {
 		ret = archive_read_next_header(a, &entry);
@@ -24,8 +25,6 @@ ARCHIVE_Extract(char* zip, char* file, BYTE* buffer)
 		if (strcmp(file, entryName) == 0)
 			break; /*if found, break*/
 	}
-
-	printf("Path: %s\n", archive_entry_pathname(entry));
 	
 	BYTE* buff = ARCHIVE_CopyData(a);
 	memcpy(buffer, buff, LARGE_BUFSIZE);
@@ -34,7 +33,6 @@ ARCHIVE_Extract(char* zip, char* file, BYTE* buffer)
 
 	archive_read_close(a);
 	archive_read_free(a);
-
 }
 
 BYTE*

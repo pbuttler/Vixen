@@ -41,6 +41,7 @@ typedef std::wstring          UString;
 typedef wchar_t               UChar;
 typedef std::wstringstream    USStream;
 typedef std::wostream         UOStream;
+typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> UConverter;
 #else /*UNIX or not Unicode defined*/
 typedef std::string           UString;
 typedef char                  UChar;
@@ -56,13 +57,15 @@ typedef std::ostream          UOStream;
 #define VTEXT(x) x
 #endif
 
-typedef std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> UConverter;
 
 namespace Vixen {
 
-		VIX_API void str_replaceAll(UString& input,
-			                        const UString& from, 
-			                        const UString& to);
+
+		VIX_API 
+		void str_replaceAll(UString& input,
+			                const UString& from, 
+			                const UString& to);
+
 		template<typename T>
 		inline VIX_API std::vector<T> parse(const UString s, const UChar delim)
 		{
