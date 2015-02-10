@@ -1,15 +1,64 @@
 #include <vix_sdlconsole.h>
+#include <vix_glrenderer.h>
 
 namespace Vixen{
 	
 	SDLConsole::SDLConsole()
 	{
 		m_offset = 0;
+		m_visible = false;
 	}
 
 	SDLConsole::~SDLConsole()
 	{
 		
+	}
+
+	bool SDLConsole::IsActive()
+	{
+		return m_visible;
+	}
+
+	void SDLConsole::SetFont(BMFont* font)
+	{
+		m_font = font;
+	}
+
+	void SDLConsole::SetTexture(Texture* tex)
+	{
+		m_texture = tex;
+	}
+
+	void SDLConsole::Render(IRenderer* renderer, int x, int y)
+	{
+		if (!m_visible) //dont render unless visible
+			return;
+
+		if (!renderer || !m_texture || !m_font)
+			return;
+
+		USStream ss;
+		ss << "<>: " << m_buffer.str();
+		
+		((GLRenderer*)renderer)->Render2DTexture((GLTexture*)m_texture,
+			Vector2(x, y), Rect(0, 0, 0, 0), Vector2(0, 0), Vector2(1, 1), 0.0f, Colors::White, 0.0f);
+		((GLRenderer*)renderer)->Render2DText(m_font, ss.str(),
+			Vector2(x+15, y+20), Colors::Snow);
+	}
+
+	void SDLConsole::Show()
+	{
+		m_visible = true;
+	}
+
+	void SDLConsole::Hide()
+	{
+		m_visible = false;
+	}
+
+	void SDLConsole::Toggle()
+	{
+		m_visible = !m_visible;
 	}
 
 	UString SDLConsole::Buffer()

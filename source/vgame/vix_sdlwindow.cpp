@@ -128,6 +128,8 @@ namespace Vixen {
 
 		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("console_4.png"));
 		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_24.fnt"));
+		m_console.SetFont(font);
+		m_console.SetTexture(tex);
 
 		PrimitiveTriangle* tri = new PrimitiveTriangle;
 		PrimitiveCube* cube = new PrimitiveCube;
@@ -149,6 +151,7 @@ namespace Vixen {
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
+				
 				SDL_TextInputEvent ie;
 				switch (event.type)
 				{
@@ -156,9 +159,7 @@ namespace Vixen {
 					VClose();
 					break;
 
-				case SDL_TEXTINPUT:
-					m_console.Write(event.text.text, strlen(event.text.text));
-					break;
+				
 
 				case SDL_KEYDOWN:
 					switch (event.key.keysym.sym)
@@ -170,18 +171,29 @@ namespace Vixen {
 						VClose();
 						break;
 					case SDLK_BACKSPACE:
-						m_console.Erase(1);
+						if(m_console.IsActive())
+							m_console.Erase(1);
 						break;
 
 					case SDLK_RETURN:
-						m_console.Erase(-1);
+						if(m_console.IsActive())
+							m_console.Erase(-1);
 						break;
+
+					case SDLK_BACKQUOTE:
+						m_console.Toggle();
+						continue;
 					}
 					m_kbState.KeyDown(event.key.keysym.scancode);
 					break;
 
 				case SDL_KEYUP:
 					m_kbState.KeyUp(event.key.keysym.scancode);
+					break;
+
+				case SDL_TEXTINPUT:
+					if (m_console.IsActive())
+						m_console.Write(event.text.text, strlen(event.text.text));
 					break;
 				}
 			}
@@ -205,13 +217,15 @@ namespace Vixen {
 			   << "Console Input Test";
 			((GLRenderer*)m_renderer)->Render2DText(font, ss.str(),
 				Vector2(20, 20),  Colors::Snow);
+
+			m_console.Render(m_renderer, 10, VGetClientBounds().h - 70);
 			
-			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex, Vector2(10, VGetClientBounds().h - 70),
+			/*((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex, Vector2(10, VGetClientBounds().h - 70),
 				Rect(0,0,0,0), Vector2(0, 0), Vector2(1, 1), 0.0f, Colors::White, 0.0f);
 			USStream ts;
 			ts << "<>: " << m_console.Buffer();
 			((GLRenderer*)m_renderer)->Render2DText(font, ts.str(),
-				Vector2(25, VGetClientBounds().h-50), Colors::Snow);
+				Vector2(25, VGetClientBounds().h-50), Colors::Snow);*/
 			
 			if (m_kbState.SingleKeyPress(SDL_SCANCODE_A))
 				printf("A\n");

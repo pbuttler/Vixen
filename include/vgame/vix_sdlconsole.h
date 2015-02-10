@@ -13,9 +13,17 @@ namespace Vixen {
 
 		~SDLConsole();
 
+
+		bool    IsActive();
+		void    Toggle();
+		void    Show();
+		void    Hide();
 		UString Buffer();
 		void	Write(const char* text, size_t len);
 		void	Erase(size_t len);
+		void    Render(IRenderer* renderer, int x, int y);
+		void    SetFont(BMFont* font);
+		void    SetTexture(Texture* tex);
 
 	private:
 
