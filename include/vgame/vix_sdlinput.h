@@ -9,13 +9,18 @@ namespace Vixen {
 
 	class VIX_API SDLKeyboardState
 	{
+		typedef std::map<SDL_Scancode, bool> KeyState;
+
 	public:
 		SDLKeyboardState();
 
-
+		void KeyDown(SDL_Scancode code);
+		void KeyUp(SDL_Scancode code);
+		void UpdatePrev();
+		bool SingleKeyPress(SDL_Scancode code);
 	private:
-		Uint8* m_curKeyState;
-		Uint8* m_prevKeyState;
+		KeyState  m_current;
+		KeyState  m_previous;
 	};
 
 }

@@ -25,6 +25,55 @@
 
 namespace Vixen {
 
+	////////////////////////////////////////////////////////////////
+	//	Zip File Implementation
+	////////////////////////////////////////////////////////////////
+	
+	ZipFile::ZipFile(void)
+	{
+
+	}
+
+	ZipFile::~ZipFile(void)
+	{
+
+	}
+
+	UString ZipFile::GetName(void)
+	{
+		return VTEXT("");
+	}
+
+	UString ZipFile::GetPath(void)
+	{
+		return VTEXT("");
+	}
+
+	int ZipFile::Read(void* buffer, int len)
+	{
+		return 0;
+	}
+
+	int ZipFile::Write(const void* buffer, int len)
+	{
+		return 0;
+	}
+
+	int ZipFile::Length(void)
+	{
+		return 0;
+	}
+
+	int ZipFile::Tell(void)
+	{
+		return 0;
+	}
+
+	int ZipFile::Seek(long offset, FSOrigin origin)
+	{
+		return 0;
+	}
+
 	UString getFileExtension(const UString& filePath, bool wd /* = true */)
 	{
 		UString ext = VTEXT("");

@@ -126,7 +126,7 @@ namespace Vixen {
 		camera2D->SetBounds(0, (float)r.w, 0, (float)r.h);
 		
 
-		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("stackedTileSheet.png"));
+		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("console_4.png"));
 		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_24.fnt"));
 
 		PrimitiveTriangle* tri = new PrimitiveTriangle;
@@ -136,20 +136,28 @@ namespace Vixen {
 
 
 		m_timer.Start();
-
+		SDL_StartTextInput();
+		
 		/*run application loop*/
 		m_running = true;
 		while (m_running)
 		{
 			m_timer.Tick();
+
+			m_kbState.UpdatePrev();
 			
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
+				SDL_TextInputEvent ie;
 				switch (event.type)
 				{
 				case SDL_QUIT:
 					VClose();
+					break;
+
+				case SDL_TEXTINPUT:
+					m_console.Write(event.text.text, strlen(event.text.text));
 					break;
 
 				case SDL_KEYDOWN:
@@ -161,8 +169,19 @@ namespace Vixen {
 					case SDLK_ESCAPE:
 						VClose();
 						break;
-						
+					case SDLK_BACKSPACE:
+						m_console.Erase(1);
+						break;
+
+					case SDLK_RETURN:
+						m_console.Erase(-1);
+						break;
 					}
+					m_kbState.KeyDown(event.key.keysym.scancode);
+					break;
+
+				case SDL_KEYUP:
+					m_kbState.KeyUp(event.key.keysym.scancode);
 					break;
 				}
 			}
@@ -174,19 +193,28 @@ namespace Vixen {
 			cube->RotateX(m_timer.DeltaTime());
 			cube->RotateY(m_timer.DeltaTime());
 			cube->RotateZ(m_timer.DeltaTime());
-
+			
 			camera->Move(C3D_DIRECTION::BACKWARD);
 
+			
+			
 			USStream ss;
-			ss << "_FPS: " << m_timer.FPS() << "\n"
+			ss << "FPS: " << m_timer.FPS() << "\n"
 			   << "Author: Matt Guerrette" << "\n"
-			   << "Date: 2/2/2015" << "\n"
-			   << "Hello, World";
+			   << "Date: 2/10/2015" << "\n"
+			   << "Console Input Test";
 			((GLRenderer*)m_renderer)->Render2DText(font, ss.str(),
 				Vector2(20, 20),  Colors::Snow);
-
-			((GLRenderer*)m_renderer)->Render2DText(font, UString(VTEXT("<>: ")),
-				Vector2(20, VGetClientBounds().h-50), Colors::Snow);
+			
+			((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex, Vector2(10, VGetClientBounds().h - 70),
+				Rect(0,0,0,0), Vector2(0, 0), Vector2(1, 1), 0.0f, Colors::White, 0.0f);
+			USStream ts;
+			ts << "<>: " << m_console.Buffer();
+			((GLRenderer*)m_renderer)->Render2DText(font, ts.str(),
+				Vector2(25, VGetClientBounds().h-50), Colors::Snow);
+			
+			if (m_kbState.SingleKeyPress(SDL_SCANCODE_A))
+				printf("A\n");
 
 			VSwapBuffers();
 

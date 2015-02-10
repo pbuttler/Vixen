@@ -47,6 +47,7 @@ namespace Vixen {
 				ErrCodeString(ErrCode::ERR_GLEW_INIT_FAIL));
 			return ErrCode::ERR_GLEW_INIT_FAIL;
 		}
+		
 
 		/*init camera2D*/
 		m_camera2D = new GLCamera2D(0, 800, 0, 600);
