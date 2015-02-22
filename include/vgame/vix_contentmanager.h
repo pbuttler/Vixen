@@ -39,10 +39,8 @@ namespace Vixen {
 
 	class IContent;
 
-	class VIX_API ContentManager : public Singleton < ContentManager >, IManager
+	class VIX_API ContentManager : public IManager, INonCopy
 	{
-		friend class Singleton < ContentManager >;
-
 		typedef std::map<UString, IContent*> ContentMap;
 	public:
 		ContentManager();
@@ -112,7 +110,7 @@ namespace Vixen {
 			return NULL;
 		}
 
-		UString _path = os_path(path);
+		UString _path = os_path(TEX_FOLDER_PATH + path);
 
 		ContentMap::iterator it = m_textures.find(_path);
 		if (it != m_textures.end()) {
@@ -128,7 +126,6 @@ namespace Vixen {
 		return NULL;
 	}
 
-	extern ContentManager&  g_ContentManager;
 }
 
 #endif

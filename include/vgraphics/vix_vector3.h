@@ -70,24 +70,6 @@ namespace Vixen {
 
 		/*operators*/
 
-		/*
-
-		////////////////////
-
-		          [1]       [2]
-			    /    \     /   \
-			  [3]   [4]   [1]  [9]
-			   |     |
-			  [0]   [5]
-
-			  GameObject----
-			      
-
-				  MeshComponent    [Component]
-				  PhysicsComponent [Component]
-
-		*/
-
 		inline bool operator== (const Vector3& rhs)
 		{
 			return ( x == rhs.x &&

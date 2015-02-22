@@ -46,6 +46,7 @@ namespace Vixen {
 
 		}
 
+
 		/*operators*/
 
 		inline bool operator== (const Vector2& rhs)

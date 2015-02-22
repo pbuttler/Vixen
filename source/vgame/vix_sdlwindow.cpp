@@ -21,6 +21,7 @@
 	SOFTWARE.
 */
 
+#include <vix_game.h>
 #include <vix_sdlwindow.h>
 #include <vix_debugutil.h>
 #include <vix_glrenderer.h>
@@ -41,11 +42,23 @@ namespace Vixen {
 		m_hidden = false;
 		m_paused = false;
 		m_fullscreen = false;
+		m_parent = NULL;
+		m_renderer = NULL;
 	}
 
 	SDLGameWindow::~SDLGameWindow()
 	{
-		delete m_renderer;
+		
+	}
+
+	void SDLGameWindow::VSetParent(IGame* game)
+	{
+		m_parent = game;
+	}
+
+	void SDLGameWindow::VSetRenderer(IRenderer* renderer)
+	{
+		m_renderer = renderer;
 	}
 
 	ErrCode SDLGameWindow::VInit()
@@ -89,14 +102,12 @@ namespace Vixen {
 			return ErrCode::ERR_SDL_CREATE_FAIL;
 		}
 
-		m_renderer = new GLRenderer;
 		error = m_renderer->VInit();
 		if (CheckError(error)) {
 			DebugPrintF(VTEXT("Renderer failed to initialize: %s\n"),
 				ErrCodeString(error));
 			return error;
 		}
-
 
 		return error;
 	}
@@ -114,9 +125,8 @@ namespace Vixen {
 			return error;
 		}
 
-		glEnable(GL_CULL_FACE); //ENABLE FACE CULLING
-		glFrontFace(GL_CW);	    //SET FRONT FACES TO CLOCKWISE WOUND
-		glCullFace(GL_BACK);    //CULL ALL BACKFACING POLYGONS
+		/*LOAD ONLY NECESSARY CONTENT FOR STARTUP*/
+		m_parent->VOnStartup();
 
 		Rect r = VGetClientBounds();
 		glViewport(0, 0, r.w, r.h);
@@ -125,115 +135,37 @@ namespace Vixen {
 		GLCamera2D* camera2D = ((GLRenderer*)m_renderer)->Camera2D();
 		camera2D->SetBounds(0, (float)r.w, 0, (float)r.h);
 		
+		m_renderer->VSetClearColor(Colors::CornflowerBlue);
 
-		Texture* tex = g_ContentManager.Load<Texture>(TEX_FOLDER_PATH + VTEXT("console_4.png"));
-		BMFont*  font = g_ContentManager.Load<BMFont>(VTEXT("Consolas_24.fnt"));
-		m_console.SetFont(font);
-		m_console.SetTexture(tex);
-
-		PrimitiveTriangle* tri = new PrimitiveTriangle;
-		PrimitiveCube* cube = new PrimitiveCube;
-
-		m_renderer->VSetClearColor(Colors::DarkSlateGray);
-
-
-		m_timer.Start();
-		SDL_StartTextInput();
-		
-		/*run application loop*/
+		//run application loop
 		m_running = true;
 		while (m_running)
 		{
-			m_timer.Tick();
-
-			m_kbState.UpdatePrev();
 			
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
-				
-				SDL_TextInputEvent ie;
 				switch (event.type)
 				{
 				case SDL_QUIT:
 					VClose();
-					break;
-
-				
-
-				case SDL_KEYDOWN:
-					switch (event.key.keysym.sym)
-					{
-					case SDLK_F5:
-						VSetFullscreen(!m_fullscreen);
-						break;
-					case SDLK_ESCAPE:
-						VClose();
-						break;
-					case SDLK_BACKSPACE:
-						if(m_console.IsActive())
-							m_console.Erase(1);
-						break;
-
-					case SDLK_RETURN:
-						if(m_console.IsActive())
-							m_console.Erase(-1);
-						break;
-
-					case SDLK_BACKQUOTE:
-						m_console.Toggle();
-						continue;
-					}
-					m_kbState.KeyDown(event.key.keysym.scancode);
-					break;
-
-				case SDL_KEYUP:
-					m_kbState.KeyUp(event.key.keysym.scancode);
-					break;
-
-				case SDL_TEXTINPUT:
-					if (m_console.IsActive())
-						m_console.Write(event.text.text, strlen(event.text.text));
 					break;
 				}
 			}
 
 			m_renderer->VClearBuffer(ClearArgs::COLOR_DEPTH_BUFFER);
 
-			GLCamera3D* camera = ((GLRenderer*)m_renderer)->Camera3D();
-			cube->Render(camera);
-			cube->RotateX(m_timer.DeltaTime());
-			cube->RotateY(m_timer.DeltaTime());
-			cube->RotateZ(m_timer.DeltaTime());
-			
-			camera->Move(C3D_DIRECTION::BACKWARD);
+			/*update*/
+			m_parent->VOnUpdate(0.0f);
 
-			
-			
-			USStream ss;
-			ss << "FPS: " << m_timer.FPS() << "\n"
-			   << "Author: Matt Guerrette" << "\n"
-			   << "Date: 2/10/2015" << "\n"
-			   << "Console Input Test";
-			((GLRenderer*)m_renderer)->Render2DText(font, ss.str(),
-				Vector2(20, 20),  Colors::Snow);
+			/*render*/
+			m_parent->VOnRender(0.0f);
 
-			m_console.Render(m_renderer, 10, VGetClientBounds().h - 70);
-			
-			/*((GLRenderer*)m_renderer)->Render2DTexture((GLTexture*)tex, Vector2(10, VGetClientBounds().h - 70),
-				Rect(0,0,0,0), Vector2(0, 0), Vector2(1, 1), 0.0f, Colors::White, 0.0f);
-			USStream ts;
-			ts << "<>: " << m_console.Buffer();
-			((GLRenderer*)m_renderer)->Render2DText(font, ts.str(),
-				Vector2(25, VGetClientBounds().h-50), Colors::Snow);*/
-			
-			if (m_kbState.SingleKeyPress(SDL_SCANCODE_A))
-				printf("A\n");
 
 			VSwapBuffers();
-
-			m_timer.CalculateFPS();
 		}
+
+		m_parent->VOnShutdown();
 
 		return error;
 	}

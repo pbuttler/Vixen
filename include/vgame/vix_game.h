@@ -27,21 +27,33 @@
 #include <vix_platform.h>
 #include <vix_gamewindow.h>
 #include <vix_gameconfig.h>
+#include <vix_contentmanager.h>
+#include <vix_glrenderer.h>
 //#include <vix_audiomanager.h>
 
 
 namespace Vixen {
 
-	class VIX_API Game
+	class VIX_API IGame
 	{
 	public:
-		Game();
+		IGame();
 
-		int run();
+		int Run();
+		virtual void VOnStartup(void) = 0;
+		virtual void VOnUpdate(float dt) = 0;
+		virtual void VOnRender(float dt) = 0;
+		virtual void VOnShutdown(void) = 0;
 
-	private:
-		GameConfig*   m_config;
-		IGameWindow*  m_window;
+		IRenderer*		const GetRenderer() const;
+		IGameWindow*	const GetWindow()   const;
+
+	protected:
+		GameConfig*		m_config;
+		IGameWindow*	m_window;
+		IRenderer*      m_renderer;
+		ContentManager	m_content;
+
 	};
 
 }

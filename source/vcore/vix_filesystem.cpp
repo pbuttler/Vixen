@@ -12,4 +12,19 @@ namespace Vixen {
 
 	}
 
+	void FileSystem::Init(void)
+	{
+
+	}
+
+	void FileSystem::Restart(void)
+	{
+
+	}
+
+	void FileSystem::Shutdown(void)
+	{
+
+	}
+
 }

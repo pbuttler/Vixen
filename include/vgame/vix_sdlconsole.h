@@ -13,7 +13,6 @@ namespace Vixen {
 
 		~SDLConsole();
 
-
 		bool    IsActive();
 		void    Toggle();
 		void    Show();
@@ -24,8 +23,6 @@ namespace Vixen {
 		void    Render(IRenderer* renderer, int x, int y);
 		void    SetFont(BMFont* font);
 		void    SetTexture(Texture* tex);
-
-	private:
 
 	};
 }

@@ -33,12 +33,16 @@
 
 namespace Vixen {
 
+	class IGame;
+
 	class VIX_API IGameWindow : INonCopy
 	{
 
 	public:
 		virtual ~IGameWindow() { }
 
+		virtual void               VSetParent(IGame* game) = 0;
+		virtual void               VSetRenderer(IRenderer* renderer) = 0;
 		virtual ErrCode            VInit() = 0;
 		virtual ErrCode            VRun() = 0;
 		virtual void               VSetFullscreen(bool flag) = 0;
@@ -55,6 +59,7 @@ namespace Vixen {
 		static const size_t DEF_WINDOW_HEIGHT = 600;
 
 	protected:
+		IGame*      m_parent;   //For now...
 		IRenderer*  m_renderer; //For now...
 	};
 

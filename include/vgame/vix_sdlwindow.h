@@ -64,6 +64,8 @@ namespace Vixen {
 
 		~SDLGameWindow();
 
+		void                VSetParent(IGame* game)                override;
+		void                VSetRenderer(IRenderer* renderer)      override;
 		ErrCode             VInit()                                override;
 		ErrCode             VRun()                                 override;
 		void                VSetVisible(bool flag)                 override;

@@ -25,26 +25,26 @@
 #include <vix_sdlwindow.h>
 #include <vix_debugutil.h>
 #include <vix_contentmanager.h>
-
+#include <vix_glrenderer.h>
 
 namespace Vixen {
 
-	ContentManager&   g_ContentManager = ContentManager::instance();
-	
-
-	Game::Game()
+	IGame::IGame()
 	{
 		m_config = new GameConfig(VTEXT("test.config"));
 		m_window = new SDLGameWindow(m_config->WindowArgs());
+		m_renderer = new GLRenderer;
+		m_window->VSetParent(this);
+		m_window->VSetRenderer(m_renderer);
 	}
 
-	int Game::run()
+	int IGame::Run()
 	{
 		/*if application window exists*/
 		if (m_window) {
-			g_ContentManager.VStartUp();
+			m_content.VStartUp();
 			ErrCode error = m_window->VRun();
-			g_ContentManager.VShutDown();
+			m_content.VShutDown();
 			if (CheckError(error)) {
 				DebugPrintF(VTEXT("Application loop encountered error: %s\n"),
 					ErrCodeString(error));
@@ -54,5 +54,14 @@ namespace Vixen {
 
 		return 0;
 	}
-	
+
+	IGameWindow* const IGame::GetWindow() const
+	{
+		return m_window;
+	}
+
+	IRenderer* const IGame::GetRenderer() const
+	{
+		return m_renderer;
+	}
 }
