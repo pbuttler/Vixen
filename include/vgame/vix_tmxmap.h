@@ -3,8 +3,17 @@
 
 #include <vix_platform.h>
 #include <vix_stringutil.h>
+#include <vix_tinyxml.h>
 
 namespace Vixen {
+
+	enum TMXImgFormat
+	{
+		TMX_PNG,
+		TMX_GIF,
+		TMX_JPG,
+		TMX_BMP
+	};
 
 	enum TMXOrientation
 	{
@@ -32,31 +41,69 @@ namespace Vixen {
 		size_t          tileHeight;   //Pixel height of tile
 	};
 
-	struct TMXTileImageInfo
+	struct TMXImageInfo
 	{
-
+		TMXImgFormat	format;		//EXT. FOR EMBEDDED IMAGES
+		UString			source;		//Path reference to tileset image file
+		size_t			width;		//Width of image in pixels  (optional)
+		size_t			height;		//Height of image in pixels (optional)
 	};
 
 	struct TMXTilesetInfo
 	{
-		int		globalID;
-		UString name;
-		size_t  width;   
-		size_t  height;
-		size_t  spacing;
-		size_t  margin;
+		int		globalID;	//first global tile ID (maps to FIRST tile)
+		UString name;		//name
+		size_t  width;		//maximum width of tiles
+		size_t  height;		//maximum height of tiles
+		size_t  spacing;	//spacing in pixels between tiles
+		size_t  margin;		//margin around tiles
 	};
 
-	
+	struct TMXTile
+	{
+		int    globalID;	//local tile ID within tileset
+	};
+
+
+	class VIX_API TMXLayer
+	{
+	public:
+		TMXLayer(const UString& name, 
+					   size_t	width,
+					   size_t	height,
+					   float	opacity,
+					   bool		visible);
+
+		~TMXLayer(void);
+
+		void			SetTile(int row, int col, const TMXTile& tile);
+		void			SetTileID(int row, int col, int val);
+		const TMXTile&	GetTile(int row, int col);
+		int				GetTileID(int row, int col);
+
+	private:
+		UString		m_name;		//layer name
+		size_t		m_width;	//width in TILES
+		size_t		m_height;	//height in TILES
+		float		m_opacity;	//opacity of layer (0 - 1)
+		bool		m_visible;	//layer visibility (true - false)
+		TMXTile*	m_tiles;    //tile collection
+	};
 
 	class VIX_API TMXMap
 	{
 	public:
 		TMXMap(void);
 
+
+		static void FromFile(const UString& file, TMXMap& map);
 	private:
 		TMXMapInfo m_info;
-		
+		TMXLayer*  m_layers;
+
+	private:
+		static void ReadMapInfo(XMLDOC& document, TMXMap& map);
+		static void ReadTilesetInfo(XMLDOC& document, TMXMap& map);
 	};
 
 }
