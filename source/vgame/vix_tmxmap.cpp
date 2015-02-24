@@ -1,4 +1,5 @@
 #include <vix_tmxmap.h>
+#include <vix_debugutil.h>
 
 namespace Vixen {
 
@@ -53,12 +54,33 @@ namespace Vixen {
 
 	void TMXMap::FromFile(const UString& file, TMXMap& map)
 	{
+		using namespace tinyxml2;
 
+		/*Try Parse file*/
+		XMLDOC document;
+
+		/*TinyXML now supports paths containing UTF-8 encoded characters due to
+		  change I've made in the source. */
+		XMLError err = document.LoadFile(file.c_str());
+		UString errorString;
+		if (XMLErrCheck(err, errorString)) {
+			DebugPrintF(VTEXT("XMLDocument Load Failed: %s\n"),
+				        errorString.c_str());
+			return;
+		}
+
+		ReadMapInfo(document, map);
+		ReadTilesetInfo(document, map);
 	}
 
 	void TMXMap::ReadMapInfo(XMLDOC& document, TMXMap& map)
 	{
+		using namespace tinyxml2;
 
+		XMLElement* mapinfo = document.FirstChildElement("map");
+		map.m_info.version = mapinfo->DoubleAttribute("version");
+		const char* orientation = mapinfo->Attribute("orientation");
+		
 	}
 
 	void TMXMap::ReadTilesetInfo(XMLDOC& document, TMXMap& map)

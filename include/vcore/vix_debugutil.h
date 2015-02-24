@@ -35,6 +35,9 @@
 #endif
 #include <ctime>
 
+#ifdef VIX_SYS_LINUX
+#include <cstdarg>
+#endif
 
 #ifndef VIX_STRINGIFY
 #define VIX_STRINGIFY(x) #x

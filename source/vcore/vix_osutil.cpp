@@ -41,7 +41,7 @@ namespace Vixen {
 			_mkdir(dir.c_str());
 	#endif
 #elif  VIX_SYS_LINUX
-		mkdir(dir.c_str());
+		mkdir(dir.c_str(), S_IRWXU);
 #endif
 	}
 

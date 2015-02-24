@@ -38,10 +38,11 @@ namespace Vixen {
 		localtime_s(&pTime, &now_time);
 		char buffer[VIX_BUFSIZE];
 		asctime_s(buffer, &pTime);
-#else
-		ss << asctime(localtime(&pTime));
-#endif
 		ss << buffer;
+#else
+		ss << asctime(localtime(&now_time));
+#endif
+		
 		return ss.str();
 	}
 }
