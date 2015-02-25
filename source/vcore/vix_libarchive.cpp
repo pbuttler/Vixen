@@ -1,5 +1,6 @@
 #include <vix_libarchive.h>
 #include <vix_debugutil.h>
+#include <cstring>
 
 void
 ARCHIVE_Extract(char* zip, char* file, BYTE* buffer)

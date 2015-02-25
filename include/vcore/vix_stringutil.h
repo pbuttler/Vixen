@@ -28,7 +28,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#ifndef VIX_SYS_LINUX
 #include <codecvt>
+#endif
 #include <iostream>
 
 #ifndef VIX_BUFSIZE

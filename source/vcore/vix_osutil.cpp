@@ -25,7 +25,7 @@
 
 #ifdef VIX_SYS_WINDOWS
 	#include <direct.h>   //iso c++
-#elif VIX_SYS_LINUX
+#elif defined(VIX_SYS_LINUX)
 	#include <sys/stat.h> //linux
 #endif
 
@@ -40,7 +40,7 @@ namespace Vixen {
 	#else   
 			_mkdir(dir.c_str());
 	#endif
-#elif  VIX_SYS_LINUX
+#elif  defined(VIX_SYS_LINUX)
 		mkdir(dir.c_str(), S_IRWXU);
 #endif
 	}
@@ -53,7 +53,7 @@ namespace Vixen {
 		DWORD dwAttrib = GetFileAttributes(dir.c_str());
 		return (dwAttrib != INVALID_FILE_ATTRIBUTES &&
 				(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
-#elif VIX_SYS_LINUX
+#elif defined(VIX_SYS_LINUX)
 		//THIS CODE *SHOULD* WORK ON LINUX AND UNIX.
 		//IM NOT 100% POSITIVE THOUGH, SO PLEASE CHECK
 		struct stat info;
