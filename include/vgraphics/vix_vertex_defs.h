@@ -28,10 +28,10 @@ namespace Vixen {
 		{
 			if(flag) {
 				glEnableVertexAttribArray(0); //position
-				//glEnableVertexAttribArray(1); //color
+				glEnableVertexAttribArray(1); //color
 			} else {
 				glDisableVertexAttribArray(0);
-				//glDisableVertexAttribArray(1);
+				glDisableVertexAttribArray(1);
 			}
 		}
 
@@ -43,8 +43,8 @@ namespace Vixen {
 			/*POSITION*/
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
 			/*COLOR*/
-			//offset += sizeof(float) * 3; //update offset
-			//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			offset += sizeof(float) * 3; //update offset
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
 
 			/*RENDER*/
 			glDrawElements(render_mode, index_cnt, GL_UNSIGNED_SHORT, NULL);

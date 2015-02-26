@@ -1,5 +1,5 @@
-#ifndef VIX_PRIMITIVE_SPHERE
-#define VIX_PRIMITIVE_SPHERE
+#ifndef VIX_PRIMITIVE_CYLINDER
+#define VIX_PRIMITIVE_CYLINDER
 
 #include <vix_platform.h>
 #include <vix_gl.h>
@@ -12,13 +12,13 @@
 
 namespace Vixen {
 
-	class VIX_API PrimitiveSphere
+	class VIX_API PrimitiveCylinder
 	{
 	public:
-		PrimitiveSphere(void);
-		PrimitiveSphere(float radius, float subdivisions, Color c);
+		PrimitiveCylinder(void);
+		PrimitiveCylinder(float radius, float height, float subdivisions, Color c);
 
-		~PrimitiveSphere();
+		~PrimitiveCylinder();
 
 		void RotateX(float dt);
 		void RotateY(float dt);
@@ -38,6 +38,7 @@ namespace Vixen {
 		float                  m_rotationZ;
 		float                  m_radius;
 		float                  m_subdivisions;
+		float                  m_height;
 		Color                  m_color;
 
 		/*UTILITY FUNCTIONS*/
@@ -57,6 +58,8 @@ namespace Vixen {
 		static const size_t SPHERE_VERTEX_COUNT = 12;
 	};
 
+
 }
+
 
 #endif

@@ -1,13 +1,9 @@
-#include <vix_primitive_sphere.h>
-#include <vix_color.h>
-#include <vix_math.h>
+#include <vix_primitive_cylinder.h>
 
-#define S_X .525731112119133606 
-#define S_Z .850650808352039932
 
 namespace Vixen {
 
-	PrimitiveSphere::PrimitiveSphere()
+	PrimitiveCylinder::PrimitiveCylinder()
 	{
 		m_rotationX = 0.0f;
 		m_rotationY = 0.0f;
@@ -22,7 +18,7 @@ namespace Vixen {
 		init_color_vi_buffers();
 	}
 
-	PrimitiveSphere::PrimitiveSphere(float radius, float subdivisions, Color c)
+	PrimitiveCylinder::PrimitiveCylinder(float radius, float height, float subdivisions, Color c)
 	{
 		m_rotationX = 0.0f;
 		m_rotationY = 0.0f;
@@ -32,90 +28,96 @@ namespace Vixen {
 		m_iBuffer = new GLIndexBuffer(SPHERE_INDEX_COUNT);
 		m_subdivisions = subdivisions;
 		m_radius = radius;
+		m_height = height;
 		m_color = c;
 
 		init_shader_program();
 		init_color_vi_buffers();
 	}
 
-	PrimitiveSphere::~PrimitiveSphere()
+	PrimitiveCylinder::~PrimitiveCylinder()
 	{
 
 	}
 
-	void PrimitiveSphere::RotateX(float dt)
+	void PrimitiveCylinder::RotateX(float dt)
 	{
 		m_rotationX += dt * 50.0f;
 	}
 
-	void PrimitiveSphere::RotateY(float dt)
+	void PrimitiveCylinder::RotateY(float dt)
 	{
 		m_rotationY += dt * 50.0f;
 	}
 
-	void PrimitiveSphere::RotateZ(float dt)
+	void PrimitiveCylinder::RotateZ(float dt)
 	{
 		m_rotationZ += dt * 50.0f;
 	}
 
-	void PrimitiveSphere::SetPosition(float x, float y, float z)
+	void PrimitiveCylinder::SetPosition(float x, float y, float z)
 	{
 		m_position = Vec3(x, y, z);
 	}
 
 
-	void PrimitiveSphere::init_color_vi_buffers()
+	void PrimitiveCylinder::init_color_vi_buffers()
 	{
 		
-#pragma region ICOSAHEDRON
-		std::array<VertexPositionColor, SPHERE_VERTEX_COUNT> vTemp =
+		const std::array<VertexPositionColor, 8> vTemp =
 		{
-			VertexPositionColor(-S_X, 0.0f, S_Z, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( S_X, 0.0f, S_Z, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor(-S_X, 0.0f, -S_Z, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( S_X, 0.0f, -S_Z, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( 0.0f, S_Z, S_X, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( 0.0f, S_Z, -S_X, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( 0.0f, -S_Z, S_X, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( 0.0f, -S_Z, -S_X, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( S_Z, S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( -S_Z, S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( S_Z, -S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
-			VertexPositionColor( -S_Z, -S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a)
+			VertexPositionColor(-1.0f, 1.0f, 1.0f,
+			   Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
+			VertexPositionColor(1.0f, 1.0f, 1.0f, 
+			   Colors::Blue.r, Colors::Blue.g, Colors::Blue.b, Colors::Blue.a),
+			VertexPositionColor(-1.0f, -1.0f, 1.0f,
+			   Colors::Yellow.r, Colors::Yellow.g, Colors::Yellow.b, Colors::Yellow.a),
+			VertexPositionColor(1.0f, -1.0f, 1.0f,
+			   Colors::Pink.r, Colors::Pink.g, Colors::Pink.b, Colors::Pink.a),
+
+			VertexPositionColor(1.0f, 1.0f, -1.0f,
+			   Colors::Green.r, Colors::Green.g, Colors::Green.b, Colors::Green.a),
+			VertexPositionColor(-1.0f, 1.0f, -1.0f,
+			   Colors::Orange.r, Colors::Orange.g, Colors::Orange.b, Colors::Orange.a),
+			VertexPositionColor(1.0, -1.0f, -1.0f,
+			   Colors::Aqua.r, Colors::Aqua.g, Colors::Aqua.b, Colors::Aqua.a),
+			VertexPositionColor(-1.0f, -1.0f, -1.0f,
+			   Colors::Purple.r, Colors::Purple.g, Colors::Purple.b, Colors::Purple.a)
 		};
-		std::array<unsigned short, SPHERE_INDEX_COUNT> iTemp = 
+		m_vBuffer->set(0, 8, vTemp.data());
+
+		const std::array<unsigned short, 36> iTemp =
 		{
+			//FRONT FACE
+			0, 1, 2,
+			2, 1, 3,
+
+			//BACK FACE
+			4, 5, 6,
+			6, 5, 7,
+
+			//LEFT FACE
+			5, 0, 7,
+			7, 0, 2,
+
+			//RIGHT FACE
+			1, 4, 3,
+			3, 4, 6,
+
+			//TOP FACE
+			5, 4, 0,
 			0, 4, 1,
-			0, 9, 4,
-			9, 5, 4,
-			4, 5, 8,
-			4, 8, 1,
-			8, 10, 1,
-			8, 3, 10,
-			5, 3, 8, 
-			5, 2, 3,
-			2, 7, 3,
-			7, 10, 3,
-			7, 6, 10,
-			7, 11, 6,
-			11, 0, 6,
-			0, 1, 6,
-			6, 1, 10,
-			9, 0, 11,
-			9, 11, 2,
-			9, 2, 5,
-			7, 2, 11
+
+			//BOTTOM FACE
+			6, 7, 3, 
+			3, 7, 2
 		};
-		m_iBuffer->set(0, SPHERE_INDEX_COUNT, iTemp.data());
-
+		m_iBuffer->set(0, 36, iTemp.data());
 		
-		m_vBuffer->set(0, SPHERE_VERTEX_COUNT, vTemp.data());
-
-#pragma endregion
 		
 	}
 
-	void PrimitiveSphere::init_shader_program()
+	void PrimitiveCylinder::init_shader_program()
 	{
 		/*vertex shader info*/
 		ShaderInfo vshader_info;
@@ -158,7 +160,7 @@ namespace Vixen {
 		m_program = new GLShaderProgram(args);
 	}
 
-	void PrimitiveSphere::applyTransform(GLCamera3D* camera)
+	void PrimitiveCylinder::applyTransform(GLCamera3D* camera)
 	{
 		GLuint projLoc;
 		GLuint worldLoc;
@@ -183,15 +185,15 @@ namespace Vixen {
 			glm::scale(Mat4(1.0f), glm::vec3(m_radius));
 
 		/*apply value from camera*/
-		glUniform1f(tessiloc, 1);
-		glUniform1f(tessoloc, m_subdivisions);
+		glUniform1f(tessiloc, 2);
+		glUniform1f(tessoloc, 2);
 		glUniform4f(colorloc, m_color.r, m_color.g, m_color.b, m_color.a);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->Projection()));
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera->View()));
 		glUniformMatrix4fv(worldLoc, 1, GL_FALSE, glm::value_ptr(world));
 	}
 
-	void PrimitiveSphere::Render(GLCamera3D* camera)
+	void PrimitiveCylinder::Render(GLCamera3D* camera)
 	{
 		m_vBuffer->bind();
 		m_iBuffer->bind();
@@ -201,7 +203,7 @@ namespace Vixen {
 
 		VertexPositionColor::Enable(true);
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
-		VertexPositionColor::Render(SPHERE_INDEX_COUNT, GL_PATCHES);
+		VertexPositionColor::Render(36, GL_PATCHES);
 		VertexPositionColor::Enable(false);
 
 		m_vBuffer->unbind();
