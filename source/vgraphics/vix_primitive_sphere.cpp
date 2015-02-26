@@ -183,7 +183,7 @@ namespace Vixen {
 			glm::scale(Mat4(1.0f), glm::vec3(m_radius));
 
 		/*apply value from camera*/
-		glUniform1f(tessiloc, 1);
+		glUniform1f(tessiloc, m_subdivisions);
 		glUniform1f(tessoloc, m_subdivisions);
 		glUniform4f(colorloc, m_color.r, m_color.g, m_color.b, m_color.a);
 		glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera->Projection()));
@@ -201,7 +201,7 @@ namespace Vixen {
 
 		VertexPositionColor::Enable(true);
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
-		VertexPositionColor::Render(SPHERE_INDEX_COUNT, GL_PATCHES);
+		VertexPositionColor::RenderElements(SPHERE_INDEX_COUNT, GL_PATCHES);
 		VertexPositionColor::Enable(false);
 
 		m_vBuffer->unbind();

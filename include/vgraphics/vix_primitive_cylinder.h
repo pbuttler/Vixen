@@ -40,6 +40,7 @@ namespace Vixen {
 		float                  m_subdivisions;
 		float                  m_height;
 		Color                  m_color;
+		size_t                 m_vertCnt;
 
 		/*UTILITY FUNCTIONS*/
 

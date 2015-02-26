@@ -35,7 +35,7 @@ namespace Vixen {
 			}
 		}
 
-		static void Render(GLsizei index_cnt, GLenum render_mode)
+		static void RenderElements(GLsizei index_cnt, GLenum render_mode)
 		{
 			size_t stride = sizeof(VertexPositionColor);
 			int    offset = 0;
@@ -49,6 +49,21 @@ namespace Vixen {
 			/*RENDER*/
 			glDrawElements(render_mode, index_cnt, GL_UNSIGNED_SHORT, NULL);
 			
+		}
+
+		static void RenderArrays(GLsizei vertex_cnt, GLenum render_mode)
+		{
+			size_t stride = sizeof(VertexPositionColor);
+			int    offset = 0;
+			
+			/*POSITION*/
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+			/*COLOR*/
+			offset += sizeof(float) * 3; //update offset
+			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
+
+			/*RENDER*/
+			glDrawArrays(render_mode, 0, vertex_cnt);
 		}
 	};
 

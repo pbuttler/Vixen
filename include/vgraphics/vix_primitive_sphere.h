@@ -39,6 +39,7 @@ namespace Vixen {
 		float                  m_radius;
 		float                  m_subdivisions;
 		Color                  m_color;
+		
 
 		/*UTILITY FUNCTIONS*/
 
