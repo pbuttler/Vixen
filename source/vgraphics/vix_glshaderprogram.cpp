@@ -50,6 +50,30 @@ namespace Vixen {
 				}
 				break;
 
+			case ShaderType::TESSELATION_CONTROL_SHADER:
+				if(!m_tcShader) {
+					m_tcShader = new GLShader(info);
+					AttachShader(m_tcShader);
+					LinkShader(m_tcShader);
+				}
+				break;
+
+			case ShaderType::TESSELATION_EVAL_SHADER:
+				if(!m_teShader) {
+					m_teShader = new GLShader(info);
+					AttachShader(m_teShader);
+					LinkShader(m_teShader);
+				}
+				break;
+
+			case ShaderType::GEOMETRY_SHADER:
+				if(!m_gShader) {
+					m_gShader = new GLShader(info);
+					AttachShader(m_gShader);
+					LinkShader(m_gShader);
+				}
+				break;
+
 			case ShaderType::FRAGMENT_SHADER:
 				if (!m_fShader) {
 					m_fShader = new GLShader(info);

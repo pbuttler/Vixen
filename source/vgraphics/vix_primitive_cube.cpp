@@ -150,7 +150,7 @@ namespace Vixen {
 		applyTransform(camera);
 
 		VertexPositionColor::Enable(true);
-		VertexPositionColor::Render(COLOR_INDEX_COUNT);
+		VertexPositionColor::Render(COLOR_INDEX_COUNT, GL_TRIANGLES);
 		VertexPositionColor::Enable(false);
 
 		m_vBuffer->unbind();

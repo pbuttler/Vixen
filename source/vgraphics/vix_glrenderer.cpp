@@ -47,6 +47,13 @@ namespace Vixen {
 				ErrCodeString(ErrCode::ERR_GLEW_INIT_FAIL));
 			return ErrCode::ERR_GLEW_INIT_FAIL;
 		}
+
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CW);
+		glCullFace(GL_BACK);
+		
 		
 
 		/*init camera2D*/

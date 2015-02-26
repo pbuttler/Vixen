@@ -102,7 +102,6 @@ namespace Vixen {
 		TMXLayer*  m_layers;
 
 	private:
-		static TMXOrientation	
 		static void				ReadMapInfo(XMLDOC& document, TMXMap& map);
 		static void				ReadTilesetInfo(XMLDOC& document, TMXMap& map);
 	};

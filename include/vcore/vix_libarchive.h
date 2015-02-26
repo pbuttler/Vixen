@@ -12,6 +12,7 @@
 VIX_API
 void ARCHIVE_Extract(char* zip, char* file, BYTE* buffer);
 
+
 VIX_API
 BYTE*  ARCHIVE_CopyData(archive* ar);
 

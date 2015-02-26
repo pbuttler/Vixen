@@ -51,6 +51,23 @@
 //////////////////////////////////////////////////////////////////////////
 // Define header to create portable import / export macros
 //////////////////////////////////////////////////////////////////////////
+
+#ifndef VIX_IMPORT
+	#ifdef VIX_SYS_WINDOWS
+		#define VIX_IMPORT __declspec(dllimport)
+	#else
+		#define VIX_IMPORT __attribute__ ((__visibility__("default")))
+	#endif
+#endif
+
+#ifndef VIX_EXPORT
+#ifdef VIX_SYS_WINDOWS
+		#define VIX_EXPORT __declspec(dllexport)
+	#else
+		#define VIX_EXPORT __attribute__ ((__visibility__("default")))
+	#endif
+#endif
+
 #if !defined(VIX_STATIC)
 	#ifdef VIX_SYS_WINDOWS
 		#if defined (VIX_NONCLIENT_BUILD)

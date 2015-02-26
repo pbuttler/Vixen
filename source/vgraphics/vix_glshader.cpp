@@ -126,6 +126,7 @@ namespace Vixen {
 			UConverter converter;
 			UString log_string = converter.from_bytes(log_text);
 			DebugPrintF(log_string.c_str());
+			std::cout << log << std::endl;
 #else
 			DebugPrintF(VTEXT("Shader Log: %s\n%s\n"),
 						log, ErrCodeString(error));
@@ -183,8 +184,11 @@ namespace Vixen {
 		case Vixen::ShaderType::GEOMETRY_SHADER:
 			return GL_GEOMETRY_SHADER;
 			break;
-		case Vixen::ShaderType::TESSELATION_SHADER:
+		case Vixen::ShaderType::TESSELATION_CONTROL_SHADER:
 			return GL_TESS_CONTROL_SHADER;
+			break;
+		case Vixen::ShaderType::TESSELATION_EVAL_SHADER:
+			return GL_TESS_EVALUATION_SHADER;
 			break;
 		case Vixen::ShaderType::FRAGMENT_SHADER:
 			return GL_FRAGMENT_SHADER;

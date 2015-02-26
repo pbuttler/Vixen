@@ -30,7 +30,7 @@
 
 namespace Vixen {
 
-	typedef std::array<ShaderInfo, 4> ShaderArgs;
+	typedef std::array<ShaderInfo, 5> ShaderArgs;
 
 	class VIX_API ShaderProgram
 	{
@@ -46,7 +46,8 @@ namespace Vixen {
 		Shader*    m_vShader;  /*vertex shader*/
 		Shader*    m_fShader;  /*fragment shader*/
 		Shader*    m_gShader;  /*geometry shader*/
-		Shader*    m_tShader;  /*tess control shader*/
+		Shader*    m_tcShader; /*tess control shader*/
+		Shader*    m_teShader; /*tess eval shader*/
 	};
 
 }
