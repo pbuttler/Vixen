@@ -1,5 +1,5 @@
-#ifndef VIX_PRIMITIVE_CYLINDER_H
-#define VIX_PRIMITIVE_CYLINDER_H
+#ifndef VIX_PRIMITIVE_CONE_H
+#define VIX_PRIMITIVE_CONE_H
 
 #include <vix_platform.h>
 #include <vix_gl.h>
@@ -12,13 +12,13 @@
 
 namespace Vixen {
 
-	class VIX_API PrimitiveCylinder
+	class VIX_API PrimitiveCone
 	{
 	public:
-		PrimitiveCylinder(void);
-		PrimitiveCylinder(float radius, float height, float subdivisions, Color c);
+		PrimitiveCone(void);
+		PrimitiveCone(float radius, float height, float subdivisions, Color c);
 
-		~PrimitiveCylinder();
+		~PrimitiveCone();
 
 		void RotateX(float dt);
 		void RotateY(float dt);
@@ -60,8 +60,6 @@ namespace Vixen {
 
 		/*STATIC CONSTANTS*/
 
-		static const size_t RINGS = 24;
-		static const size_t SECTORS = 48;
 		static const size_t SUBDIVISIONS = 12;
 		static const size_t SPHERE_INDEX_COUNT = 60;
 		static const size_t SPHERE_VERTEX_COUNT = 12;
@@ -69,6 +67,5 @@ namespace Vixen {
 
 
 }
-
 
 #endif

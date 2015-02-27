@@ -1,9 +1,10 @@
-#include <vix_primitive_cylinder.h>
+#include <vix_primitive_cone.h>
 #include <vix_math.h>
 
 namespace Vixen {
 
-	PrimitiveCylinder::PrimitiveCylinder()
+	
+	PrimitiveCone::PrimitiveCone()
 	{
 		m_rotationX = 0.0f;
 		m_rotationY = 0.0f;
@@ -11,14 +12,14 @@ namespace Vixen {
 		m_position = Vec3(0.0f, 0.0f, -5);
 		m_vBuffer = new VertPosColBuffer(32);
 		m_iBuffer = new GLIndexBuffer(SPHERE_INDEX_COUNT);
-		m_subdivisions = 4.0f;
+		m_subdivisions = 10.0f;
 		m_radius = 1.0f;
 
 		init_shader_program();
 		init_color_vi_buffers();
 	}
 
-	PrimitiveCylinder::PrimitiveCylinder(float radius, float height, float subdivisions, Color c)
+	PrimitiveCone::PrimitiveCone(float radius, float height, float subdivisions, Color c)
 	{
 		m_rotationX = 0.0f;
 		m_rotationY = 0.0f;
@@ -35,51 +36,50 @@ namespace Vixen {
 		init_color_vi_buffers();
 	}
 
-	PrimitiveCylinder::~PrimitiveCylinder()
+	PrimitiveCone::~PrimitiveCone()
 	{
 
 	}
 
-	void PrimitiveCylinder::SetSubdivisions(size_t sub)
+	void PrimitiveCone::SetSubdivisions(size_t sub)
 	{
 		m_subdivisions = sub;
 		init_color_vi_buffers();
 	}
 
-	size_t PrimitiveCylinder::GetMaxSubdivisions()
+	size_t PrimitiveCone::GetMaxSubdivisions()
 	{
 		return SUBDIVISIONS;
 	}
 
-	void PrimitiveCylinder::RotateX(float dt)
+	void PrimitiveCone::RotateX(float dt)
 	{
 		m_rotationX += dt * 50.0f;
 	}
 
-	void PrimitiveCylinder::RotateY(float dt)
+	void PrimitiveCone::RotateY(float dt)
 	{
 		m_rotationY += dt * 50.0f;
 	}
 
-	void PrimitiveCylinder::RotateZ(float dt)
+	void PrimitiveCone::RotateZ(float dt)
 	{
 		m_rotationZ += dt * 50.0f;
 	}
 
-	void PrimitiveCylinder::SetPosition(float x, float y, float z)
+	void PrimitiveCone::SetPosition(float x, float y, float z)
 	{
 		m_position = Vec3(x, y, z);
 	}
 
-	size_t PrimitiveCylinder::GetSubdivisions()
+	size_t PrimitiveCone::GetSubdivisions()
 	{
 		return m_subdivisions;
 	}
 
 
-	void PrimitiveCylinder::init_color_vi_buffers()
+	void PrimitiveCone::init_color_vi_buffers()
 	{
-		m_topVerts.clear();
 		m_botVerts.clear();
 		m_bodyVerts.clear();
 
@@ -88,13 +88,6 @@ namespace Vixen {
 		const float min_sub = 3;
 		const float max_sub = 12;
 		const float a = TWO_PI / (m_subdivisions + (min_sub-1));
-		////TOP CAP VERTS
-		m_topVerts.push_back(VertexPositionColor(0, h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
-		for(float i = 0; i <= TWO_PI; i += a)
-		{
-			m_topVerts.push_back(VertexPositionColor(r*cos(i), h, r*sin(i), 1.0f, 0.0f, 0.0f, 1.0f));
-		}
-		m_topVerts.push_back(VertexPositionColor(r, h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
 
 		//BOTTOM CAP VERTS
 		m_botVerts.push_back(VertexPositionColor(0, -h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
@@ -105,18 +98,15 @@ namespace Vixen {
 		m_botVerts.push_back(VertexPositionColor(r, -h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
 
 		//MIDDLE
+		m_bodyVerts.push_back(VertexPositionColor(0, h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
 		for(float i = 0; i <= TWO_PI; i += a)
 		{
 			m_bodyVerts.push_back(VertexPositionColor(r*cos(i), -h, r*sin(i), 1.0f, 0.0f, 0.0f, 1.0f));
-			m_bodyVerts.push_back(VertexPositionColor(r*cos(i), h, r*sin(i), 1.0f, 0.0f, 0.0f, 1.0f));
 		}
-
-		m_bodyVerts.push_back(VertexPositionColor(r, -h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
-		m_bodyVerts.push_back(VertexPositionColor(r, h, 0, 1.0f, 0.0f, 0.0f, 1.0f));
 	
 	}
 
-	void PrimitiveCylinder::init_shader_program()
+	void PrimitiveCone::init_shader_program()
 	{
 		/*vertex shader info*/
 		ShaderInfo vshader_info;
@@ -139,7 +129,7 @@ namespace Vixen {
 		m_program = new GLShaderProgram(args);
 	}
 
-	void PrimitiveCylinder::applyTransform(GLCamera3D* camera)
+	void PrimitiveCone::applyTransform(GLCamera3D* camera)
 	{
 		GLuint projLoc;
 		GLuint worldLoc;
@@ -165,24 +155,16 @@ namespace Vixen {
 		glUniformMatrix4fv(worldLoc, 1, GL_FALSE, glm::value_ptr(world));
 	}
 
-	void PrimitiveCylinder::Render(GLCamera3D* camera)
+	void PrimitiveCone::Render(GLCamera3D* camera)
 	{
 		m_program->Bind();
 
 		applyTransform(camera);
-
-
-		//RENDER TOP
-		m_vBuffer->set(0, m_topVerts.size(), m_topVerts.data());
-		m_vBuffer->bind();
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		VertexPositionColor::Enable(true);
-		VertexPositionColor::RenderArrays(m_topVerts.size(), GL_TRIANGLE_FAN);
-		VertexPositionColor::Enable(false);
-		m_vBuffer->unbind();
 		
 
 		//RENDER BOTTOM
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		m_vBuffer->set(0, m_botVerts.size(), m_botVerts.data());
 		m_vBuffer->bind();
 		VertexPositionColor::Enable(true);
@@ -194,12 +176,11 @@ namespace Vixen {
 		m_vBuffer->set(0, m_bodyVerts.size(), m_bodyVerts.data());
 		m_vBuffer->bind();
 		VertexPositionColor::Enable(true);
-		VertexPositionColor::RenderArrays(m_bodyVerts.size(), GL_QUAD_STRIP);
+		VertexPositionColor::RenderArrays(m_bodyVerts.size(), GL_TRIANGLE_FAN);
 		VertexPositionColor::Enable(false);
 		m_vBuffer->unbind();
 
 		//m_iBuffer->unbind();
 		m_program->Unbind();
 	}
-
 }

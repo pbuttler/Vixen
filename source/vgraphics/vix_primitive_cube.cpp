@@ -149,6 +149,7 @@ namespace Vixen {
 
 		applyTransform(camera);
 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		VertexPositionColor::Enable(true);
 		VertexPositionColor::RenderElements(COLOR_INDEX_COUNT, GL_TRIANGLES);
 		VertexPositionColor::Enable(false);

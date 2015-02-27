@@ -34,6 +34,7 @@ namespace Vixen {
 		m_config = new GameConfig(VTEXT("test.config"));
 		m_window = new SDLGameWindow(m_config->WindowArgs());
 		m_renderer = new GLRenderer;
+		m_keyboard = new SDLKeyboardState;
 		m_window->VSetParent(this);
 		m_window->VSetRenderer(m_renderer);
 	}
@@ -63,5 +64,10 @@ namespace Vixen {
 	IRenderer* const IGame::GetRenderer() const
 	{
 		return m_renderer;
+	}
+
+	SDLKeyboardState* const IGame::GetKeyboard() const
+	{
+		return m_keyboard;
 	}
 }

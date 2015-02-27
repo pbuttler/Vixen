@@ -48,21 +48,21 @@ namespace Vixen {
 			return ErrCode::ERR_GLEW_INIT_FAIL;
 		}
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CW);
-		glCullFace(GL_BACK);
+		glDisable(GL_CULL_FACE);
+		//glFrontFace(GL_CW);
+		//glCullFace(GL_BACK);
 		
 		
 
 		/*init camera2D*/
-		m_camera2D = new GLCamera2D(0, 800, 0, 600);
+		m_camera2D = new GLCamera2D(0, 1280, 0, 800);
 
 		/*init 3d camera*/
 		m_camera3D = new GLCamera3D;
-		m_camera3D->SetPerspective(static_cast<float>(800)/
-			                       static_cast<float>(600), 45.0f, 0.05f, 1000.0f);
+		m_camera3D->SetPerspective(static_cast<float>(1280)/
+			                       static_cast<float>(800), 45.0f, 0.05f, 1000.0f);
 		m_camera3D->SetView(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		
 		/*init textureBatcher*/
@@ -165,15 +165,27 @@ namespace Vixen {
 
 	void GLRenderer::Render2DText(BMFont * font, UString& text, const Vector2 & position, const Color & color)
 	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		m_Render2DBatcher->Begin(BatchSortMode::IMMEDITATE);
 
-		float dx = position.x;
-		float dy = position.y;
+		float x = position.x;
+		if(position.x == -1) {
+			float midX = (1280 - font->Bounds(text).w)/2;
+			x = midX;
+		}
+		float y = position.y;
+		if(position.y == -1) {
+			float midY = (800 - font->Bounds(text).h)/2;
+			y = midY;
+		}
+
+		float dx = x;
+		float dy = y;
 		for (UChar &c : text)
 		{
 			if (c == '\n')
 			{
-				dx = position.x;
+				dx = x;
 				dy += font->FontFile().common.lineHeight;
 				continue;
 			}

@@ -47,13 +47,14 @@ namespace Vixen {
 
 		IRenderer*		const GetRenderer() const;
 		IGameWindow*	const GetWindow()   const;
+		SDLKeyboardState* const GetKeyboard() const;
 
 	protected:
-		GameConfig*		m_config;
-		IGameWindow*	m_window;
-		IRenderer*      m_renderer;
-		ContentManager	m_content;
-
+		GameConfig*			m_config;
+		IGameWindow*		m_window;
+		IRenderer*			m_renderer;
+		ContentManager		m_content;
+		SDLKeyboardState*	m_keyboard;
 	};
 
 }

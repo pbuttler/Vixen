@@ -2,10 +2,12 @@
 #define VIX_SDLINPUT_H
 
 #include <vix_platform.h>
+#include <vix_input.h>
 #include <SDL.h>
 #include <map>
 
 namespace Vixen {
+
 
 	class VIX_API SDLKeyboardState
 	{
@@ -17,10 +19,13 @@ namespace Vixen {
 		void KeyDown(SDL_Scancode code);
 		void KeyUp(SDL_Scancode code);
 		void UpdatePrev();
-		bool SingleKeyPress(SDL_Scancode code);
+		bool KeyPress(IKEY key);
+		bool SingleKeyPress(IKEY key);
 	private:
 		KeyState  m_current;
 		KeyState  m_previous;
+
+		SDL_Scancode convertFromIKEY(IKEY key);
 	};
 
 }

@@ -191,6 +191,11 @@ namespace Vixen {
 		glUniformMatrix4fv(worldLoc, 1, GL_FALSE, glm::value_ptr(world));
 	}
 
+	void PrimitiveSphere::SetSubdivisions(float sub)
+	{
+		m_subdivisions = sub;
+	}
+
 	void PrimitiveSphere::Render(GLCamera3D* camera)
 	{
 		m_vBuffer->bind();
@@ -199,6 +204,7 @@ namespace Vixen {
 
 		applyTransform(camera);
 
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		VertexPositionColor::Enable(true);
 		glPatchParameteri(GL_PATCH_VERTICES, 3);
 		VertexPositionColor::RenderElements(SPHERE_INDEX_COUNT, GL_PATCHES);

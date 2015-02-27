@@ -1,5 +1,5 @@
-#ifndef VIX_PRIMITIVE_SPHERE
-#define VIX_PRIMITIVE_SPHERE
+#ifndef VIX_PRIMITIVE_SPHERE_H
+#define VIX_PRIMITIVE_SPHERE_H
 
 #include <vix_platform.h>
 #include <vix_gl.h>
@@ -25,6 +25,7 @@ namespace Vixen {
 		void RotateZ(float dt);
 
 		void SetPosition(float x, float y, float z);
+		void SetSubdivisions(float sub);
 
 		void Render(GLCamera3D* camera);
 

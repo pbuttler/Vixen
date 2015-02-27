@@ -137,11 +137,13 @@ namespace Vixen {
 		
 		m_renderer->VSetClearColor(Colors::CornflowerBlue);
 
+		
 		//run application loop
 		m_running = true;
 		while (m_running)
 		{
 			
+
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
 			{
@@ -149,6 +151,14 @@ namespace Vixen {
 				{
 				case SDL_QUIT:
 					VClose();
+					break;
+
+				case SDL_KEYDOWN:
+					m_parent->GetKeyboard()->KeyDown(event.key.keysym.scancode);
+					break;
+
+				case SDL_KEYUP:
+					m_parent->GetKeyboard()->KeyUp(event.key.keysym.scancode);
 					break;
 				}
 			}
@@ -160,6 +170,8 @@ namespace Vixen {
 
 			/*render*/
 			m_parent->VOnRender(0.0f);
+
+			m_parent->GetKeyboard()->UpdatePrev();
 
 
 			VSwapBuffers();
