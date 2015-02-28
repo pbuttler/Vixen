@@ -30,7 +30,7 @@
 // the OpenGL (GL and GLU) headers
 //////////////////////////////////////////////////////////////////////////
 #ifndef VIX_NO_GLEW
-#include <gl/glew.h>
+#define VIX_GLEW
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,11 +45,18 @@
 	#include <windows.h>
 	#endif
 
+        #ifdef VIX_GLEW
+        #include <gl/glew.h>
+        #endif
 	#include <gl/gl.h>
 	#include <gl/glu.h>
+        
 #elif defined(VIX_SYS_LINUX) //Linux
-	#include <gl/gl.h>
-	#include <gl/glu.h>
+        #ifdef VIX_GLEW
+        #include <GL/glew.h>
+        #endif
+	#include <GL/gl.h>
+	#include <GL/glu.h>
 #elif defined(VIX_SYS_MACOS) //Mac OS
 	#include <OpenGL/gl.h>
 	#include <OpenGL/glu.h>

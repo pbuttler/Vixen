@@ -68,8 +68,7 @@ namespace Vixen {
 		/* Initialize SDL
 		*/
 		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
-			DebugPrintF(VTEXT("SDL Failed to Initialize: %s\n"),
-				        ErrCodeString(ErrCode::ERR_SDL_INIT_FAIL));
+			DebugPrintF(VTEXT("SDL Failed to Initialize"));
 			return ErrCode::ERR_SDL_INIT_FAIL;
 		}
 
@@ -88,8 +87,7 @@ namespace Vixen {
 											SDL_WINDOW_OPENGL | SDL_WINDOW_ALLOW_HIGHDPI);
 		if (!m_windowHandle) {
 			SDL_Quit();
-			DebugPrintF(VTEXT("Failed to created SDL_Window handle: %s\n"),
-				ErrCodeString(ErrCode::ERR_SDL_CREATE_FAIL));
+			DebugPrintF(VTEXT("Failed to created SDL_Window handle"));
 			return ErrCode::ERR_SDL_CREATE_FAIL;
 		}
 
@@ -97,15 +95,13 @@ namespace Vixen {
 		m_context = SDL_GL_CreateContext(m_windowHandle);
 		if (!m_context) {
 			SDL_Quit();
-			DebugPrintF(VTEXT("Failed to create SDL_GL_Context handle: %s\n"),
-				ErrCodeString(ErrCode::ERR_SDL_CREATE_FAIL));
+			DebugPrintF(VTEXT("Failed to create SDL_GL_Context handle"));
 			return ErrCode::ERR_SDL_CREATE_FAIL;
 		}
 
 		error = m_renderer->VInit();
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("Renderer failed to initialize: %s\n"),
-				ErrCodeString(error));
+		  DebugPrintF(VTEXT("Renderer failed to initialize"));
 			return error;
 		}
 
@@ -120,8 +116,7 @@ namespace Vixen {
 		/*try and initialize window*/
 		error = VInit();
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("SDLGameWindow failed to initialize: %s\n"),
-				ErrCodeString(error));
+		  DebugPrintF(VTEXT("SDLGameWindow failed to initialize"));
 			return error;
 		}
 

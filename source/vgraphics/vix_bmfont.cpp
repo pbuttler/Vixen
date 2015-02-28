@@ -26,7 +26,9 @@
 #include <vix_errglobals.h>
 #include <vix_algorithms.h>
 #include <vix_texture.h>
+#ifndef VIX_SYS_LINUX
 #include <codecvt>
+#endif
 
 
 
@@ -238,13 +240,14 @@ namespace Vixen {
 
 		/*Populate font info struct of file with parsed info*/
 		BMFontInfo& info = file.info;
-		UConverter cv;
+		
 		const char* _face = infoElement->Attribute("face");
 		const char* _charset = infoElement->Attribute("charset");
 		const char* _padding = infoElement->Attribute("padding");
 		const char* _spacing = infoElement->Attribute("spacing");
 		UString spacing;
 #ifdef UNICODE
+		UConverter cv;
 		info.face = cv.from_bytes(_face);
 		info.charset = cv.from_bytes(_charset);
 		info.padding = cv.from_bytes(_padding);
@@ -340,8 +343,9 @@ namespace Vixen {
 			BMFontPage p;
 			p.id = pageElement->IntAttribute("id");
 			const char* _file = pageElement->Attribute("file");
-			UConverter cv;
+		
 #ifdef UNICODE 
+			UConverter cv;
 			p.file = cv.from_bytes(_file);
 #else
 			p.file = _file;

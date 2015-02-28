@@ -13,7 +13,7 @@ namespace Vixen {
 			/*no file or raw contents avaliable for loading*/
 			DebugPrintF(VTEXT("Shader creation failed: %s\n%s\n"),
 				        VTEXT("No shader path or raw contents avaliable"),
-						ErrCodeString(ErrCode::ERR_NULL_PATH));
+				    ErrCodeString(ErrCode::ERR_NULL_PATH).c_str());
 		}
 
 		/*determine if shader should load from file or raw contents*/
@@ -26,7 +26,7 @@ namespace Vixen {
 
 		if (CheckError(error)) {
 			DebugPrintF(VTEXT("Shader creation failed: %s\n"),
-				        ErrCodeString(error));
+				    ErrCodeString(error).c_str());
 		}
 	}
 
@@ -44,14 +44,14 @@ namespace Vixen {
 		if (!source) {
 			error = ErrCode::ERR_FAILURE;
 			DebugPrintF(VTEXT("Failed to parse shader source: %s\n"),
-				ErrCodeString(error));
+				    ErrCodeString(error).c_str());
 			return error;
 		}
 
 		error = LoadShader(source);
 		if (CheckError(error)) {
 			DebugPrintF(VTEXT("Failed to init shader from file: %s\n"),
-				ErrCodeString(error));
+				    ErrCodeString(error).c_str());
 			return error;
 		}
 
@@ -73,7 +73,7 @@ namespace Vixen {
 		if (CheckError(error)) {
 			if (CheckError(error)) {
 				DebugPrintF(VTEXT("Failed to init shader from source: %s\n"),
-					ErrCodeString(error));
+					    ErrCodeString(error).c_str());
 				return error;
 			}
 		}
@@ -89,7 +89,7 @@ namespace Vixen {
 		if (type == GL_NONE) {
 			error = ErrCode::ERR_FAILURE;
 			DebugPrintF(VTEXT("Failed to Load Shader due to invalid type: %s\n"),
-						ErrCodeString(error));
+				    ErrCodeString(error).c_str());
 			return error;
 		}
 
@@ -129,7 +129,7 @@ namespace Vixen {
 			std::cout << log << std::endl;
 #else
 			DebugPrintF(VTEXT("Shader Log: %s\n%s\n"),
-						log, ErrCodeString(error));
+				    log, ErrCodeString(error).c_str());
 #endif
 			delete[] log;
 
@@ -150,7 +150,7 @@ namespace Vixen {
 #endif
 		if (!file) {
 			DebugPrintF(VTEXT("Unabled to read shader: %s\n"),
-				ErrCodeString(ErrCode::ERR_FAILURE));
+				    ErrCodeString(ErrCode::ERR_FAILURE).c_str());
 			return NULL;
 		}
 

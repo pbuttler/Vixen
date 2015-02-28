@@ -42,9 +42,8 @@ namespace Vixen {
 		/*initialize glew*/
 		GLenum glewErr = glewInit();
 		if (glewErr != GLEW_OK) {
-			DebugPrintF(VTEXT("Glew failed to initialize: %s\n%s\n"),
-				glewGetErrorString(glewErr), 
-				ErrCodeString(ErrCode::ERR_GLEW_INIT_FAIL));
+			DebugPrintF(VTEXT("Glew failed to initialize: %s\n"),
+				    glewGetErrorString(glewErr));
 			return ErrCode::ERR_GLEW_INIT_FAIL;
 		}
 
@@ -163,7 +162,7 @@ namespace Vixen {
 		m_Render2DBatcher->End();
 	}
 
-	void GLRenderer::Render2DText(BMFont * font, UString& text, const Vector2 & position, const Color & color)
+	void GLRenderer::Render2DText(BMFont * font, UString text, const Vector2 & position, const Color & color)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		m_Render2DBatcher->Begin(BatchSortMode::IMMEDITATE);

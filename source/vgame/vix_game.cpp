@@ -31,7 +31,7 @@ namespace Vixen {
 
 	IGame::IGame()
 	{
-		m_config = new GameConfig(VTEXT("test.config"));
+	        m_config = new GameConfig(VTEXT("vtest.config"));
 		m_window = new SDLGameWindow(m_config->WindowArgs());
 		m_renderer = new GLRenderer;
 		m_keyboard = new SDLKeyboardState;
@@ -47,8 +47,7 @@ namespace Vixen {
 			ErrCode error = m_window->VRun();
 			m_content.VShutDown();
 			if (CheckError(error)) {
-				DebugPrintF(VTEXT("Application loop encountered error: %s\n"),
-					ErrCodeString(error));
+			  DebugPrintF(VTEXT("Application loop encountered error"));
 				return -1;
 			}
 		}

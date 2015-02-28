@@ -32,10 +32,15 @@
 
 typedef tinyxml2::XMLDocument XMLDOC;
 typedef tinyxml2::XMLPrinter  XMLPRINT;
+#ifdef VIX_SYS_LINUX
+typedef int XMLError;
+#endif
 
 namespace Vixen {
 
-	inline bool VIX_API XMLErrCheck(tinyxml2::XMLError error, UString& errorMsg)
+#ifdef VIX_SYS_WINDOWS
+	inline 
+	bool VIX_API XMLErrCheck(tinyxml2::XMLError error, UString& errorMsg)
 	{
 		bool fail = true;
 		switch (error)
@@ -105,6 +110,51 @@ namespace Vixen {
 		
 		return fail;
 	}
+#elif defined(VIX_SYS_LINUX)
+	inline
+        bool VIX_API XMLErrCheck(int error, UString& errMsg)
+	{
+	  bool fail = true;
+	  switch(error) {
+	case tinyxml2::XML_NO_ERROR:
+	  fail = false;
+	  break;
+	case tinyxml2::XML_NO_ATTRIBUTE:
+	  break;
+	case tinyxml2::XML_WRONG_ATTRIBUTE_TYPE:
+	  break;
+	case tinyxml2::XML_ERROR_FILE_NOT_FOUND:
+	  break;
+	case tinyxml2::XML_ERROR_FILE_COULD_NOT_BE_OPENED:
+	  break;
+	case tinyxml2::XML_ERROR_ELEMENT_MISMATCH:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_ELEMENT:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_ATTRIBUTE:
+	  break;
+	case tinyxml2::XML_ERROR_IDENTIFYING_TAG:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_TEXT:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_CDATA:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_COMMENT:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_DECLARATION:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING_UNKNOWN:
+	  break;
+	case tinyxml2::XML_ERROR_EMPTY_DOCUMENT:
+	  break;
+	case tinyxml2::XML_ERROR_MISMATCHED_ELEMENT:
+	  break;
+	case tinyxml2::XML_ERROR_PARSING:
+	  break;
+	  }
+	  return fail;
+	}
+#endif
 
 }
 

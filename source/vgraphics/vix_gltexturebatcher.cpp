@@ -1,6 +1,7 @@
 #include <vix_gltexturebatcher.h>
 #include <vix_glm.h>
 #include <vix_rectangle.h>
+#include <algorithm>
 
 namespace Vixen {
 

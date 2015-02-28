@@ -36,6 +36,60 @@ namespace Vixen {
 
 	}
 
+  BMFont* ContentManager::LoadFont(const UString& path)
+  {
+    	if (path.empty()) {
+	  DebugPrintF(VTEXT("Error Loading [BMFont]"));
+			return NULL;
+		}
+
+		UString _path = os_path(FONT_FOLDER_PATH + path);
+		UString _texPath = os_path(FONT_FOLDER_PATH + TEX_FOLDER_PATH);
+
+		ContentMap::iterator it = m_fonts.find(_path);
+		if (it != m_fonts.end()) {
+			return (BMFont*)it->second;
+		}
+		else {
+
+			/*create new font*/
+			BMFont* font = new BMFont(_path);
+			/*load textures for font*/
+			for (auto& page : font->FontFile().pages) {
+				Texture* tex = Load<Texture>(_texPath + page.file);
+				if (tex)
+					font->AddPageTexture(tex);
+			}
+			m_fonts[_path] = (IContent*)font;
+			return font;
+		}
+
+		return NULL;
+  }
+
+  Texture* ContentManager::LoadTexture(const UString& path)
+  {
+    	if (path.empty()) {
+	  DebugPrintF(VTEXT("Error Loading [Texture]"));
+			return NULL;
+		}
+
+		UString _path = os_path(TEX_FOLDER_PATH + path);
+
+		ContentMap::iterator it = m_textures.find(_path);
+		if (it != m_textures.end()) {
+			return (Texture*)it->second;
+		}
+		else {
+			/*create new texture*/
+			Texture* texture = new GLTexture(_path);
+			m_textures[_path] = (IContent*)texture;
+			return texture;
+		}
+
+		return NULL;
+  }
+
 	ErrCode ContentManager::VStartUp()
 	{
 		DebugPrintF(VTEXT("ContentManager starting up..."));

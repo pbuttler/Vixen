@@ -51,8 +51,7 @@ namespace Vixen {
 		/*Parse config file*/
 		error = ParseConfig(document);
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("GameConfig failed to parse: %s\n"),
-				        ErrCodeString(error));
+			DebugPrintF(VTEXT("GameConfig failed to parse"));
 		}
 
 		return error;

@@ -11,8 +11,7 @@ namespace Vixen {
 		/*load and create shaders from args*/
 		ErrCode error = VCreateShadersFromArgs();
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("Failed to create shader program: %s\n"),
-				ErrCodeString(error));
+		  DebugPrintF(VTEXT("Failed to create shader program"));
 		}
 		else {
 			DebugPrintF(VTEXT("Created shader program"));
@@ -114,8 +113,7 @@ namespace Vixen {
 		glLinkProgram(m_program);
 		error = ValidateCompile(m_program);
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("Failed to link shader to program: %s\n"),
-				ErrCodeString(error));
+			DebugPrintF(VTEXT("Failed to link shader to program"));
 			delete shader;
 		}
 
@@ -135,8 +133,8 @@ namespace Vixen {
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
 			GLchar* log = new GLchar[length + 1];
 			glGetProgramInfoLog(program, length, &length, log);
-			DebugPrintF(VTEXT("Program Log: %s\n%s\n"),
-				log, ErrCodeString(error));
+			DebugPrintF(VTEXT("Program Log: %s\n"),
+				log);
 			delete[] log;
 		}
 

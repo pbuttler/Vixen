@@ -90,8 +90,7 @@ namespace Vixen {
 
 		ErrCode error = InitFromFile(filePath);
 		if (CheckError(error)) {
-			DebugPrintF(VTEXT("Texture failed to initialize: %s\n"),
-				ErrCodeString(error));
+			DebugPrintF(VTEXT("Texture failed to initialize"));
 		}
 	}
 

@@ -42,7 +42,7 @@ namespace Vixen{
 		
 		((GLRenderer*)renderer)->Render2DTexture((GLTexture*)m_texture,
 			Vector2(x, y), Rect(0, 0, 0, 0), Vector2(0, 0), Vector2(1, 1), 0.0f, Colors::White, 0.0f);
-		((GLRenderer*)renderer)->Render2DText(m_font, ss.str(),
+		((GLRenderer*)renderer)->Render2DText(m_font, UString(ss.str().c_str()),
 			Vector2(x+15, y+20), Colors::Snow);
 	}
 

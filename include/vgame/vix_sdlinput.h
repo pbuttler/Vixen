@@ -3,7 +3,11 @@
 
 #include <vix_platform.h>
 #include <vix_input.h>
+#ifdef VIX_SYS_WINDOWS
 #include <SDL.h>
+#elif defined(VIX_SYS_LINUX)
+#include <SDL2/SDL.h>
+#endif#include <SDL.h>
 #include <map>
 
 namespace Vixen {

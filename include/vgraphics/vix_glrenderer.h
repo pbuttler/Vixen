@@ -57,7 +57,7 @@ namespace Vixen {
 								float           depth);
 
 		void   Render2DText(BMFont* font,
-			                UString& text,
+			                UString text,
 							const Vector2& position,
 							const Color&   color);
 
