@@ -33,7 +33,7 @@
 typedef tinyxml2::XMLDocument XMLDOC;
 typedef tinyxml2::XMLPrinter  XMLPRINT;
 #ifdef VIX_SYS_LINUX
-typedef int XMLError;
+//typedef int XMLError;
 #endif
 
 namespace Vixen {
@@ -112,7 +112,7 @@ namespace Vixen {
 	}
 #elif defined(VIX_SYS_LINUX)
 	inline
-        bool VIX_API XMLErrCheck(int error, UString& errMsg)
+        bool VIX_API XMLErrCheck(tinyxml2::XMLError error, UString& errMsg)
 	{
 	  bool fail = true;
 	  switch(error) {

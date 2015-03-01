@@ -39,6 +39,7 @@ namespace Vixen {
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
 
+		glewExperimental = GL_TRUE;
 		/*initialize glew*/
 		GLenum glewErr = glewInit();
 		if (glewErr != GLEW_OK) {

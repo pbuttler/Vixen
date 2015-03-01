@@ -45,6 +45,8 @@ namespace Vixen {
 
 		UString _path = os_path(FONT_FOLDER_PATH + path);
 		UString _texPath = os_path(FONT_FOLDER_PATH + TEX_FOLDER_PATH);
+		std::cout << _path << std::endl;
+		
 
 		ContentMap::iterator it = m_fonts.find(_path);
 		if (it != m_fonts.end()) {
@@ -56,7 +58,8 @@ namespace Vixen {
 			BMFont* font = new BMFont(_path);
 			/*load textures for font*/
 			for (auto& page : font->FontFile().pages) {
-				Texture* tex = Load<Texture>(_texPath + page.file);
+			  std::cout << _texPath + page.file << std::endl;
+				Texture* tex = LoadTexture(_texPath + page.file);
 				if (tex)
 					font->AddPageTexture(tex);
 			}

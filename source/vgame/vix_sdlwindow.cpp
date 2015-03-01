@@ -91,6 +91,18 @@ namespace Vixen {
 			return ErrCode::ERR_SDL_CREATE_FAIL;
 		}
 
+		int maxv;
+		int minv;
+		int mask;
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maxv);
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minv);
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &mask);
+		DebugPrintF(VTEXT("[BEFORE] GL Version %i : %i : %i"), maxv, minv, mask); 
+
+	        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+		DebugPrintF(VTEXT("Core: %i"), SDL_GL_CONTEXT_PROFILE_CORE);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY); 
 		/*create OpenGL context*/
 		m_context = SDL_GL_CreateContext(m_windowHandle);
 		if (!m_context) {
@@ -98,12 +110,19 @@ namespace Vixen {
 			DebugPrintF(VTEXT("Failed to create SDL_GL_Context handle"));
 			return ErrCode::ERR_SDL_CREATE_FAIL;
 		}
+		DebugPrintF(VTEXT("GL Vendor: %s"), glGetString(GL_VENDOR));
+		DebugPrintF(VTEXT("GL Version: %s"), glGetString(GL_VERSION));
 
 		error = m_renderer->VInit();
 		if (CheckError(error)) {
 		  DebugPrintF(VTEXT("Renderer failed to initialize"));
 			return error;
 		}
+
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maxv);
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minv);
+		SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &mask);
+		DebugPrintF(VTEXT("[AFTER] GL Version %i : %i : %i"), maxv, minv, mask); 
 
 		return error;
 	}

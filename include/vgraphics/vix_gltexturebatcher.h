@@ -183,6 +183,8 @@ namespace Vixen {
 		/*Begin/End flag*/
 		bool                      m_BEFlag;
 
+		GLuint                      m_vao;
+
 		/*-----------private utility functions-----------*/
 
 		

@@ -140,16 +140,19 @@ namespace Vixen {
 		//bind opengl texture handle
 		glBindTexture(m_target, m_id);
 
+	      
+
 		//retrieve internal format
 		GLenum internalFormat = vixFIBmpToInternalFormat(image->bitmap);
 		//retrieve format
-		GLenum format = vixFIBmpToFormat(image->bitmap);
-		
-		//hand opengl the image
+		GLenum format = vixFIBmpToFormat(image->bitmap);	
 		glTexImage2D(m_target, 0, internalFormat, image->header.width, image->header.height, 0, format, GL_UNSIGNED_BYTE, image->data);
 		glGenerateMipmap(m_target);
 		glTexParameterf(m_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameterf(m_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	
+
+    
 
 		//cleanup image allocation
 		if (image)

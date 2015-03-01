@@ -13,6 +13,7 @@ namespace Vixen {
 		m_textureCount = 0;
 		m_camera = camera;
 
+
 		//populate index buffer
 		for (unsigned short i = 0, j = 0; i < MAX_BATCH_SIZE; i++, j += VERTS_PER_TEX)
 		{
@@ -285,8 +286,9 @@ namespace Vixen {
 	void GLTextureBatcher::render_textures()
 	{
 		/*bind buffers*/
+
 		m_vBuffer->bind();
-		m_iBuffer->bind();
+	  	m_iBuffer->bind();
 		/*bind shader*/
 		m_program->Bind();
 		/*bind texture*/
@@ -314,6 +316,7 @@ namespace Vixen {
 
 		/*unbind buffers*/
 		m_vBuffer->unbind();
+        
 		m_iBuffer->unbind();
 		/*unbind shader*/
 		m_program->Unbind();
@@ -339,7 +342,9 @@ namespace Vixen {
 
 			/*build texture*/
 			build_texture(info, i);
+		 
 		}
+	        
 
 		/*render textures*/
 		render_textures();
