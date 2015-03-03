@@ -22,6 +22,7 @@
 */
 
 #include <vix_contentmanager.h>
+#include <vix_stlutil.h>
 
 namespace Vixen {
 
@@ -33,7 +34,7 @@ namespace Vixen {
 
 	ContentManager::~ContentManager()
 	{
-
+        STLMAP_DELETE(m_fonts);
 	}
 
   BMFont* ContentManager::LoadFont(const UString& path)
@@ -46,7 +47,7 @@ namespace Vixen {
 		UString _path = os_path(FONT_FOLDER_PATH + path);
 		UString _texPath = os_path(FONT_FOLDER_PATH + TEX_FOLDER_PATH);
 		std::cout << _path << std::endl;
-		
+
 
 		ContentMap::iterator it = m_fonts.find(_path);
 		if (it != m_fonts.end()) {

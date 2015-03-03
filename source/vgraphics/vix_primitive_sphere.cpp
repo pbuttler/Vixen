@@ -2,7 +2,7 @@
 #include <vix_color.h>
 #include <vix_math.h>
 
-#define S_X .525731112119133606 
+#define S_X .525731112119133606
 #define S_Z .850650808352039932
 
 namespace Vixen {
@@ -40,7 +40,7 @@ namespace Vixen {
 
 	PrimitiveSphere::~PrimitiveSphere()
 	{
-
+        delete m_program;
 	}
 
 	void PrimitiveSphere::RotateX(float dt)
@@ -66,7 +66,7 @@ namespace Vixen {
 
 	void PrimitiveSphere::init_color_vi_buffers()
 	{
-		
+
 #pragma region ICOSAHEDRON
 		std::array<VertexPositionColor, SPHERE_VERTEX_COUNT> vTemp =
 		{
@@ -83,7 +83,7 @@ namespace Vixen {
 			VertexPositionColor( S_Z, -S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a),
 			VertexPositionColor( -S_Z, -S_X, 0.0f, Colors::Red.r, Colors::Red.g, Colors::Red.b, Colors::Red.a)
 		};
-		std::array<unsigned short, SPHERE_INDEX_COUNT> iTemp = 
+		std::array<unsigned short, SPHERE_INDEX_COUNT> iTemp =
 		{
 			0, 4, 1,
 			0, 9, 4,
@@ -92,7 +92,7 @@ namespace Vixen {
 			4, 8, 1,
 			8, 10, 1,
 			8, 3, 10,
-			5, 3, 8, 
+			5, 3, 8,
 			5, 2, 3,
 			2, 7, 3,
 			7, 10, 3,
@@ -108,11 +108,11 @@ namespace Vixen {
 		};
 		m_iBuffer->set(0, SPHERE_INDEX_COUNT, iTemp.data());
 
-		
+
 		m_vBuffer->set(0, SPHERE_VERTEX_COUNT, vTemp.data());
 
 #pragma endregion
-		
+
 	}
 
 	void PrimitiveSphere::init_shader_program()

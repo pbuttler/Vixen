@@ -6,6 +6,10 @@ namespace Vixen {
 	GLShaderProgram::GLShaderProgram(const ShaderArgs args)
 	{
 		m_args = args;
+		m_vShader = NULL;
+		m_fShader = NULL;
+		m_tcShader = NULL;
+		m_teShader = NULL;
 		m_program = glCreateProgram();
 
 		/*load and create shaders from args*/
@@ -37,7 +41,9 @@ namespace Vixen {
 	{
 		ErrCode error = ErrCode::ERR_SUCCESS;
 
+
 		/*iterate over shader info objects*/
+
 		for (auto& info : m_args) {
 			switch (info.type)
 			{
@@ -111,7 +117,7 @@ namespace Vixen {
 
 		/*link program to shader*/
 		glLinkProgram(m_program);
-		error = ValidateCompile(m_program);
+		//error = ValidateCompile(m_program);
 		if (CheckError(error)) {
 			DebugPrintF(VTEXT("Failed to link shader to program"));
 			delete shader;

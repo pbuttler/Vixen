@@ -124,7 +124,7 @@ namespace Vixen {
 		{
 			size_t stride = sizeof(Vertex2D);
 			int    offset = 0;
-			
+
 			/*POSITION*/
 			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, stride, (const GLvoid*)offset);
 			/*COLOR*/
@@ -173,7 +173,7 @@ namespace Vixen {
 
 		/*Vertex buffer*/
 		GLVertexBuffer<Vertex2D>*  m_vBuffer;
-		
+
 		/*Index buffer*/
 		GLIndexBuffer*             m_iBuffer;
 
@@ -187,7 +187,7 @@ namespace Vixen {
 
 		/*-----------private utility functions-----------*/
 
-		
+
 		/*INITIALIZE SHADER PROGRAM*/
 		ErrCode init_shader_program();
 

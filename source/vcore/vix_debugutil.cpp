@@ -32,9 +32,10 @@ namespace Vixen {
 
 		system_clock::time_point now_point = system_clock::now();
 		std::time_t now_time = system_clock::to_time_t(now_point);
-		tm pTime;
+
 
 #ifdef VIX_SYS_WINDOWS
+        tm pTime;
 		localtime_s(&pTime, &now_time);
 		char buffer[VIX_BUFSIZE];
 		asctime_s(buffer, &pTime);
@@ -42,7 +43,7 @@ namespace Vixen {
 #else
 		ss << asctime(localtime(&now_time));
 #endif
-		
+
 		return ss.str();
 	}
 }

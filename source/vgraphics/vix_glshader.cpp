@@ -3,7 +3,7 @@
 #include <vix_errglobals.h>
 
 namespace Vixen {
-	
+
 	GLShader::GLShader(const ShaderInfo& info)
 	{
 		m_info = info;
@@ -67,7 +67,7 @@ namespace Vixen {
 		std::string _source = cv.to_bytes(m_info.raw.c_str());
 		const GLchar* source = _source.c_str();
 #else
-		const GLchar* source = m_info.raw.c_str();
+		const GLchar* source = (const GLchar*)m_info.raw.c_str();
 #endif
 		error = LoadShader(source);
 		if (CheckError(error)) {
@@ -135,7 +135,7 @@ namespace Vixen {
 
 			return error;
 		}
-		
+
 
 		return error;
 	}
@@ -163,7 +163,7 @@ namespace Vixen {
 
 		/*buffer source*/
 		GLchar* src = new GLchar[len + 1];
-		
+
 		/*read file contents into buffer*/
 		fread(src, 1, len, file);
 		/*close file after read*/

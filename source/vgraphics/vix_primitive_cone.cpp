@@ -3,7 +3,7 @@
 
 namespace Vixen {
 
-	
+
 	PrimitiveCone::PrimitiveCone()
 	{
 		m_rotationX = 0.0f;
@@ -38,7 +38,7 @@ namespace Vixen {
 
 	PrimitiveCone::~PrimitiveCone()
 	{
-
+        delete m_program;
 	}
 
 	void PrimitiveCone::SetSubdivisions(size_t sub)
@@ -103,7 +103,7 @@ namespace Vixen {
 		{
 			m_bodyVerts.push_back(VertexPositionColor(r*cos(i), -h, r*sin(i), 1.0f, 0.0f, 0.0f, 1.0f));
 		}
-	
+
 	}
 
 	void PrimitiveCone::init_shader_program()
@@ -160,7 +160,7 @@ namespace Vixen {
 		m_program->Bind();
 
 		applyTransform(camera);
-		
+
 
 		//RENDER BOTTOM
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

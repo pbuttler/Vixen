@@ -48,7 +48,7 @@ namespace Vixen {
 
 	SDLGameWindow::~SDLGameWindow()
 	{
-		
+
 	}
 
 	void SDLGameWindow::VSetParent(IGame* game)
@@ -75,7 +75,7 @@ namespace Vixen {
 		/*Create the SDL_Window handle*/
 #ifdef UNICODE
 		UConverter convert;
-		std::string title = convert.to_bytes(m_params.title); 
+		std::string title = convert.to_bytes(m_params.title);
 #else
 		std::string title = m_params.title;
 #endif
@@ -97,12 +97,12 @@ namespace Vixen {
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maxv);
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minv);
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &mask);
-		DebugPrintF(VTEXT("[BEFORE] GL Version %i : %i : %i"), maxv, minv, mask); 
+		DebugPrintF(VTEXT("[BEFORE] GL Version %i : %i : %i"), maxv, minv, mask);
 
-	        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 		DebugPrintF(VTEXT("Core: %i"), SDL_GL_CONTEXT_PROFILE_CORE);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY); 
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
 		/*create OpenGL context*/
 		m_context = SDL_GL_CreateContext(m_windowHandle);
 		if (!m_context) {
@@ -122,7 +122,7 @@ namespace Vixen {
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &maxv);
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &minv);
 		SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &mask);
-		DebugPrintF(VTEXT("[AFTER] GL Version %i : %i : %i"), maxv, minv, mask); 
+		DebugPrintF(VTEXT("[AFTER] GL Version %i : %i : %i"), maxv, minv, mask);
 
 		return error;
 	}
@@ -148,15 +148,17 @@ namespace Vixen {
 		camera->SetPerspective((float)r.w / (float)r.h, 45.0f, 0.05f, 1000.0f);
 		GLCamera2D* camera2D = ((GLRenderer*)m_renderer)->Camera2D();
 		camera2D->SetBounds(0, (float)r.w, 0, (float)r.h);
-		
+
 		m_renderer->VSetClearColor(Colors::CornflowerBlue);
 
-		
+        SDLTimer timer;
+        timer.Start();
 		//run application loop
 		m_running = true;
 		while (m_running)
 		{
-			
+
+            timer.Tick();
 
 			SDL_Event event;
 			while (SDL_PollEvent(&event))
@@ -180,10 +182,10 @@ namespace Vixen {
 			m_renderer->VClearBuffer(ClearArgs::COLOR_DEPTH_BUFFER);
 
 			/*update*/
-			m_parent->VOnUpdate(0.0f);
+			m_parent->VOnUpdate(timer.DeltaTime());
 
 			/*render*/
-			m_parent->VOnRender(0.0f);
+			m_parent->VOnRender(timer.DeltaTime());
 
 			m_parent->GetKeyboard()->UpdatePrev();
 
@@ -216,7 +218,7 @@ namespace Vixen {
 
 	void SDLGameWindow::VSetVisible(bool flag)
 	{
-		
+
 
 	}
 
