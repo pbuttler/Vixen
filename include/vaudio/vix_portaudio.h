@@ -3,7 +3,11 @@
 
 #include <vix_platform.h>
 #include <portaudio.h>
+#include <stdlib.h>
 
+/*PORTAUDIO DEFINES*/
+#define PAUDIO_SAMPLERATE   44100
+#define PAUDIO_SLEEPSECONDS 2
 
 /*
 *	PAUDIO_Error
@@ -22,7 +26,7 @@ bool PAUDIO_Error(PaError err);
 *	Called on application startup
 */
 VIX_API
-void PAUDIO_Init();
+bool PAUDIO_Init();
 
 /*
 *	PAUDIO_Term
@@ -31,26 +35,55 @@ void PAUDIO_Init();
 *	Called on application exit
 */
 VIX_API
-void PAUDIO_Term();
+bool PAUDIO_Term();
 
 /*
 *	PAUDIO_QueryDevices
 *	Queries physical audio devices and outputs
 *   information for each device.
-*	
+*
 */
 VIX_API
 void PAUDIO_QueryDevices();
 
 /*
+*   PAUDIO_Sleep
+*
+*   Sleeps PortAudio caller for PAUDIO_SLEEPSECONDS
+*
+*/
+VIX_API
+void PAUDIO_Sleep();
+
+/*
 *	PAUDIO_PrintDevice
 *	Prints information about specified device
-*	
+*
 */
 VIX_API
 void PAUDIO_PrintDevice(const PaDeviceInfo* dInfo, size_t i);
 
+
 VIX_API
-void PAUDIO_CloseStream(PaStream* stream);
+bool PAUDIO_OpenStreamDef(PaStream*         stream,
+                          int               inChannels,
+                          int               outChannels,
+                          PaSampleFormat    sampleFormat,
+                          double            sampleRate,
+                          unsigned long     framesPerBuffer,
+                          PaStreamCallback* streamCallback,
+                          void*             data);
+
+VIX_API
+bool PAUDIO_OpenStreamDef(PaStream*         stream,
+                          int               inChannels,
+                          int               outChannels,
+                          PaSampleFormat    sampleFormat,
+                          unsigned long     framesPerBuffer,
+                          PaStreamCallback* streamCallback,
+                          void*             data);
+
+VIX_API
+bool PAUDIO_CloseStream(PaStream* stream);
 
 #endif

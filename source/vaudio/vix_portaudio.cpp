@@ -15,7 +15,6 @@ PAUDIO_Error(PaError err)
 		DebugPrintF(VTEXT("PortAudio Error: %s\n"), text.c_str());
 #else
 		DebugPrintF(VTEXT("PortAudio Error: %s\n"), errText);
-
 #endif
 		return true;
 	}
@@ -24,27 +23,26 @@ PAUDIO_Error(PaError err)
 	}
 }
 
-void
+bool
 PAUDIO_Init()
 {
 	PaError err;
 	err = Pa_Initialize();
-	PAUDIO_Error(err); //check error
+	return PAUDIO_Error(err); //check error
 }
 
-void
+bool
 PAUDIO_Term()
 {
 	PaError err;
 	err = Pa_Terminate();
-	PAUDIO_Error(err); //check error
+	return PAUDIO_Error(err); //check error
 }
 
 void PAUDIO_QueryDevices()
 {
 	using namespace Vixen;
 
-	PaError err;
 	int numDevices;
 	numDevices = Pa_GetDeviceCount();
 	if (numDevices < 0) {
@@ -58,6 +56,63 @@ void PAUDIO_QueryDevices()
 		deviceInfo = Pa_GetDeviceInfo(i);
 		PAUDIO_PrintDevice(deviceInfo, i);
 	}
+}
+
+bool
+PAUDIO_OpenStreamDef(PaStream*          stream,
+                     int                inChannels,
+                     int                outChannels,
+                     PaSampleFormat     sampleFormat,
+                     double             sampleRate,
+                     unsigned long      framesPerBuffer,
+                     PaStreamCallback*  callback,
+                     void*              data)
+{
+    PaError err;
+    err = Pa_OpenDefaultStream(&stream,
+                               inChannels,
+                               outChannels,
+                               sampleFormat,
+                               sampleRate,
+                               framesPerBuffer,
+                               callback,
+                               &data);
+    return PAUDIO_Error(err);
+}
+
+bool
+PAUDIO_OpenStreamDef(PaStream*          stream,
+                     int                inChannels,
+                     int                outChannels,
+                     PaSampleFormat     sampleFormat,
+                     unsigned long      framesPerBuffer,
+                     PaStreamCallback*  callback,
+                     void*              data)
+{
+    PaError err;
+    err = Pa_OpenDefaultStream(&stream,
+                               inChannels,
+                               outChannels,
+                               sampleFormat,
+                               PAUDIO_SAMPLERATE,
+                               framesPerBuffer,
+                               callback,
+                               &data);
+    return PAUDIO_Error(err);
+}
+
+bool
+PAUDIO_CloseStream(PaStream* stream)
+{
+    PaError err;
+    err = Pa_CloseStream(stream);
+    return PAUDIO_Error(err);
+}
+
+void
+PAUDIO_Sleep()
+{
+    Pa_Sleep(PAUDIO_SLEEPSECONDS * 1000);
 }
 
 void
@@ -76,10 +131,9 @@ PAUDIO_PrintDevice(const PaDeviceInfo* dInfo, size_t i)
 	UString name(dInfo->name);
 #endif
 
-	
+
 	DebugPrintF(VTEXT("AUDIO DEVICE [%d]\n"), i);
 	DebugPrintF(VTEXT("\tNAME: %s\n"), name.c_str());
 	DebugPrintF(VTEXT("\tMAX_ICHANNELS: %d\n"), dInfo->maxInputChannels);
 	DebugPrintF(VTEXT("\tMAX_OCHANNELS: %d\n"), dInfo->maxOutputChannels);
-
 }
